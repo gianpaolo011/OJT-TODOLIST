@@ -10,7 +10,7 @@ import logo from '../../assets/images/GP-logo.png'
 import '../../assets/styles/dashboard.scss'
 import { useState } from 'react'
 
-// import { Snackbar, Alert } from '@mui/material'
+
 import SignUp from '../../components/dashboard-components/SignUp'
 import LogIn from '../../components/dashboard-components/LogIn'
 

@@ -23,12 +23,12 @@ export const router = createBrowserRouter([
     path: '/LogIn',
     element: <LogIn />,
   },
-  {
-    path: '/Application',
-    element: <Application />,
-  },
-  {
-    path: '/TodoContainer',
-    element: <TodoContainer />,
-  },
+  // {
+  //   path: '/Application',
+  //   element: <Application />,
+  // },
+  // {
+  //   path: '/TodoContainer',
+  //   element: <TodoContainer />,
+  // },
 ])

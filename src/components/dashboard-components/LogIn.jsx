@@ -5,21 +5,24 @@ import CloseIcon from '@mui/icons-material/Close'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import '../../assets/styles/loginpage.scss'
 import {
+  Alert,
   Button,
   Checkbox,
   FormControlLabel,
   IconButton,
   Modal,
+  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-
+import { toast } from 'sonner'
 // import CryptoJS from 'crypto-js'
 import { userSchemaLogin } from '../../UserValidation/UserLogInValidation'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useLoginMutation } from '../../app/features/api/login'
+import CryptoJS from 'crypto-js'
 
 function LogIn({ isOpen, onClose }) {
   const [showPassword, setShowPassword] = useState(false)
@@ -29,6 +32,20 @@ function LogIn({ isOpen, onClose }) {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
+  }
+
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    severity: 'success',
+  })
+
+  const handleClosesnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setOpensnackbar(false)
   }
 
   const [login] = useLoginMutation()
@@ -50,11 +67,24 @@ function LogIn({ isOpen, onClose }) {
     console.log('data', data)
     login(data)
       .unwrap()
-      .then((res) => {
-        console.log(res.message)
+      .then((response) => {
+        setAlert({ show: true, message: response.message, severity: 'success' })
+
+        const encryptedData = CryptoJS.AES.encrypt(
+          JSON.stringify(response.result.token),
+          import.meta.env.VITE_CRYPTO_SALT_KEY,
+        ).toString()
+
+        localStorage.setItem('token', encryptedData)
+
+        console.log({ response })
         navigate('/landingpage')
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {
+        alert({ show: true, message: error.message, severity: 'error' })
+
+        console.log(error)
+      })
   }
 
   // [login] = useLoginMutation()
@@ -135,6 +165,21 @@ function LogIn({ isOpen, onClose }) {
             </Button>
           </div>
         </form>
+        <Snackbar
+          open={alert.show}
+          autoHideDuration={1500}
+          onClose={handleClosesnackbar}
+        >
+          <Alert
+            elevation={6}
+            onClose={handleClosesnackbar}
+            severity={alert.severity}
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {alert.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </Modal>
   )

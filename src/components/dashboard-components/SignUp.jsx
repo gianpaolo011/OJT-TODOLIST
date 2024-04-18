@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import { Box } from '@mui/system'
 // import React from 'react'
+import { toast } from 'sonner'
 import { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
@@ -19,6 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useSignupMutation } from '../../app/features/api/signup'
 import calendar from '../../assets/images/calendar_front.png'
 import '../../assets/styles/signup.scss'
+
 
 function SignUp({ isOpen, onClose }) {
   const {
@@ -31,18 +33,17 @@ function SignUp({ isOpen, onClose }) {
   } = useForm({
     defaultValues: {
       first_name: '',
+      last_name: '',
+      middle_name: '',
+      contact_no: '',
       username: '',
       password: '',
-      last_name: '',
       confirm: '',
     },
-    // resolver: yupResolver(userSchema),
+    resolver: yupResolver(userSchema),
   })
 
   const [signup] = useSignupMutation()
-  //  const [opensignup, setOpensignup] = useState(false)
-  // const handleOpensignup = () => setOpensignup(true)
-  // const handleClosesignup = () => setOpensignup(false)
 
   const [showPassword, setShowPassword] = useState(false)
 
@@ -73,6 +74,9 @@ function SignUp({ isOpen, onClose }) {
     }
 
     signup(formData)
+      .unwrap()
+      .then((response) => setOpensnackbar(response, 'response'))
+      .catch((error) => console.log(error, 'error'))
     // const isValid = await userSchema.isValid(formData)
     console.log({ formData })
   }
@@ -126,8 +130,8 @@ function SignUp({ isOpen, onClose }) {
                   <TextField
                     {...register('first_name')}
                     autoComplete="off"
-                    error={!!errors?.email}
-                    helperText={errors?.email?.message}
+                    error={!!errors?.first_name}
+                    helperText={errors?.first_name?.message}
                     className="personal-info__textfield"
                     id="outlined-basic"
                     label="First Name"
@@ -137,8 +141,8 @@ function SignUp({ isOpen, onClose }) {
                   <TextField
                     {...register('last_name')}
                     autoComplete="off"
-                    error={!!errors?.username}
-                    helperText={errors?.username?.message}
+                    error={!!errors?.last_name}
+                    helperText={errors?.last_name?.message}
                     className="personal-info__textfield"
                     id="outlined-basic"
                     label="Last Name"
@@ -148,23 +152,23 @@ function SignUp({ isOpen, onClose }) {
                   <TextField
                     {...register('middle_name')}
                     autoComplete="off"
-                    error={!!errors?.username}
-                    helperText={errors?.username?.message}
+                    error={!!errors?.middle_name}
+                    helperText={errors?.middle_name?.message}
                     className="personal-info__textfield"
                     id="outlined-basic"
                     label="Middle Initial"
-                   variant="standard"
+                    variant="standard"
                   />
 
                   <TextField
                     {...register('contact_no')}
                     autoComplete="off"
-                    error={!!errors?.username}
-                    helperText={errors?.username?.message}
+                    error={!!errors?.contact_no}
+                    helperText={errors?.contact_no?.message}
                     className="personal-info__textfield"
                     id="outlined-basic"
                     label="Contact Number"
-                    variant="standard" 
+                    variant="standard"
                   />
                 </Box>
                 <Typography variant="h5">Credentials</Typography>
@@ -236,6 +240,9 @@ function SignUp({ isOpen, onClose }) {
                   className="submit_button"
                   variant="contained"
                   type="submit"
+                   onClick={() => {
+                        toast('This is a sonner toast')
+                      }}
                 >
                   Register
                 </Button>
