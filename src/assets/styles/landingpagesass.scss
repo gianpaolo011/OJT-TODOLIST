@@ -1,0 +1,248 @@
+.landingpage {
+  height: 100vh;
+  // display: flex;
+  // flex-direction: column;
+  gap: 10px;
+  background-color: #dcf2f1;
+  
+  &__appbar {
+    top: 0;
+    position: sticky;
+    z-index: 100;
+  }
+  &__appbar__label {
+    color: gray;
+    text-transform: uppercase;
+    background-image: linear-gradient(
+      -225deg,
+      #5585b5 0%,
+      #53a8b6 29%,
+      #79c2d0 67%,
+      #bbe4e9 100%
+    );
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 2s linear infinite;
+    // display: inline-block;
+  }
+}
+
+.landingpage-body {
+  font-family: 'Roboto';
+  color: #0f1035;
+  text-align: center;
+  background-color: #dcf2f1;
+  flex: 1;
+  height: auto;
+  width: auto;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  font-size: xx-large;
+  padding: 80px 45px 40px;
+
+  &__addbtn {
+    display: flex;
+    align-self: self-end;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+}
+
+// .events-container {
+
+//   display: flex;
+//   flex-direction: row;
+//   margin-top: 50px;
+//   gap: 50px;
+//   width: auto;
+//   height: auto;
+//   padding: 40px;
+//   margin-top: -2%;
+//   text-align: center;
+//   font-size: xx-large;
+// }
+
+.todolist-form {
+  border-radius: 10px;
+  margin-top: 5%;
+  height: auto;
+  width: 30%;
+  margin-left: 35%;
+  background: linear-gradient(#ffffff, #e3f6f5, #8bf2f2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  gap: 20px;
+  padding: 20px;
+
+  &__label {
+    width: 95%;
+  }
+
+  &__closebtn {
+    display: flex;
+    align-self: flex-start;
+    margin-left: 92%;
+    cursor: pointer;
+  }
+
+  &__timepickers {
+    display: flex;
+  }
+}
+.drawer {
+  &__close-btn {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    cursor: pointer;
+  }
+  &__event-btn {
+    height: 500%;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+  &__btn-container {
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+
+    height: 60%;
+  }
+  &__tab1 {
+    &.MuiButtonBase-root {
+      font-size: larger;
+      display: flex;
+      text-align: left;
+      height: 50px;
+      padding: 10px;
+
+      border: 2px solid white;
+      border-radius: 15px;
+      &:hover {
+        background-color: lightgreen;
+      }
+    }
+  }
+  &__tab2 {
+    &.MuiButtonBase-root {
+      font-size: larger;
+      display: flex;
+      text-align: left;
+      height: 50px;
+      padding: 10px;
+
+      border: 2px solid white;
+      border-radius: 15px;
+      &:hover {
+        background-color: lightblue;
+      }
+    }
+  }
+  &__tab3 {
+    &.MuiButtonBase-root {
+      font-size: larger;
+      display: flex;
+      text-align: left;
+      height: 50px;
+      padding: 10px;
+      background-color: transparent;
+      border: 2px solid white;
+      border-radius: 15px;
+      &:hover {
+        background-color: lightcoral;
+      }
+    }
+  }
+}
+
+.morevert_container {
+  display: flex;
+  justify-content: end;
+}
+.map-container {
+  width: 500px;
+  gap: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  margin-bottom: 15px;
+  text-align: left;
+  font-size: 25px;
+  padding: 10px 14px 10px 15px;
+}
+.date-created {
+  &.MuiBox-root {
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    font-size: medium;
+    color: #032e63;
+    width: 60%;
+    height: 30px;
+  }
+}
+.events-container {
+  &__print-container {
+    & .MuiPaper-root {
+      background-color: #7fc7d9;
+      border-radius: 15px;
+      border: 3px solid white;
+      color: #0f1035;
+    }
+    &__ongoing {
+      gap: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+
+      margin-bottom: 20px;
+      text-align: left;
+      font-size: 25px;
+      padding: 10px 14px 10px 15px;
+    }
+
+    &__finished {
+      gap: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+
+      margin-bottom: 20px;
+      text-align: left;
+      font-size: 25px;
+      padding: 10px 14px 10px 15px;
+    }
+
+    &__failed {
+      & .MuiPaper-root {
+        width: 100%;
+      }
+      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      font-size: 20px;
+      padding: 10px 14px 10px 15px;
+    }
+  }
+}
+.G_logo {
+  height: 100%;
+  width: 100%;
+  &__logo-picture {
+    width: 100%;
+  }
+}

@@ -1,0 +1,164 @@
+.upper_div {
+  margin-left: 90%;
+  display: flex;
+  justify-content: center;
+}
+.upper_div_Signup {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.slogan_label {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: larger;
+}
+.dashboard {
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  background-position: center;
+
+  &__upper-container_btns {
+    display: flex;
+    justify-content: end;
+    gap: 12px;
+    margin-right: 20px;
+    margin-top: 5px;
+  }
+  &__G_logo__logo-picture {
+    width: 5%;
+    height: 10%;
+    position: fixed;
+    top: 0;
+  }
+}
+.calendar-box {
+  height: 44%;
+
+  &__calendar {
+    height: 210%;
+    width: 50%;
+  }
+}
+
+.label_box {
+  width: 35%;
+  height: 30%;
+  margin-left: 56%;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+  text-align: center;
+}
+.title_box {
+  color: gray;
+  margin-left: 53%;
+  font-size: 60px;
+  border-radius: 10px;
+  width: 40%;
+  text-align: center;
+  margin-top: -10%;
+
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    -225deg,
+    #5585b5 0%,
+    #53a8b6 29%,
+    #79c2d0 67%,
+    #bbe4e9 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+.Upper_Nav {
+  margin-right: 60%;
+}
+
+.ftr_img {
+  height: 58%;
+  width: 100%;
+  margin-top: -10%;
+  position: fixed;
+}
+
+.login-page__form-container {
+  border-radius: 10px;
+  margin-top: 5%;
+  height: 80%;
+  width: 30%;
+  margin-left: 35%;
+  background: linear-gradient(#ffffff, #e3f6f5, #8bf2f2);
+  box-shadow: 0.1rem 0.1rem #c5c5c5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.submit_button {
+  &.MuiButtonBase-root {
+    background-color: lightgreen;
+    margin-top: 2rem;
+  }
+}
+
+.login-page__form-container__login-form {
+  width: 100%;
+  text-align: center;
+}
+.textfields {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.username__text-field {
+  width: 80%;
+}
+
+.password__text-field {
+  width: 80%;
+}
+
+.login_label {
+  color: navy;
+}
+.checkbox {
+  margin: 10px;
+}
+
+
+.submit_button {
+  &.MuiButtonBase-root {
+    background-color: green;
+    margin-top: 2rem;
+  }
+}
+
+
+.textfield {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.checkbox {
+  margin: 10px;
+}
+
