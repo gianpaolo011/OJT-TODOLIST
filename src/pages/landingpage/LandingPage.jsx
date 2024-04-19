@@ -20,6 +20,7 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import logo from '../../assets/images/GP-logo.png'
+import nodatafound from '../../assets/images/nodata.png'
 import '../../components/dashboard-components/SignUp'
 import '../../assets/styles/landingpagesass.scss'
 import {
@@ -130,7 +131,7 @@ function LandingPage() {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
+console.log(isError, 'error')
   const DrawerList = (
     <Box className="drawer" sx={{ width: 250 }} role="presentation">
       <List>
@@ -258,14 +259,15 @@ function LandingPage() {
       </Card>
     ))
   } else if (isError) {
-    content = <p>{error.data.message}</p>
+    // content = <p>{error.data.message}</p>
+    content = <img className="nodatafound-picture" src={nodatafound}></img>
   }
   return (
     <>
       <Box className="landingpage">
         <Box className="landingpage__appbar">
           <Box sx={{ flexGrow: 1 }}>
-            <AppBar component="div" color="inherit" position="fixed" >
+            <AppBar component="div" color="inherit" position="fixed">
               <Toolbar>
                 <IconButton
                   onClick={toggleDrawer(true)}
@@ -285,13 +287,15 @@ function LandingPage() {
                 >
                   To Do List Practice
                 </Typography>
-                {params.status === 'pending' && <AddCircleOutlineRounded
-                  titleAccess="Add Task"
-                  onClick={handleOpenmodal}
-                  className="landingpage-body__addbtn"
-                  fontSize="large"
-                  color="primary"
-                />}
+                {params.status === 'pending' && (
+                  <AddCircleOutlineRounded
+                    titleAccess="Add Task"
+                    onClick={handleOpenmodal}
+                    className="landingpage-body__addbtn"
+                    fontSize="large"
+                    color="primary"
+                  />
+                )}
                 <Modal open={openaddtodolist}>
                   <form className="todolist-form" onSubmit={handlesubmit2}>
                     <Close
