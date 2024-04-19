@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+
 import {
   Box,
   Divider,
@@ -17,7 +18,9 @@ import {
   FormControlLabel,
   Menu,
   MenuItem,
+  Avatar,
 } from '@mui/material'
+
 import MenuIcon from '@mui/icons-material/Menu'
 import logo from '../../assets/images/GP-logo.png'
 import nodatafound from '../../assets/images/nodata.png'
@@ -49,6 +52,8 @@ import {
 import ActionMenuCard from '../../components/ActionMenu'
 import Updatetask from '../../components/landingpage-components/Updatetask'
 import dayjs from 'dayjs'
+import { lightBlue } from '@mui/material/colors'
+import ConfirmationDialog from '../../components/confirmation/confirmation-dialog'
 
 function LandingPage() {
   const [update] = useUpdateTodostatusMutation()
@@ -56,6 +61,9 @@ function LandingPage() {
   const [openaddtodolist, setOpentodolist] = useState(false)
   const handleOpenmodal = () => setOpentodolist(true)
   const handleClosemodal = () => setOpentodolist(false)
+
+  const [openconfirmdialog, setOpenconfirmdialog] = useState(false)
+  const [opendoneconfirmdialog, setOpendoneconfirmdialog] = useState(false)
 
   const [open, setOpen] = useState(false)
 
@@ -131,7 +139,7 @@ function LandingPage() {
   const handleClose = () => {
     setAnchorEl(null)
   }
-console.log(isError, 'error')
+  console.log(isError, 'error')
   const DrawerList = (
     <Box className="drawer" sx={{ width: 250 }} role="presentation">
       <List>
@@ -262,6 +270,7 @@ console.log(isError, 'error')
     // content = <p>{error.data.message}</p>
     content = <img className="nodatafound-picture" src={nodatafound}></img>
   }
+
   return (
     <>
       <Box className="landingpage">
@@ -296,6 +305,7 @@ console.log(isError, 'error')
                     color="primary"
                   />
                 )}
+                <Avatar sx={{ bgcolor: lightBlue[500] }}></Avatar>
                 <Modal open={openaddtodolist}>
                   <form className="todolist-form" onSubmit={handlesubmit2}>
                     <Close
@@ -417,7 +427,7 @@ console.log(isError, 'error')
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             update({
               id: updatedata.id,
@@ -426,16 +436,31 @@ console.log(isError, 'error')
           }}
         >
           Done
+        </MenuItem> */}
+        <MenuItem
+          onClick={() => {
+            setOpendoneconfirmdialog(true)
+          }}
+        >
+          Done
         </MenuItem>
 
         <MenuItem
+          onClick={() => {
+            setOpenconfirmdialog(true)
+          }}
+        >
+          Delete
+        </MenuItem>
+
+        {/* <MenuItem
           onClick={() => {
             deleteTodo(getdata)
             handleClose()
           }}
         >
           Delete
-        </MenuItem>
+        </MenuItem> */}
 
         <MenuItem
           onClick={() => {
@@ -452,6 +477,37 @@ console.log(isError, 'error')
         isOpen={openupdate}
         onClose={() => {
           setOpenupdate(false)
+        }}
+      />
+
+      {/* DONE CONFIRMATION */}
+      <ConfirmationDialog
+        message="Are you sure this task is done?"
+        handleYes={() => {
+          update({
+            id: updatedata.id,
+          })
+          handleClose()
+          setOpendoneconfirmdialog(false)
+        }}
+        isOpen={opendoneconfirmdialog}
+        onClose={() => {
+          setOpendoneconfirmdialog(false)
+          handleClose()
+        }}
+      />
+      {/* Delete Confirmation */}
+      <ConfirmationDialog
+        message="Are you sure you want to delete this task?"
+        handleYes={() => {
+          deleteTodo(getdata)
+          handleClose()
+          setOpenconfirmdialog(false)
+        }}
+        isOpen={openconfirmdialog}
+        onClose={() => {
+          setOpenconfirmdialog(false)
+          handleClose()
         }}
       />
     </>
