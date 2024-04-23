@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import {
   Box,
@@ -19,8 +19,9 @@ import {
   Menu,
   MenuItem,
   Avatar,
+  Fade,
 } from '@mui/material'
-
+import { useNavigate } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
 import logo from '../../assets/images/GP-logo.png'
 import nodatafound from '../../assets/images/nodata.png'
@@ -62,6 +63,8 @@ function LandingPage() {
   const handleOpenmodal = () => setOpentodolist(true)
   const handleClosemodal = () => setOpentodolist(false)
 
+  const navigate = useNavigate()
+
   const [openconfirmdialog, setOpenconfirmdialog] = useState(false)
   const [opendoneconfirmdialog, setOpendoneconfirmdialog] = useState(false)
 
@@ -75,6 +78,8 @@ function LandingPage() {
   const [enddate, setEnddate] = useState('')
   const [NewTodo, setNewTodo] = useState('')
   const [params, setparams] = useState({ status: 'pending' })
+
+
 
   const {
     data: result,
@@ -129,6 +134,16 @@ function LandingPage() {
   console.log(updatedata)
   const [getdata, setGetdata] = useState('')
 
+  const [anchorMenu, setAnchorMenu] = useState(null)
+  const isopen = Boolean(anchorMenu)
+
+  const handleClickmenu = (event) => {
+    setAnchorMenu(event.currentTarget)
+  }
+  const handleClosemenu = () => {
+    setAnchorMenu(null)
+  }
+
   const [anchorEl, setAnchorEl] = useState(null)
   const opens = Boolean(anchorEl)
   const handleClick = (event, id, item) => {
@@ -140,6 +155,7 @@ function LandingPage() {
     setAnchorEl(null)
   }
   console.log(isError, 'error')
+
   const DrawerList = (
     <Box className="drawer" sx={{ width: 250 }} role="presentation">
       <List>
@@ -209,14 +225,14 @@ function LandingPage() {
       </List>
       <Divider />
       <Box className="drawer__btn-container">
-        <Link to="/">
+        {/* <Link to="/">
           <Logout
             titleAccess="Log out"
             className="drawer__logoutbtn"
             color="info"
             fontSize="large"
           ></Logout>
-        </Link>
+        </Link> */}
       </Box>
     </Box>
   )
@@ -305,7 +321,38 @@ function LandingPage() {
                     color="primary"
                   />
                 )}
-                <Avatar sx={{ bgcolor: lightBlue[500] }}></Avatar>
+                <Avatar
+                  sx={{ bgcolor: lightBlue[500], cursor: 'pointer' }}
+                  onClick={handleClickmenu}
+                />
+                {/* <Button
+                  id="fade-button"
+                  aria-controls={isopen ? 'fade-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={isopen ? 'true' : undefined}
+                  onClick={handleClickmenu}
+                >
+                  Dashboard
+                </Button> */}
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'fade-button',
+                  }}
+                  anchorEl={anchorMenu}
+                  open={isopen}
+                  onClose={handleClosemenu}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      navigate('/')
+                    }}
+                  >
+                    Log Out
+                  </MenuItem>
+                </Menu>
+
                 <Modal open={openaddtodolist}>
                   <form className="todolist-form" onSubmit={handlesubmit2}>
                     <Close
@@ -426,17 +473,8 @@ function LandingPage() {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
+        TransitionComponent={Fade}
       >
-        {/* <MenuItem
-          onClick={() => {
-            update({
-              id: updatedata.id,
-            })
-            handleClose()
-          }}
-        >
-          Done
-        </MenuItem> */}
         <MenuItem
           onClick={() => {
             setOpendoneconfirmdialog(true)
@@ -453,15 +491,6 @@ function LandingPage() {
           Delete
         </MenuItem>
 
-        {/* <MenuItem
-          onClick={() => {
-            deleteTodo(getdata)
-            handleClose()
-          }}
-        >
-          Delete
-        </MenuItem> */}
-
         <MenuItem
           onClick={() => {
             setOpenupdate(true)
@@ -477,6 +506,7 @@ function LandingPage() {
         isOpen={openupdate}
         onClose={() => {
           setOpenupdate(false)
+          handleClose()
         }}
       />
 
@@ -496,7 +526,7 @@ function LandingPage() {
           handleClose()
         }}
       />
-      {/* Delete Confirmation */}
+      {/* DELETE CONFIRMATION */}
       <ConfirmationDialog
         message="Are you sure you want to delete this task?"
         handleYes={() => {

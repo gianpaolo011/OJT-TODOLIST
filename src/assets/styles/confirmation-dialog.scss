@@ -1,0 +1,14 @@
+.dialog {
+ 
+  display: flex;
+  flex-direction: column;
+  border-radius: 50px;
+  padding: 20px;
+  justify-self: center;
+  height: 50x;
+  &__confirmation-title {
+    font-size: large;
+    font-family: 'Roboto';
+   
+  }
+}
