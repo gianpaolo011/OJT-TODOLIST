@@ -4,7 +4,7 @@
   // flex-direction: column;
   gap: 10px;
   background-color: #dcf2f1;
-  
+
   &__appbar {
     top: 0;
     position: sticky;
@@ -55,8 +55,6 @@
     margin-right: 30px;
   }
 }
-
-
 
 .todolist-form {
   border-radius: 10px;
@@ -233,11 +231,14 @@
   width: 100%;
   &__logo-picture {
     width: 100%;
+    &:hover {
+      transition: all 2s;
+      transform: rotateY(360deg);
+    }
   }
 }
-.nodatafound-picture{
+.nodatafound-picture {
   height: 100%;
   width: 35%;
   margin-left: 33%;
-  
 }

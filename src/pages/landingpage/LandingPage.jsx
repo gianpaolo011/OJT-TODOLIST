@@ -31,8 +31,8 @@ import {
   AddCircleOutlineRounded,
   Close,
   DoneOutline,
+  ExitToApp,
   KeyboardDoubleArrowLeft,
-  Logout,
   LoopOutlined,
 } from '@mui/icons-material'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
@@ -41,7 +41,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
-import { Link } from 'react-router-dom'
 import {
   useGetTodosQuery,
   useAddTodoMutation,
@@ -185,7 +184,7 @@ function LandingPage() {
             variant="contrained"
             sx={{ width: '100%' }}
             startIcon={
-              <LoopOutlined className="drawer_tab__icons"></LoopOutlined>
+              <LoopOutlined className="drawer_tab__icons" color='primary'></LoopOutlined>
             }
             style={{ justifyContent: 'flex-start' }}
           >
@@ -201,7 +200,7 @@ function LandingPage() {
             color="primary"
             variant="contrained"
             sx={{ width: '100%' }}
-            startIcon={<DoneOutline></DoneOutline>}
+            startIcon={<DoneOutline color='primary'></DoneOutline>}
             style={{ justifyContent: 'flex-start' }}
           >
             Finished Task
@@ -216,7 +215,7 @@ function LandingPage() {
             color="primary"
             variant="contrained"
             sx={{ width: '100%' }}
-            startIcon={<Close></Close>}
+            startIcon={<Close color='primary'></Close>}
             style={{ justifyContent: 'flex-start' }}
           >
             Failed to Do Task
@@ -348,7 +347,7 @@ function LandingPage() {
                     onClick={() => {
                       navigate('/')
                     }}
-                  >
+                  > <ExitToApp color='primary'/>
                     Log Out
                   </MenuItem>
                 </Menu>
