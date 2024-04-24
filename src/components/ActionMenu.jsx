@@ -14,7 +14,7 @@ const ActionMenu = (props) => {
       onClick={(e) => handleClick(e, id, item)}
     >
       {' '}
-      {<MoreVert className="editable"></MoreVert>}
+      {<MoreVert color="action" className="editable"></MoreVert>}
     </Button>
   )
 }

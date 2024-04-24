@@ -78,15 +78,9 @@ function LandingPage() {
   const [NewTodo, setNewTodo] = useState('')
   const [params, setparams] = useState({ status: 'pending' })
 
-
-
-  const {
-    data: result,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetTodosQuery(params)
+  const { data: result, isLoading, isSuccess, isError } = useGetTodosQuery(
+    params,
+  )
   console.log(result, 'result', isSuccess, 'success')
 
   const [addTodo] = useAddTodoMutation()
@@ -184,7 +178,10 @@ function LandingPage() {
             variant="contrained"
             sx={{ width: '100%' }}
             startIcon={
-              <LoopOutlined className="drawer_tab__icons" color='primary'></LoopOutlined>
+              <LoopOutlined
+                className="drawer_tab__icons"
+                color="primary"
+              ></LoopOutlined>
             }
             style={{ justifyContent: 'flex-start' }}
           >
@@ -200,7 +197,7 @@ function LandingPage() {
             color="primary"
             variant="contrained"
             sx={{ width: '100%' }}
-            startIcon={<DoneOutline color='primary'></DoneOutline>}
+            startIcon={<DoneOutline color="primary"></DoneOutline>}
             style={{ justifyContent: 'flex-start' }}
           >
             Finished Task
@@ -215,7 +212,7 @@ function LandingPage() {
             color="primary"
             variant="contrained"
             sx={{ width: '100%' }}
-            startIcon={<Close color='primary'></Close>}
+            startIcon={<Close color="primary"></Close>}
             style={{ justifyContent: 'flex-start' }}
           >
             Failed to Do Task
@@ -223,16 +220,7 @@ function LandingPage() {
         </Box>
       </List>
       <Divider />
-      <Box className="drawer__btn-container">
-        {/* <Link to="/">
-          <Logout
-            titleAccess="Log out"
-            className="drawer__logoutbtn"
-            color="info"
-            fontSize="large"
-          ></Logout>
-        </Link> */}
-      </Box>
+      <Box className="drawer__btn-container"></Box>
     </Box>
   )
 
@@ -261,6 +249,7 @@ function LandingPage() {
               />
             </Box>
           )}
+
           <Box className="date-created">
             {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
           </Box>
@@ -324,16 +313,9 @@ function LandingPage() {
                   sx={{ bgcolor: lightBlue[500], cursor: 'pointer' }}
                   onClick={handleClickmenu}
                 />
-                {/* <Button
-                  id="fade-button"
-                  aria-controls={isopen ? 'fade-menu' : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={isopen ? 'true' : undefined}
-                  onClick={handleClickmenu}
-                >
-                  Dashboard
-                </Button> */}
+
                 <Menu
+                  className="user-menu"
                   id="fade-menu"
                   MenuListProps={{
                     'aria-labelledby': 'fade-button',
@@ -347,12 +329,14 @@ function LandingPage() {
                     onClick={() => {
                       navigate('/')
                     }}
-                  > <ExitToApp color='primary'/>
+                  >
+                    {' '}
+                    <ExitToApp color="info" />
                     Log Out
                   </MenuItem>
                 </Menu>
 
-                <Modal open={openaddtodolist}>
+                <Modal className="set-todolist_modal" open={openaddtodolist}>
                   <form className="todolist-form" onSubmit={handlesubmit2}>
                     <Close
                       fontSize="large"
@@ -419,12 +403,7 @@ function LandingPage() {
             </AppBar>
           </Box>
 
-          <Drawer
-            // PaperProps={{ style: { backgroundColor: 'lightgrey' } }}
-            className="drawer"
-            onClick={toggleDrawer(false)}
-            open={open}
-          >
+          <Drawer className="drawer" onClick={toggleDrawer(false)} open={open}>
             {DrawerList}
           </Drawer>
         </Box>
@@ -440,6 +419,7 @@ function LandingPage() {
               <Box className="events-container__print-container">
                 {'Ongoing Task'}
                 <Box className="events-container__print-container__ongoing">
+                  <i className="pin"></i>
                   {content}
                 </Box>
               </Box>
@@ -493,7 +473,8 @@ function LandingPage() {
         <MenuItem
           onClick={() => {
             setOpenupdate(true)
-            updateTodo(item)
+            updateTodo()
+            // updateTodo(item)
             handleClose()
           }}
         >
