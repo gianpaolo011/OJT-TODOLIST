@@ -1,18 +1,33 @@
 import React from 'react'
-import { Button, Dialog, DialogTitle } from '@mui/material'
+import { Button, Dialog, DialogTitle, Divider } from '@mui/material'
 import '../../assets/styles/confirmation-dialog.scss'
 
-function ConfirmationDialog ({ isOpen, onClose, handleYes, message }) {
+function ConfirmationDialog({ isOpen, onClose, handleYes, message }) {
   return (
-    <Dialog open={isOpen}className='dialog'>
-      <DialogTitle id="responsive-dialog-title" className='dialog__confirmation-title'>
+    <Dialog
+      open={isOpen}
+      className="dialog"
+      PaperProps={{ style: { borderRadius: '10px' } }}
+    >
+      <DialogTitle
+        id="responsive-dialog-title"
+        className="dialog__confirmation-title"
+      >
         {message}
       </DialogTitle>
-
-      <Button autoFocus onClick={handleYes} className='dialog__confirmation-btn-yes'>
+      <Divider />
+      <Button
+        autoFocus
+        onClick={handleYes}
+        className="dialog__confirmation-btn-yes"
+      >
         Yes
       </Button>
-      <Button autoFocus onClick={onClose} className='dialog__confirmation-btn-no'>
+      <Button
+        autoFocus
+        onClick={onClose}
+        className="dialog__confirmation-btn-no"
+      >
         No
       </Button>
     </Dialog>

@@ -7,7 +7,7 @@ export const UpdateSchema = yup.object().shape({
   dateandtime: yup
     .date()
     .min(
-      moment().format('YYYY-MM-DD hh:mm:ss'),
+      moment().format('YYYY-MM-DD hh:mm'),
       'Date and Time must be present or future',
     )
     .required('Date and Time is required.'),

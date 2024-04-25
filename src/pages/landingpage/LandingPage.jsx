@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import { toast } from 'sonner'
 import {
   Box,
   Divider,
@@ -30,10 +30,13 @@ import '../../assets/styles/landingpagesass.scss'
 import {
   AddCircleOutlineRounded,
   Close,
+  Delete,
+  DoneAll,
   DoneOutline,
   ExitToApp,
   KeyboardDoubleArrowLeft,
   LoopOutlined,
+  Update,
 } from '@mui/icons-material'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -54,8 +57,14 @@ import Updatetask from '../../components/landingpage-components/Updatetask'
 import dayjs from 'dayjs'
 import { lightBlue } from '@mui/material/colors'
 import ConfirmationDialog from '../../components/confirmation/confirmation-dialog'
+import { Toaster } from 'sonner'
 
 function LandingPage() {
+  // const showtoast = () => {
+  //   toast('sample toast', {
+  //     className: 'success-toast',
+  //   })
+  // }
   const [update] = useUpdateTodostatusMutation()
   const [openupdate, setOpenupdate] = useState(false)
   const [openaddtodolist, setOpentodolist] = useState(false)
@@ -100,11 +109,35 @@ function LandingPage() {
 
     addTodo(body)
       .unwrap()
-      .then((response) => {
-        console.log(response)
+      .then((res) => {
+        console.log(res.message, 'ressss')
+        toast.success(res.message, {
+          style: {
+            background: 'green',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+        })
+        handleClosemodal()
       })
-      .catch((error) => console.log(error))
-    handleClosemodal()
+      .catch((error) => {
+        toast.error(error, {
+          style: {
+            background: 'red',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+        })
+        console.log(error, 'error')
+      })
+    //   .unwrap()
+    //   .then((response) => {
+    //     console.log(response)
+    //   })
+    //   .catch((error) => console.log(error))
+    // handleClosemodal()
   }
 
   const [datetime, setdatetime] = useState(false)
@@ -445,32 +478,40 @@ function LandingPage() {
       </Box>
 
       <Menu
+        className="confirm-menu"
         id="basic-menu"
         anchorEl={anchorEl}
         open={opens}
         onClose={handleClose}
         MenuListProps={{
           'aria-labelledby': 'basic-button',
+          style: { backgroundColor: '#494c7d', color: 'white', gap: '10px' },
         }}
         TransitionComponent={Fade}
       >
         <MenuItem
+          className="menu-item"
           onClick={() => {
             setOpendoneconfirmdialog(true)
           }}
         >
+          <DoneAll />
           Done
         </MenuItem>
 
         <MenuItem
+          className="menu-item"
           onClick={() => {
             setOpenconfirmdialog(true)
           }}
         >
+          {' '}
+          <Delete />
           Delete
         </MenuItem>
 
         <MenuItem
+          className="menu-item"
           onClick={() => {
             setOpenupdate(true)
             updateTodo()
@@ -478,6 +519,8 @@ function LandingPage() {
             handleClose()
           }}
         >
+          {' '}
+          <Update />
           Update
         </MenuItem>
       </Menu>
@@ -497,6 +540,29 @@ function LandingPage() {
           update({
             id: updatedata.id,
           })
+            .unwrap()
+            .then((res) => {
+              console.log(res.message, 'ressss')
+              toast.success(res.message, {
+                style: {
+                  background: 'green',
+                  textAlign: 'center',
+                  fontSize: 'large',
+                  color: 'white',
+                },
+              })
+            })
+            .catch((error) => {
+              toast.error(error, {
+                style: {
+                  background: 'red',
+                  textAlign: 'center',
+                  fontSize: 'large',
+                  color: 'white',
+                },
+              })
+              console.log(error, 'error')
+            })
           handleClose()
           setOpendoneconfirmdialog(false)
         }}
@@ -511,6 +577,29 @@ function LandingPage() {
         message="Are you sure you want to delete this task?"
         handleYes={() => {
           deleteTodo(getdata)
+            .unwrap()
+            .then((res) => {
+              console.log(res.message, 'ressss')
+              toast.success(res.message, {
+                style: {
+                  background: 'green',
+                  textAlign: 'center',
+                  fontSize: 'large',
+                  color: 'white',
+                },
+              })
+            })
+            .catch((error) => {
+              toast.error(error, {
+                style: {
+                  background: 'red',
+                  textAlign: 'center',
+                  fontSize: 'large',
+                  color: 'white',
+                },
+              })
+              console.log(error, 'error')
+            })
           handleClose()
           setOpenconfirmdialog(false)
         }}
@@ -520,6 +609,8 @@ function LandingPage() {
           handleClose()
         }}
       />
+      {/* <Button onClick={showtoast}>toast</Button> */}
+      <Toaster richColors />
     </>
   )
 }

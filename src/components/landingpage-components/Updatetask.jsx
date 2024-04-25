@@ -7,7 +7,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DateTimeField } from '@mui/x-date-pickers-pro'
+
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -15,6 +15,7 @@ import '../../assets/styles/Updatetask.scss'
 import moment from 'moment'
 import { useUpdateTodoMutation } from '../../app/features/api/apiSlice'
 import dayjs from 'dayjs'
+import { toast } from 'sonner'
 
 function Update({ isOpen, onClose, itemData, updateddata }) {
   const [update] = useUpdateTodoMutation()
@@ -26,6 +27,7 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
     setValue,
     // getValues,
     watch,
+
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -33,9 +35,9 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
       // dateandtime: null,
       dateandtime: '',
     },
-    // resolver: yupResolver(UpdateSchema),
+    resolver: yupResolver(UpdateSchema),
   })
-
+  console.log('form-error', errors)
   useEffect(() => {
     // console.log({ updateddata })
     if (updateddata) {
@@ -47,13 +49,39 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
   console.log(watch('dateandtime'))
 
   const handleUpdatetodo = (data) => {
-    console.log(data)
+    console.log('dataaaa', data)
     const formData = {
       id: updateddata.id,
-      end_date: data.dateandtime,
+      end_date: moment(data.dateandtime).format('YYYY-MM-DD hh:mm'),
       text: data.descriptionvalue,
     }
     update(formData)
+      .unwrap()
+      .then((res) => {
+        console.log(res.message, 'ressss')
+        toast.success(res.message, {
+          style: {
+            background: 'green',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+          // onAutoClose: (t) => onClose(t),
+          // duration: '1000',
+        })
+        onClose()
+      })
+      .catch((error) => {
+        toast.error(error, {
+          style: {
+            background: 'red',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+        })
+        console.log(error, 'error')
+      })
   }
 
   return (
@@ -108,8 +136,17 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
                     value={value ? dayjs(value) : ''}
                     // value={value ? moment(value) : null}
                     focused
-                    error={!!errors?.dateandtime}
-                    helperText={errors?.dateandtime?.message}
+                    // error={!!errors?.dateandtime}
+                    // helperText={errors?.dateandtime?.message}
+                    slotProps={{
+                      textField: {
+                        error: !!errors?.dateandtime,
+                        helperText: errors?.dateandtime?.message,
+                      },
+                    }}
+                    onError={() => {
+                      errors.dateandtime, errors?.dateandtime?.message
+                    }}
                     required
                     className="dateandtimeinput"
                     label="Set new Date and Time."

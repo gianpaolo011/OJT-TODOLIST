@@ -1,5 +1,7 @@
 .dialog {
- 
+  &.MuiPaper-root {
+    background-color: aqua;
+  }
   display: flex;
   flex-direction: column;
   border-radius: 50px;
@@ -9,6 +11,5 @@
   &__confirmation-title {
     font-size: large;
     font-family: 'Roboto';
-   
   }
 }
