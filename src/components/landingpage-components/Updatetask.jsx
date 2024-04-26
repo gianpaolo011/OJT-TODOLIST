@@ -21,7 +21,6 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
   const [update] = useUpdateTodoMutation()
   console.log(itemData)
   const {
-    reset,
     handleSubmit,
     control,
     setValue,
@@ -32,7 +31,6 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
   } = useForm({
     defaultValues: {
       descriptionvalue: '',
-      // dateandtime: null,
       dateandtime: '',
     },
     resolver: yupResolver(UpdateSchema),
@@ -52,7 +50,8 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
     console.log('dataaaa', data)
     const formData = {
       id: updateddata.id,
-      end_date: moment(data.dateandtime).format('YYYY-MM-DD hh:mm'),
+      end_date: moment(data.dateandtime).format('YYYY-MM-DD HH:mm'),
+      // end_date: data.dateandtime,
       text: data.descriptionvalue,
     }
     update(formData)
@@ -86,14 +85,17 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
 
   return (
     <Modal open={isOpen}>
-      <form className="todolist-form" onSubmit={handleSubmit(handleUpdatetodo)}>
+      <form
+        className="todolist-form"
+        autoComplete="off"
+        onSubmit={handleSubmit(handleUpdatetodo)}
+      >
         <Close
           fontSize="large"
           className="todolist-form__closebtn"
           color="error"
           onClick={() => {
             onClose()
-            reset()
           }}
         />
         <Typography className="setdescription">Set New Description</Typography>

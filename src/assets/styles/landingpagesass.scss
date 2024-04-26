@@ -183,6 +183,8 @@
   }
 }
 .events-container {
+  // display: flex;
+  // justify-content: center;
   &__print-container {
     & .MuiPaper-root {
       background-color: #7fc7d9;
@@ -205,7 +207,7 @@
       margin-bottom: 20px;
       text-align: left;
       font-size: 25px;
-      padding: 10px 14px 10px 15px;
+      padding: 10px 14px 10px 30px;
     }
 
     &__finished {
@@ -223,6 +225,7 @@
     &__failed {
       & .MuiPaper-root {
         width: 100%;
+        
       }
       gap: 10px;
       display: flex;

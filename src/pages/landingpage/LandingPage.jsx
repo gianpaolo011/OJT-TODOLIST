@@ -30,6 +30,7 @@ import '../../assets/styles/landingpagesass.scss'
 import {
   AddCircleOutlineRounded,
   Close,
+  CloudSync,
   Delete,
   DoneAll,
   DoneOutline,
@@ -58,6 +59,9 @@ import dayjs from 'dayjs'
 import { lightBlue } from '@mui/material/colors'
 import ConfirmationDialog from '../../components/confirmation/confirmation-dialog'
 import { Toaster } from 'sonner'
+import { settaskschema } from '../../UserValidation/SetTaskSchema'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 function LandingPage() {
   // const showtoast = () => {
@@ -65,6 +69,23 @@ function LandingPage() {
   //     className: 'success-toast',
   //   })
   // }
+
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    reset,
+
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      text: '',
+      end_date: '',
+    },
+    resolver: yupResolver(settaskschema),
+  })
+  console.log('try error', errors)
   const [update] = useUpdateTodostatusMutation()
   const [openupdate, setOpenupdate] = useState(false)
   const [openaddtodolist, setOpentodolist] = useState(false)
@@ -75,6 +96,9 @@ function LandingPage() {
 
   const [openconfirmdialog, setOpenconfirmdialog] = useState(false)
   const [opendoneconfirmdialog, setOpendoneconfirmdialog] = useState(false)
+  const [openretrieveconfirmdialog, setOpenretrieveconfirmdialog] = useState(
+    false,
+  )
 
   const [open, setOpen] = useState(false)
 
@@ -180,7 +204,6 @@ function LandingPage() {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  console.log(isError, 'error')
 
   const DrawerList = (
     <Box className="drawer" sx={{ width: 250 }} role="presentation">
@@ -209,7 +232,15 @@ function LandingPage() {
             size="small"
             color="primary"
             variant="contrained"
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              backgroundColor:
+                params.status === 'pending' ? 'green' : undefined, // Change color to green when status is 'pending'
+              '&:hover': {
+                backgroundColor:
+                  params.status === 'pending' ? 'green' : undefined, // Change color to green on hover when status is 'pending'
+              },
+            }}
             startIcon={
               <LoopOutlined
                 className="drawer_tab__icons"
@@ -229,7 +260,13 @@ function LandingPage() {
             size="small"
             color="primary"
             variant="contrained"
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              backgroundColor: params.status === 'done' ? 'green' : undefined,
+              '&:hover': {
+                backgroundColor: params.status === 'done' ? 'green' : undefined,
+              },
+            }}
             startIcon={<DoneOutline color="primary"></DoneOutline>}
             style={{ justifyContent: 'flex-start' }}
           >
@@ -244,7 +281,15 @@ function LandingPage() {
             size="small"
             color="primary"
             variant="contrained"
-            sx={{ width: '100%' }}
+            sx={{
+              width: '100%',
+              backgroundColor:
+                params.status === 'inactive' ? 'green' : undefined,
+              '&:hover': {
+                backgroundColor:
+                  params.status === 'inactive' ? 'green' : undefined,
+              },
+            }}
             startIcon={<Close color="primary"></Close>}
             style={{ justifyContent: 'flex-start' }}
           >
@@ -272,7 +317,7 @@ function LandingPage() {
             width: '100%',
           }}
         >
-          {params.status === 'pending' && (
+          {(params.status === 'pending' || params.status === 'inactive') && (
             <Box className="morevert_container">
               <ActionMenuCard
                 id={item?.id}
@@ -375,12 +420,32 @@ function LandingPage() {
                       fontSize="large"
                       className="todolist-form__closebtn"
                       color="error"
-                      onClick={handleClosemodal}
+                      onClick={() => {
+                        handleClosemodal()
+                        reset()
+                      }}
                     />
 
                     <Typography className="todolist-form__description">
                       Description
                     </Typography>
+                    {/* 
+                    <Controller
+                      control={control}
+                      name="text"
+                      render={({ field }) => (
+                        <TextField
+                          id="text"
+                          {...field}
+                          focused
+                          error={!!errors?.text}
+                          helperText={errors?.text?.message}
+                          required
+                          className="todolist-form__label"
+                          label="What to do?"
+                        />
+                      )}
+                    /> */}
                     <TextField
                       autoComplete="off"
                       value={NewTodo}
@@ -410,6 +475,35 @@ function LandingPage() {
                           >
                             <Typography>Set Time Range</Typography>
 
+                            {/* <Controller
+                              control={control}
+                              name="end_date"
+                              render={({ field  }) => (
+                                <DateTimePicker
+                                  id="end_date"
+                                  {...field}
+                                  // onChange={(e) =>
+                                  //   onChange(
+                                  //     dayjs(e).format('YYYY-MM-DD HH:mm'),
+                                  //   )
+                                  // }
+                                  focused
+                                  slotProps={{
+                                    textField: {
+                                      error: !!errors?.end_date,
+                                      helperText: errors?.end_date?.message,
+                                    },
+                                  }}
+                                  onError={() => {
+                                    errors.end_date, errors?.end_date?.message
+                                  }}
+                                  required
+                                  className="end_date"
+                                  label="Set new Date and Time."
+                                  // format="YYYY-MM-DD"
+                                />
+                              )}
+                            /> */}
                             <DateTimePicker
                               label="Basic date time picker"
                               value={enddate}
@@ -489,40 +583,59 @@ function LandingPage() {
         }}
         TransitionComponent={Fade}
       >
-        <MenuItem
-          className="menu-item"
-          onClick={() => {
-            setOpendoneconfirmdialog(true)
-          }}
-        >
-          <DoneAll />
-          Done
-        </MenuItem>
+        {params.status === 'pending' && (
+          <MenuItem
+            className="menu-item"
+            onClick={() => {
+              setOpendoneconfirmdialog(true)
+            }}
+          >
+            <DoneAll />
+            Done
+          </MenuItem>
+        )}
 
-        <MenuItem
-          className="menu-item"
-          onClick={() => {
-            setOpenconfirmdialog(true)
-          }}
-        >
-          {' '}
-          <Delete />
-          Delete
-        </MenuItem>
+        {params.status === 'pending' && (
+          <MenuItem
+            className="menu-item"
+            onClick={() => {
+              setOpenconfirmdialog(true)
+            }}
+          >
+            {' '}
+            <Delete />
+            Delete
+          </MenuItem>
+        )}
 
-        <MenuItem
-          className="menu-item"
-          onClick={() => {
-            setOpenupdate(true)
-            updateTodo()
-            // updateTodo(item)
-            handleClose()
-          }}
-        >
-          {' '}
-          <Update />
-          Update
-        </MenuItem>
+        {params.status === 'pending' && (
+          <MenuItem
+            className="menu-item"
+            onClick={() => {
+              setOpenupdate(true)
+              updateTodo()
+              // updateTodo(item)
+              handleClose()
+            }}
+          >
+            {' '}
+            <Update />
+            Update
+          </MenuItem>
+        )}
+
+        {params.status === 'inactive' && (
+          <MenuItem
+            className="menu-item"
+            onClick={() => {
+              setOpenretrieveconfirmdialog(true)
+            }}
+          >
+            {' '}
+            <CloudSync />
+            Retrieve
+          </MenuItem>
+        )}
       </Menu>
       <Updatetask
         updateddata={updatedata}
@@ -609,6 +722,44 @@ function LandingPage() {
           handleClose()
         }}
       />
+
+      <ConfirmationDialog
+        message="Are you sure you want to retrieve this task?"
+        handleYes={() => {
+          deleteTodo(getdata)
+            .unwrap()
+            .then((res) => {
+              console.log(res.message, 'ressss')
+              toast.success(res.message, {
+                style: {
+                  background: 'green',
+                  textAlign: 'center',
+                  fontSize: 'large',
+                  color: 'white',
+                },
+              })
+            })
+            .catch((error) => {
+              toast.error(error, {
+                style: {
+                  background: 'red',
+                  textAlign: 'center',
+                  fontSize: 'large',
+                  color: 'white',
+                },
+              })
+              console.log(error, 'error')
+            })
+          handleClose()
+          setOpenretrieveconfirmdialog(false)
+        }}
+        isOpen={openretrieveconfirmdialog}
+        onClose={() => {
+          setOpenretrieveconfirmdialog(false)
+          handleClose()
+        }}
+      />
+
       {/* <Button onClick={showtoast}>toast</Button> */}
       <Toaster richColors />
     </>
