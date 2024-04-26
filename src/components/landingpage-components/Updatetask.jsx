@@ -5,7 +5,6 @@ import { Box, Typography, Modal, TextField, Button } from '@mui/material'
 import { UpdateSchema } from '../../UserValidation/UpdateSchema'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
@@ -24,7 +23,7 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
     handleSubmit,
     control,
     setValue,
-    // getValues,
+
     watch,
 
     formState: { errors },
@@ -37,7 +36,6 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
   })
   console.log('form-error', errors)
   useEffect(() => {
-    // console.log({ updateddata })
     if (updateddata) {
       console.log(updateddata)
       setValue('descriptionvalue', updateddata.text)
@@ -51,7 +49,7 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
     const formData = {
       id: updateddata.id,
       end_date: moment(data.dateandtime).format('YYYY-MM-DD HH:mm'),
-      // end_date: data.dateandtime,
+
       text: data.descriptionvalue,
     }
     update(formData)
@@ -65,8 +63,6 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
             fontSize: 'large',
             color: 'white',
           },
-          // onAutoClose: (t) => onClose(t),
-          // duration: '1000',
         })
         onClose()
       })
@@ -136,10 +132,7 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
                       onChange(dayjs(e).format('YYYY-MM-DD HH:mm'))
                     }
                     value={value ? dayjs(value) : ''}
-                    // value={value ? moment(value) : null}
                     focused
-                    // error={!!errors?.dateandtime}
-                    // helperText={errors?.dateandtime?.message}
                     slotProps={{
                       textField: {
                         error: !!errors?.dateandtime,
@@ -152,7 +145,6 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
                     required
                     className="dateandtimeinput"
                     label="Set new Date and Time."
-                    // format="YYYY-MM-DD"
                   />
                 )}
               />

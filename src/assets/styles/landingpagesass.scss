@@ -225,7 +225,6 @@
     &__failed {
       & .MuiPaper-root {
         width: 100%;
-        
       }
       gap: 10px;
       display: flex;
@@ -310,9 +309,10 @@
   -ms-transform-origin: 50% 100%;
   -o-transform-origin: 50% 100%;
 }
-.menu-item{
+.menu-item {
   display: flex;
   gap: 10px;
 }
-
-
+.grey-bg {
+  background-color: grey;
+}

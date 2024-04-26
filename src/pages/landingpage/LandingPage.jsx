@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import {
   Box,
@@ -64,12 +64,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 function LandingPage() {
-  // const showtoast = () => {
-  //   toast('sample toast', {
-  //     className: 'success-toast',
-  //   })
-  // }
-
   const {
     handleSubmit,
     control,
@@ -114,7 +108,58 @@ function LandingPage() {
   const { data: result, isLoading, isSuccess, isError } = useGetTodosQuery(
     params,
   )
-  console.log(result, 'result', isSuccess, 'success')
+
+  const [errorToastAppeared, setErrorToastAppeared] = useState(false)
+
+  useEffect(() => {
+    if (isSuccess && result?.result) {
+      result.result.forEach((item) => {
+        const endDate = new Date(item.end_date)
+        const currentDate = new Date()
+
+        if (endDate < currentDate && params.status === 'pending') {
+          const message = `The task "${item.text}" has exceeded its end date.`
+          toast.error(message, {
+            duration: 84600,
+            style: {
+              background: 'red',
+              textAlign: 'center',
+              fontSize: 'large',
+              color: 'white',
+            },
+          })
+
+          setErrorToastAppeared(true)
+        }
+      })
+    }
+  }, [isSuccess, result, params.status])
+
+  const printContainerClass = errorToastAppeared
+    ? 'print-container failed'
+    : 'print-container'
+
+  //  useEffect(() => {
+  //     if (isSuccess && result?.result) {
+  //       result.result.forEach((item) => {
+  //         const endDate = new Date(item.end_date)
+  //         const currentDate = new Date()
+
+  //         if (endDate < currentDate) {
+  //           const message = `The task "${item.text}" has exceeded its end date.`
+
+  //           toast.error(message, {
+  //             style: {
+  //               background: 'red',
+  //               textAlign: 'center',
+  //               fontSize: 'large',
+  //               color: 'white',
+  //             },
+  //           })
+  //         }
+  //       })
+  //     }
+  //   }, [isSuccess, result])
 
   const [addTodo] = useAddTodoMutation()
   const [updateTodo] = useUpdateTodoMutation()
@@ -505,6 +550,7 @@ function LandingPage() {
                               )}
                             /> */}
                             <DateTimePicker
+                              disablePast
                               label="Basic date time picker"
                               value={enddate}
                               onChange={(newValue) => setEnddate(newValue)}
@@ -543,6 +589,7 @@ function LandingPage() {
           {/* Event Containers */}
           <Box className="events-container" position="inherit">
             {params.status === 'pending' && (
+              // <Box className="events-container__print-container">
               <Box className="events-container__print-container">
                 {'Ongoing Task'}
                 <Box className="events-container__print-container__ongoing">
@@ -588,6 +635,7 @@ function LandingPage() {
             className="menu-item"
             onClick={() => {
               setOpendoneconfirmdialog(true)
+              errorToastAppeared()
             }}
           >
             <DoneAll />
@@ -600,6 +648,7 @@ function LandingPage() {
             className="menu-item"
             onClick={() => {
               setOpenconfirmdialog(true)
+              errorToastAppeared()
             }}
           >
             {' '}
