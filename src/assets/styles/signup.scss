@@ -1,31 +1,19 @@
 .signup-page__form-container {
   margin-top: 5%;
   padding: 20px 14px 20px 15px;
-  height: auto;
   width: 60%;
   margin-left: 20%;
   background: white;
   box-shadow: 3px 3px 3px 3px grey;
   display: flex;
   flex-direction: row;
-
   align-items: center;
   border-radius: 10px;
   background: linear-gradient(#ffffff, #e3f6f5, #8bf2f2);
-
-  &__logo {
-    
-    &__logo-piocture {
-      // height: 20px;
-      // width: 20px;
-    }
-  }
-  &__form {
-    width: 50%;
-  }
 }
 
-.signup-page__form-container__sign-form {
+
+.login-page__form-container {
   width: 100%;
   text-align: center;
 }
@@ -33,6 +21,7 @@
 .sign_textfield {
   width: 90%;
 }
+
 .signup_label {
   color: navy;
 }
@@ -47,11 +36,12 @@
   margin-bottom: 20%;
   margin-left: 35%;
 }
+
 .x {
-  margin-left: 1500%;
+  margin-left: 1500%; 
 }
-.personal-info {
-  margin-right: -20%;
+
+ .personal-info {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -59,3 +49,6 @@
   justify-content: flex-start;
   gap: 10px;
 }
+
+
+

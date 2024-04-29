@@ -38,9 +38,10 @@ function Dashboard() {
       <Box className="dashboard__upper-container_btns">
         <Button
           onClick={() => setOpen(true)}
-          size="small"
+          size="large"
           color="primary"
-          variant="contained"
+          variant="text"
+          
           startIcon={<Login color="action" />}
         >
           Log In
@@ -48,7 +49,7 @@ function Dashboard() {
 
         <Button
           onClick={() => setOpensignup(true)}
-          size="small"
+          size="large"
           color="primary"
           variant="text"
           startIcon={<GroupAdd color="action" />}

@@ -23,6 +23,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useLoginMutation } from '../../app/features/api/login'
 import CryptoJS from 'crypto-js'
+import calendar from '../../assets/images/calendar_front.png'
 
 function LogIn({ isOpen, onClose }) {
   const [showPassword, setShowPassword] = useState(false)
@@ -92,7 +93,11 @@ function LogIn({ isOpen, onClose }) {
   return (
     
     <Modal open={isOpen}>
-      <Box className="login-page__form-container" id="myform">
+          <Box className="login-page__form-container">
+             <Box className=" signup-page__form-container__logo">
+            <img className="logo-picture" src={calendar}></img>
+          </Box>
+      <Box className="login-page__form-container__form" id="myform">
         <form
           className="login-page__form-container__login-form"
           id="login_form"
@@ -181,6 +186,7 @@ function LogIn({ isOpen, onClose }) {
             {alert.message}
           </Alert>
         </Snackbar>
+      </Box>
       </Box>
     </Modal>
   )

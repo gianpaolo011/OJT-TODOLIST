@@ -84,7 +84,21 @@ function LandingPage() {
   const [openupdate, setOpenupdate] = useState(false)
   const [openaddtodolist, setOpentodolist] = useState(false)
   const handleOpenmodal = () => setOpentodolist(true)
-  const handleClosemodal = () => setOpentodolist(false)
+  // const handleClosemodal = () => setOpentodolist(false)
+
+
+
+   const handleClosemodal = () => {
+   setOpentodolist(false)
+    resetFields()
+  };
+
+  const resetFields = () => {
+    setNewTodo('');
+    setChecked(false);
+    setdatetime(false);
+    setEnddate(null);
+  };
 
   const navigate = useNavigate()
 
@@ -127,7 +141,7 @@ function LandingPage() {
           item.status !== 'done' &&
           item.status !== 'inactive'
         ) {
-          const message = `The task "${item.text}" has exceeded its end date.`
+          const message = `The task "${item.text}" has exceeded its date.`
           toast.error(message, {
             duration: 5000,
             style: {
@@ -189,6 +203,9 @@ function LandingPage() {
   const [datetime, setdatetime] = useState(false)
 
   const [checked, setChecked] = useState(false)
+
+
+
 
   const handleChange = (event) => {
     const { checked } = event.target
@@ -444,30 +461,14 @@ function LandingPage() {
                       color="error"
                       onClick={() => {
                         handleClosemodal()
-                        reset()
+                        
                       }}
                     />
 
                     <Typography className="todolist-form__description">
                       Description
                     </Typography>
-                    {/* 
-                    <Controller
-                      control={control}
-                      name="text"
-                      render={({ field }) => (
-                        <TextField
-                          id="text"
-                          {...field}
-                          focused
-                          error={!!errors?.text}
-                          helperText={errors?.text?.message}
-                          required
-                          className="todolist-form__label"
-                          label="What to do?"
-                        />
-                      )}
-                    /> */}
+
                     <TextField
                       autoComplete="off"
                       value={NewTodo}
@@ -497,35 +498,6 @@ function LandingPage() {
                           >
                             <Typography>Set Time Range</Typography>
 
-                            {/* <Controller
-                              control={control}
-                              name="end_date"
-                              render={({ field  }) => (
-                                <DateTimePicker
-                                  id="end_date"
-                                  {...field}
-                                  // onChange={(e) =>
-                                  //   onChange(
-                                  //     dayjs(e).format('YYYY-MM-DD HH:mm'),
-                                  //   )
-                                  // }
-                                  focused
-                                  slotProps={{
-                                    textField: {
-                                      error: !!errors?.end_date,
-                                      helperText: errors?.end_date?.message,
-                                    },
-                                  }}
-                                  onError={() => {
-                                    errors.end_date, errors?.end_date?.message
-                                  }}
-                                  required
-                                  className="end_date"
-                                  label="Set new Date and Time."
-                                  // format="YYYY-MM-DD"
-                                />
-                              )}
-                            /> */}
                             <DateTimePicker
                               disablePast
                               minutesStep={1}
