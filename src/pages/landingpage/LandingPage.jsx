@@ -27,6 +27,8 @@ import logo from '../../assets/images/GP-logo.png'
 import nodatafound from '../../assets/images/nodata.png'
 import '../../components/dashboard-components/SignUp'
 import '../../assets/styles/landingpagesass.scss'
+import SearchIcon from '@mui/icons-material/Search' // Import the search icon
+import debounce from 'lodash.debounce'
 import {
   AddCircleOutlineRounded,
   Close,
@@ -86,19 +88,17 @@ function LandingPage() {
   const handleOpenmodal = () => setOpentodolist(true)
   // const handleClosemodal = () => setOpentodolist(false)
 
-
-
-   const handleClosemodal = () => {
-   setOpentodolist(false)
+  const handleClosemodal = () => {
+    setOpentodolist(false)
     resetFields()
-  };
+  }
 
   const resetFields = () => {
-    setNewTodo('');
-    setChecked(false);
-    setdatetime(false);
-    setEnddate(null);
-  };
+    setNewTodo('')
+    setChecked(false)
+    setdatetime(false)
+    setEnddate(null)
+  }
 
   const navigate = useNavigate()
 
@@ -204,9 +204,6 @@ function LandingPage() {
 
   const [checked, setChecked] = useState(false)
 
-
-
-
   const handleChange = (event) => {
     const { checked } = event.target
 
@@ -242,6 +239,44 @@ function LandingPage() {
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const [searchQuery, setSearchQuery] = useState('')
+  const [filteredTasks, setFilteredTasks] = useState([])
+
+  const handleSearch = () => {
+    const trimmedQuery = searchQuery.trim().toLowerCase()
+    if (trimmedQuery === '') {
+      setFilteredTasks(result?.result || [])
+    } else {
+      const filtered = result?.result?.filter((item) =>
+        item.text.toLowerCase().includes(trimmedQuery),
+      )
+      setFilteredTasks(filtered)
+    }
+  }
+
+  const debouncedSearch = debounce(() => {
+    const trimmedQuery = searchQuery.trim().toLowerCase()
+    if (trimmedQuery === '') {
+      setFilteredTasks(result?.result || [])
+    } else {
+      const filtered = result?.result?.filter((item) =>
+        item.text.toLowerCase().includes(trimmedQuery),
+      )
+      setFilteredTasks(filtered)
+    }
+  }, 300)
+
+
+  
+
+  useEffect(() => {
+    debouncedSearch()
+  }, [searchQuery])
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value)
   }
 
   const DrawerList = (
@@ -345,48 +380,50 @@ function LandingPage() {
   if (isLoading) {
     content = <p>Loading...</p>
   } else if (isSuccess) {
-    content = result?.result?.map((item) => (
-      <Card className="map-container" key={item?.id}>
-        <Box
-          sx={{
-            alignItems: 'end',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            display: ' flex',
-            width: '100%',
-          }}
-        >
-          {(params.status === 'pending' || params.status === 'inactive') && (
-            <Box className="morevert_container">
-              <ActionMenuCard
-                id={item?.id}
-                item={item}
-                opens={opens}
-                handleClick={handleClick}
-              />
+    content = (filteredTasks.length > 0 ? filteredTasks : result?.result)?.map(
+      (item) => (
+        <Card className="map-container" key={item?.id}>
+          <Box
+            sx={{
+              alignItems: 'end',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              display: ' flex',
+              width: '100%',
+            }}
+          >
+            {(params.status === 'pending' || params.status === 'inactive') && (
+              <Box className="morevert_container">
+                <ActionMenuCard
+                  id={item?.id}
+                  item={item}
+                  opens={opens}
+                  handleClick={handleClick}
+                />
+              </Box>
+            )}
+
+            <Box className="date-created">
+              {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
             </Box>
-          )}
-
-          <Box className="date-created">
-            {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
           </Box>
-        </Box>
 
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            flexDirection: 'column',
-            width: '100%',
-          }}
-        >
-          {`What to do:  ${item?.text}`}
-          <Divider />
-          <Divider />
-          {`Date: ${dayjs(item?.end_date).format('LLLL')}`}
-        </Box>
-      </Card>
-    ))
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+              width: '100%',
+            }}
+          >
+            {`What to do:  ${item?.text}`}
+            <Divider />
+            <Divider />
+            {`Date: ${dayjs(item?.end_date).format('LLLL')}`}
+          </Box>
+        </Card>
+      ),
+    )
   } else if (isError) {
     // content = <p>{error.data.message}</p>
     content = <img className="nodatafound-picture" src={nodatafound}></img>
@@ -409,6 +446,7 @@ function LandingPage() {
                 >
                   <MenuIcon />
                 </IconButton>
+
                 <Typography
                   className="landingpage__appbar__label"
                   variant="h5"
@@ -417,6 +455,22 @@ function LandingPage() {
                 >
                   To Do List Practice
                 </Typography>
+
+               {params.status === 'pending' &&  <Box className="landingpage__searchbar">
+                  <TextField
+                    label="Search Tasks"
+                    onChange={handleSearchInputChange}
+                    variant="outlined"
+                    InputProps={{
+                      endAdornment: (
+                        <IconButton onClick={handleSearch}>
+                          <SearchIcon />
+                        </IconButton>
+                      ),
+                    }}
+                  />
+                </Box>}
+
                 {params.status === 'pending' && (
                   <AddCircleOutlineRounded
                     titleAccess="Add Task"
@@ -461,7 +515,6 @@ function LandingPage() {
                       color="error"
                       onClick={() => {
                         handleClosemodal()
-                        
                       }}
                     />
 
