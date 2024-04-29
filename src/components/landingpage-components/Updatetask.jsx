@@ -127,6 +127,8 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
                 name="dateandtime"
                 render={({ field: { value, onChange } }) => (
                   <DateTimePicker
+                  disablePast
+                   timeSteps={{ minutes: 1 }}
                     id="dateandtime"
                     onChange={(e) =>
                       onChange(dayjs(e).format('YYYY-MM-DD HH:mm'))

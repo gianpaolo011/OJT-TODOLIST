@@ -116,11 +116,20 @@ function LandingPage() {
       result.result.forEach((item) => {
         const endDate = new Date(item.end_date)
         const currentDate = new Date()
+        currentDate.setHours(0, 0, 0, 0)
 
-        if (endDate < currentDate && params.status === 'pending') {
+        const endDateWithoutTime = new Date(endDate)
+        endDateWithoutTime.setHours(0, 0, 0, 0)
+
+        if (
+          endDate < currentDate &&
+          params.status === 'pending' &&
+          item.status !== 'done' &&
+          item.status !== 'inactive'
+        ) {
           const message = `The task "${item.text}" has exceeded its end date.`
           toast.error(message, {
-            duration: 84600,
+            duration: 5000,
             style: {
               background: 'red',
               textAlign: 'center',
@@ -134,32 +143,6 @@ function LandingPage() {
       })
     }
   }, [isSuccess, result, params.status])
-
-  const printContainerClass = errorToastAppeared
-    ? 'print-container failed'
-    : 'print-container'
-
-  //  useEffect(() => {
-  //     if (isSuccess && result?.result) {
-  //       result.result.forEach((item) => {
-  //         const endDate = new Date(item.end_date)
-  //         const currentDate = new Date()
-
-  //         if (endDate < currentDate) {
-  //           const message = `The task "${item.text}" has exceeded its end date.`
-
-  //           toast.error(message, {
-  //             style: {
-  //               background: 'red',
-  //               textAlign: 'center',
-  //               fontSize: 'large',
-  //               color: 'white',
-  //             },
-  //           })
-  //         }
-  //       })
-  //     }
-  //   }, [isSuccess, result])
 
   const [addTodo] = useAddTodoMutation()
   const [updateTodo] = useUpdateTodoMutation()
@@ -201,12 +184,6 @@ function LandingPage() {
         })
         console.log(error, 'error')
       })
-    //   .unwrap()
-    //   .then((response) => {
-    //     console.log(response)
-    //   })
-    //   .catch((error) => console.log(error))
-    // handleClosemodal()
   }
 
   const [datetime, setdatetime] = useState(false)
@@ -551,7 +528,9 @@ function LandingPage() {
                             /> */}
                             <DateTimePicker
                               disablePast
-                              label="Basic date time picker"
+                              minutesStep={1}
+                              timeSteps={{ minutes: 1 }}
+                              label="Set Date and Time"
                               value={enddate}
                               onChange={(newValue) => setEnddate(newValue)}
                             />
@@ -771,6 +750,8 @@ function LandingPage() {
           handleClose()
         }}
       />
+
+      {/* RETRIEVE CONFIRMATION */}
 
       <ConfirmationDialog
         message="Are you sure you want to retrieve this task?"
