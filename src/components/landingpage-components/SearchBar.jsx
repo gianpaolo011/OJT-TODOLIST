@@ -29,7 +29,7 @@ function SearchBar({ result, setFilteredTasks }) {
       )
       setFilteredTasks(filtered)
     }
-  }, 300)
+  }, 100)
 
   useEffect(() => {
     debouncedSearch()
@@ -37,6 +37,9 @@ function SearchBar({ result, setFilteredTasks }) {
 
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value)
+    if (e.target.value.trim() === '') {
+      window.location.reload() 
+    }
   }
   return (
     <Box className="landingpage__searchbar">
