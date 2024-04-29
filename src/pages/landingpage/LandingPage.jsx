@@ -44,7 +44,7 @@ import {
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-
+import SearchBar from '../../components/landingpage-components/SearchBar'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
 import {
@@ -241,43 +241,40 @@ function LandingPage() {
     setAnchorEl(null)
   }
 
-  const [searchQuery, setSearchQuery] = useState('')
+  // const [searchQuery, setSearchQuery] = useState('')
   const [filteredTasks, setFilteredTasks] = useState([])
+  console.log('filtered', filteredTasks)
+  // const handleSearch = () => {
+  //   const trimmedQuery = searchQuery.trim().toLowerCase()
+  //   if (trimmedQuery === '') {
+  //     setFilteredTasks(result?.result || [])
+  //   } else {
+  //     const filtered = result?.result?.filter((item) =>
+  //       item.text.toLowerCase().includes(trimmedQuery),
+  //     )
+  //     setFilteredTasks(filtered)
+  //   }
+  // }
 
-  const handleSearch = () => {
-    const trimmedQuery = searchQuery.trim().toLowerCase()
-    if (trimmedQuery === '') {
-      setFilteredTasks(result?.result || [])
-    } else {
-      const filtered = result?.result?.filter((item) =>
-        item.text.toLowerCase().includes(trimmedQuery),
-      )
-      setFilteredTasks(filtered)
-    }
-  }
+  // const debouncedSearch = debounce(() => {
+  //   const trimmedQuery = searchQuery.trim().toLowerCase()
+  //   if (trimmedQuery === '') {
+  //     setFilteredTasks(result?.result || [])
+  //   } else {
+  //     const filtered = result?.result?.filter((item) =>
+  //       item.text.toLowerCase().includes(trimmedQuery),
+  //     )
+  //     setFilteredTasks(filtered)
+  //   }
+  // }, 300)
 
-  const debouncedSearch = debounce(() => {
-    const trimmedQuery = searchQuery.trim().toLowerCase()
-    if (trimmedQuery === '') {
-      setFilteredTasks(result?.result || [])
-    } else {
-      const filtered = result?.result?.filter((item) =>
-        item.text.toLowerCase().includes(trimmedQuery),
-      )
-      setFilteredTasks(filtered)
-    }
-  }, 300)
+  // useEffect(() => {
+  //   debouncedSearch()
+  // }, [searchQuery])
 
-
-  
-
-  useEffect(() => {
-    debouncedSearch()
-  }, [searchQuery])
-
-  const handleSearchInputChange = (e) => {
-    setSearchQuery(e.target.value)
-  }
+  // const handleSearchInputChange = (e) => {
+  //   setSearchQuery(e.target.value)
+  // }
 
   const DrawerList = (
     <Box className="drawer" sx={{ width: 250 }} role="presentation">
@@ -380,50 +377,48 @@ function LandingPage() {
   if (isLoading) {
     content = <p>Loading...</p>
   } else if (isSuccess) {
-    content = (filteredTasks.length > 0 ? filteredTasks : result?.result)?.map(
-      (item) => (
-        <Card className="map-container" key={item?.id}>
-          <Box
-            sx={{
-              alignItems: 'end',
-              flexDirection: 'column',
-              justifyContent: 'flex-end',
-              display: ' flex',
-              width: '100%',
-            }}
-          >
-            {(params.status === 'pending' || params.status === 'inactive') && (
-              <Box className="morevert_container">
-                <ActionMenuCard
-                  id={item?.id}
-                  item={item}
-                  opens={opens}
-                  handleClick={handleClick}
-                />
-              </Box>
-            )}
-
-            <Box className="date-created">
-              {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
+    content = (filteredTasks.length ? filteredTasks : result?.result)?.map((item) => (
+      <Card className="map-container" key={item?.id}>
+        <Box
+          sx={{
+            alignItems: 'end',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            display: ' flex',
+            width: '100%',
+          }}
+        >
+          {(params.status === 'pending' || params.status === 'inactive') && (
+            <Box className="morevert_container">
+              <ActionMenuCard
+                id={item?.id}
+                item={item}
+                opens={opens}
+                handleClick={handleClick}
+              />
             </Box>
-          </Box>
+          )}
 
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              flexDirection: 'column',
-              width: '100%',
-            }}
-          >
-            {`What to do:  ${item?.text}`}
-            <Divider />
-            <Divider />
-            {`Date: ${dayjs(item?.end_date).format('LLLL')}`}
+          <Box className="date-created">
+            {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
           </Box>
-        </Card>
-      ),
-    )
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            flexDirection: 'column',
+            width: '100%',
+          }}
+        >
+          {`What to do:  ${item?.text}`}
+          <Divider />
+          <Divider />
+          {`Date: ${dayjs(item?.end_date).format('LLLL')}`}
+        </Box>
+      </Card>
+    ))
   } else if (isError) {
     // content = <p>{error.data.message}</p>
     content = <img className="nodatafound-picture" src={nodatafound}></img>
@@ -456,7 +451,11 @@ function LandingPage() {
                   To Do List Practice
                 </Typography>
 
-               {params.status === 'pending' &&  <Box className="landingpage__searchbar">
+                <SearchBar
+                  setFilteredTasks={setFilteredTasks}
+                  result={result}
+                />
+                {/* {params.status === 'pending' &&  <Box className="landingpage__searchbar">
                   <TextField
                     label="Search Tasks"
                     onChange={handleSearchInputChange}
@@ -469,7 +468,7 @@ function LandingPage() {
                       ),
                     }}
                   />
-                </Box>}
+                </Box>} */}
 
                 {params.status === 'pending' && (
                   <AddCircleOutlineRounded
