@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import SearchIcon from '@mui/icons-material/Search' // Import the search icon
+import SearchIcon from '@mui/icons-material/Search' 
 import debounce from 'lodash.debounce'
 import { IconButton, TextField } from '@mui/material'
 import { Box } from '@mui/system'
@@ -38,7 +38,7 @@ function SearchBar({ result, setFilteredTasks }) {
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value)
     if (e.target.value.trim() === '') {
-      window.location.reload() 
+      window.location.reload()
     }
   }
   return (

@@ -27,8 +27,7 @@ import logo from '../../assets/images/GP-logo.png'
 import nodatafound from '../../assets/images/nodata.png'
 import '../../components/dashboard-components/SignUp'
 import '../../assets/styles/landingpagesass.scss'
-import SearchIcon from '@mui/icons-material/Search' // Import the search icon
-import debounce from 'lodash.debounce'
+
 import {
   AddCircleOutlineRounded,
   Close,
@@ -61,32 +60,12 @@ import dayjs from 'dayjs'
 import { lightBlue } from '@mui/material/colors'
 import ConfirmationDialog from '../../components/confirmation/confirmation-dialog'
 import { Toaster } from 'sonner'
-import { settaskschema } from '../../UserValidation/SetTaskSchema'
-import { Controller, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 
 function LandingPage() {
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    watch,
-    reset,
-
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      text: '',
-      end_date: '',
-    },
-    resolver: yupResolver(settaskschema),
-  })
-  console.log('try error', errors)
   const [update] = useUpdateTodostatusMutation()
   const [openupdate, setOpenupdate] = useState(false)
   const [openaddtodolist, setOpentodolist] = useState(false)
   const handleOpenmodal = () => setOpentodolist(true)
-  // const handleClosemodal = () => setOpentodolist(false)
 
   const handleClosemodal = () => {
     setOpentodolist(false)
@@ -241,40 +220,7 @@ function LandingPage() {
     setAnchorEl(null)
   }
 
-  // const [searchQuery, setSearchQuery] = useState('')
   const [filteredTasks, setFilteredTasks] = useState([])
-  console.log('filtered', filteredTasks)
-  // const handleSearch = () => {
-  //   const trimmedQuery = searchQuery.trim().toLowerCase()
-  //   if (trimmedQuery === '') {
-  //     setFilteredTasks(result?.result || [])
-  //   } else {
-  //     const filtered = result?.result?.filter((item) =>
-  //       item.text.toLowerCase().includes(trimmedQuery),
-  //     )
-  //     setFilteredTasks(filtered)
-  //   }
-  // }
-
-  // const debouncedSearch = debounce(() => {
-  //   const trimmedQuery = searchQuery.trim().toLowerCase()
-  //   if (trimmedQuery === '') {
-  //     setFilteredTasks(result?.result || [])
-  //   } else {
-  //     const filtered = result?.result?.filter((item) =>
-  //       item.text.toLowerCase().includes(trimmedQuery),
-  //     )
-  //     setFilteredTasks(filtered)
-  //   }
-  // }, 300)
-
-  // useEffect(() => {
-  //   debouncedSearch()
-  // }, [searchQuery])
-
-  // const handleSearchInputChange = (e) => {
-  //   setSearchQuery(e.target.value)
-  // }
 
   const DrawerList = (
     <Box className="drawer" sx={{ width: 250 }} role="presentation">
@@ -298,6 +244,7 @@ function LandingPage() {
           <Button
             onClick={() => {
               setparams((prev) => ({ ...prev, status: 'pending' }))
+               window.location.reload()
             }}
             className="drawer__tab1"
             size="small"
@@ -306,10 +253,10 @@ function LandingPage() {
             sx={{
               width: '100%',
               backgroundColor:
-                params.status === 'pending' ? 'green' : undefined, // Change color to green when status is 'pending'
+                params.status === 'pending' ? 'green' : undefined, 
               '&:hover': {
                 backgroundColor:
-                  params.status === 'pending' ? 'green' : undefined, // Change color to green on hover when status is 'pending'
+                  params.status === 'pending' ? 'green' : undefined, 
               },
             }}
             startIcon={
@@ -326,6 +273,7 @@ function LandingPage() {
           <Button
             onClick={() => {
               setparams((prev) => ({ ...prev, status: 'done' }))
+              
             }}
             className="drawer__tab2"
             size="small"
