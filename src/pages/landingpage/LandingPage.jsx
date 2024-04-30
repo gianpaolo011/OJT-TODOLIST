@@ -41,6 +41,7 @@ import {
   LoopOutlined,
   Update,
 } from '@mui/icons-material'
+
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -384,12 +385,30 @@ function LandingPage() {
     )
   })
 
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem('darkMode')
+    return savedDarkMode ? JSON.parse(savedDarkMode) : false
+  })
+
+  
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(darkMode))
+  }, [darkMode])
+
+  const toggleDarkMode = () => {
+    setDarkMode((prevDarkMode) => !prevDarkMode) 
+  }
+
+  const backgroundColor = darkMode ? '#35374b' : '#dcf2f1'
+  const textColor = darkMode ? 'white' : 'black'
+
   return (
     <>
       <Box className="landingpage">
         <Box className="landingpage__appbar">
           <Box sx={{ flexGrow: 1 }}>
-            <AppBar component="div" color="inherit" position="fixed">
+            <AppBar component="div" color="" position="fixed">
               <Toolbar>
                 <IconButton
                   onClick={toggleDrawer(true)}
@@ -411,14 +430,16 @@ function LandingPage() {
                   To Do List Practice
                 </Typography>
 
-                <Typography
-                  className="landingpage__notif-label"
-                  variant="h6"
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-                  {`You have ${filteredTask.length} ongoing task(s) today`}
-                </Typography>
+                {params.status === 'pending' && (
+                  <Typography
+                    className="landingpage__notif-label"
+                    variant="h6"
+                    component="div"
+                    sx={{ flexGrow: 1 }}
+                  >
+                    {`You have ${filteredTask.length} ongoing task(s) today`}
+                  </Typography>
+                )}
 
                 {params.status === 'pending' && (
                   <SearchBar
@@ -468,6 +489,12 @@ function LandingPage() {
                   onClose={handleClosemenu}
                   TransitionComponent={Fade}
                 >
+                  <MenuItem onClick={toggleDarkMode}>
+                    {' '}
+                    <ExitToApp sx={{ marginRight: '10px' }} />
+                    Dark Mode
+                  </MenuItem>
+
                   <MenuItem
                     onClick={() => {
                       navigate('/')
@@ -560,11 +587,15 @@ function LandingPage() {
 
         {/* ADD TASK BUTTON */}
 
-        <Box className="landingpage-body">
+        <Box
+          className="landingpage-body"
+          sx={{ backgroundColor, color: textColor }}
+        >
           {/* <Outlet /> */}
 
           {/* Event Containers */}
-          <Box className="events-container" position="inherit">
+          <Box className="events-container" position="inherit"
+            >
             {params.status === 'pending' && (
               <Box className="events-container__print-container">
                 {'Ongoing Task'}
