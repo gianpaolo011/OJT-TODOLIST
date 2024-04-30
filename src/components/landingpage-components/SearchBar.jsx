@@ -46,7 +46,7 @@ function SearchBar({ result, setFilteredTasks }) {
       <TextField
         label="Search Tasks"
         onChange={handleSearchInputChange}
-        variant="outlined"
+        variant="standard"
         InputProps={{
           endAdornment: (
             <IconButton onClick={handleSearch}>

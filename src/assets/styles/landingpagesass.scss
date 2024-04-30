@@ -25,7 +25,25 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textclip 2s linear infinite;
-    // display: inline-block;
+
+  }
+
+  &__notif-label{
+
+    &.MuiTypography-root{
+      font-size: large;  
+      color: #4c51d4;
+    }
+    
+  }
+  &__notif-icon{
+    cursor: pointer;
+  }
+  &__notif-menu{
+    margin-left: 75%;
+  margin-top: -28%;
+  position: fixed;
+    
   }
 }
 
@@ -50,6 +68,7 @@
     margin-bottom: 15px;
     cursor: pointer;
     margin-right: 30px;
+    margin-left: 30px;
   }
 }
 

@@ -21,6 +21,7 @@ import {
   Avatar,
   Fade,
 } from '@mui/material'
+
 import { useNavigate } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
 import logo from '../../assets/images/GP-logo.png'
@@ -55,6 +56,7 @@ import {
 } from '../../app/features/api/apiSlice'
 
 import ActionMenuCard from '../../components/ActionMenu'
+import NotifBadge from '../../components/landingpage-components/Notif-Badge'
 import Updatetask from '../../components/landingpage-components/Updatetask'
 import dayjs from 'dayjs'
 import { lightBlue } from '@mui/material/colors'
@@ -244,7 +246,7 @@ function LandingPage() {
           <Button
             onClick={() => {
               setparams((prev) => ({ ...prev, status: 'pending' }))
-               window.location.reload()
+              window.location.reload()
             }}
             className="drawer__tab1"
             size="small"
@@ -253,10 +255,10 @@ function LandingPage() {
             sx={{
               width: '100%',
               backgroundColor:
-                params.status === 'pending' ? 'green' : undefined, 
+                params.status === 'pending' ? 'green' : undefined,
               '&:hover': {
                 backgroundColor:
-                  params.status === 'pending' ? 'green' : undefined, 
+                  params.status === 'pending' ? 'green' : undefined,
               },
             }}
             startIcon={
@@ -273,7 +275,6 @@ function LandingPage() {
           <Button
             onClick={() => {
               setparams((prev) => ({ ...prev, status: 'done' }))
-              
             }}
             className="drawer__tab2"
             size="small"
@@ -373,6 +374,15 @@ function LandingPage() {
     // content = <p>{error.data.message}</p>
     content = <img className="nodatafound-picture" src={nodatafound}></img>
   }
+  const filteredTask = (result?.result || []).filter((item) => {
+    const currentDate = dayjs().format('YYYY-MM-DD')
+    const taskEndDate = dayjs(item?.end_date).format('YYYY-MM-DD')
+    return (
+      taskEndDate >= currentDate &&
+      item.status !== 'done' &&
+      item.status !== 'inactive'
+    )
+  })
 
   return (
     <>
@@ -401,12 +411,23 @@ function LandingPage() {
                   To Do List Practice
                 </Typography>
 
+                <Typography
+                  className="landingpage__notif-label"
+                  variant="h6"
+                  component="div"
+                  sx={{ flexGrow: 1 }}
+                >
+                  {`You have ${filteredTask.length} ongoing task(s) today`}
+                </Typography>
+
                 {params.status === 'pending' && (
                   <SearchBar
                     setFilteredTasks={setFilteredTasks}
                     result={result}
                   />
                 )}
+
+                {params.status === 'pending' && <NotifBadge result={result} />}
 
                 {params.status === 'pending' && (
                   <AddCircleOutlineRounded
@@ -418,15 +439,29 @@ function LandingPage() {
                   />
                 )}
                 <Avatar
-                  sx={{ bgcolor: lightBlue[500], cursor: 'pointer' }}
+                  sx={{
+                    bgcolor: lightBlue[400],
+                    cursor: 'pointer',
+                    marginRight: '10px',
+                    width: 30,
+                    height: 30,
+                  }}
                   onClick={handleClickmenu}
                 />
 
                 <Menu
                   className="user-menu"
                   id="fade-menu"
+                  // MenuListProps={{
+                  //   'aria-labelledby': 'fade-button',
+                  // }}
                   MenuListProps={{
-                    'aria-labelledby': 'fade-button',
+                    'aria-labelledby': 'basic-button',
+                    style: {
+                      backgroundColor: '#494c7d',
+                      color: 'white',
+                      gap: '10px',
+                    },
                   }}
                   anchorEl={anchorMenu}
                   open={isopen}
@@ -439,7 +474,7 @@ function LandingPage() {
                     }}
                   >
                     {' '}
-                    <ExitToApp color="info" />
+                    <ExitToApp sx={{ marginRight: '10px' }} />
                     Log Out
                   </MenuItem>
                 </Menu>
@@ -507,6 +542,7 @@ function LandingPage() {
                       // onClick={handlesubmit2}
                       onClick={() => {
                         handlesubmit2()
+                        window.location.reload()
                       }}
                     >
                       SET
@@ -530,7 +566,6 @@ function LandingPage() {
           {/* Event Containers */}
           <Box className="events-container" position="inherit">
             {params.status === 'pending' && (
-              // <Box className="events-container__print-container">
               <Box className="events-container__print-container">
                 {'Ongoing Task'}
                 <Box className="events-container__print-container__ongoing">
