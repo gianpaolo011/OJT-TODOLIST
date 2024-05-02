@@ -1,7 +1,7 @@
 import { MenuItem } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { DarkMode, LightMode } from '@mui/icons-material'
-
+import { toast } from 'sonner'
 function Darkmode({ darkMode, toggleDarkMode }) {
   const [modeText, setModeText] = useState('Dark Mode')
   const [modeIcon, setModeIcon] = useState(<DarkMode />)
@@ -15,6 +15,26 @@ function Darkmode({ darkMode, toggleDarkMode }) {
         <DarkMode sx={{ marginRight: '10px' }} />
       ),
     )
+
+    if (darkMode) {
+      toast.success('Dark Mode Activated.', {
+        style: {
+          background: 'black',
+          textAlign: 'center',
+          fontSize: 'large',
+          color: 'white',
+        },
+      })
+    } else {
+      toast.success('Light Mode Activated', {
+        style: {
+          background: 'white',
+          textAlign: 'center',
+          fontSize: 'large',
+          color: 'black',
+        },
+      })
+    }
   }, [darkMode])
 
   return (
