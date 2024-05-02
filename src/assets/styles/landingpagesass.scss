@@ -161,7 +161,7 @@
       text-align: left;
       height: 50px;
       padding: 10px;
-      background-color: transparent;
+     
       border: 2px solid white;
       border-radius: 15px;
       &:hover {
@@ -202,8 +202,6 @@
   }
 }
 .events-container {
-  // display: flex;
-  // justify-content: center;
   &__print-container {
     & .MuiPaper-root {
       background-color: #7fc7d9;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+
+//MUI
 import {
   Box,
   Divider,
@@ -18,17 +19,8 @@ import {
   FormControlLabel,
   Menu,
   MenuItem,
-  Avatar,
   Fade,
 } from '@mui/material'
-
-import { useNavigate } from 'react-router-dom'
-import MenuIcon from '@mui/icons-material/Menu'
-import logo from '../../assets/images/GP-logo.png'
-import nodatafound from '../../assets/images/nodata.png'
-import '../../components/dashboard-components/SignUp'
-import '../../assets/styles/landingpagesass.scss'
-
 import {
   AddCircleOutlineRounded,
   Close,
@@ -36,18 +28,32 @@ import {
   Delete,
   DoneAll,
   DoneOutline,
-  ExitToApp,
   KeyboardDoubleArrowLeft,
   LoopOutlined,
   Update,
 } from '@mui/icons-material'
-
+import MenuIcon from '@mui/icons-material/Menu'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import SearchBar from '../../components/landingpage-components/SearchBar'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 
+//Import COMPONENTS
+import ActionMenuCard from '../../components/ActionMenu'
+import NotifBadge from '../../components/landingpage-components/Notif-Badge'
+import Updatetask from '../../components/landingpage-components/Updatetask'
+import ConfirmationDialog from '../../components/confirmation/confirmation-dialog'
+import SearchBar from '../../components/landingpage-components/SearchBar'
+import TaskLabel from '../../components/landingpage-components/TaskLabel'
+import AvatarMenu from '../../components/landingpage-components/AvatarMenu'
+import TaskDrawer from '../../components/landingpage-components/TaskDrawer'
+
+//Images and Styles
+import logo from '../../assets/images/GP-logo.png'
+import nodatafound from '../../assets/images/nodata.png'
+import '../../assets/styles/landingpagesass.scss'
+
+//Slices
 import {
   useGetTodosQuery,
   useAddTodoMutation,
@@ -56,34 +62,12 @@ import {
   useUpdateTodostatusMutation,
 } from '../../app/features/api/apiSlice'
 
-import ActionMenuCard from '../../components/ActionMenu'
-import NotifBadge from '../../components/landingpage-components/Notif-Badge'
-import Updatetask from '../../components/landingpage-components/Updatetask'
+//Others
 import dayjs from 'dayjs'
-import { lightBlue } from '@mui/material/colors'
-import ConfirmationDialog from '../../components/confirmation/confirmation-dialog'
+import { toast } from 'sonner'
 import { Toaster } from 'sonner'
 
 function LandingPage() {
-  const [update] = useUpdateTodostatusMutation()
-  const [openupdate, setOpenupdate] = useState(false)
-  const [openaddtodolist, setOpentodolist] = useState(false)
-  const handleOpenmodal = () => setOpentodolist(true)
-
-  const handleClosemodal = () => {
-    setOpentodolist(false)
-    resetFields()
-  }
-
-  const resetFields = () => {
-    setNewTodo('')
-    setChecked(false)
-    setdatetime(false)
-    setEnddate(null)
-  }
-
-  const navigate = useNavigate()
-
   const [openconfirmdialog, setOpenconfirmdialog] = useState(false)
   const [opendoneconfirmdialog, setOpendoneconfirmdialog] = useState(false)
   const [openretrieveconfirmdialog, setOpenretrieveconfirmdialog] = useState(
@@ -105,44 +89,10 @@ function LandingPage() {
     params,
   )
 
-  const [errorToastAppeared, setErrorToastAppeared] = useState(false)
-
-  useEffect(() => {
-    if (isSuccess && result?.result) {
-      result.result.forEach((item) => {
-        const endDate = new Date(item.end_date)
-        const currentDate = new Date()
-        currentDate.setHours(0, 0, 0, 0)
-
-        const endDateWithoutTime = new Date(endDate)
-        endDateWithoutTime.setHours(0, 0, 0, 0)
-
-        if (
-          endDate < currentDate &&
-          params.status === 'pending' &&
-          item.status !== 'done' &&
-          item.status !== 'inactive'
-        ) {
-          const message = `The task "${item.text}" has exceeded its date.`
-          toast.error(message, {
-            duration: 5000,
-            style: {
-              background: 'red',
-              textAlign: 'center',
-              fontSize: 'large',
-              color: 'white',
-            },
-          })
-
-          setErrorToastAppeared(true)
-        }
-      })
-    }
-  }, [isSuccess, result, params.status])
-
   const [addTodo] = useAddTodoMutation()
   const [updateTodo] = useUpdateTodoMutation()
   const [deleteTodo] = useDeleteTodoMutation()
+  const [update] = useUpdateTodostatusMutation()
 
   const handlesubmit2 = (e) => {
     e.preventDefault()
@@ -182,8 +132,11 @@ function LandingPage() {
       })
   }
 
+  //Add Task Modal
+  const [openupdate, setOpenupdate] = useState(false)
+  const [openaddtodolist, setOpentodolist] = useState(false)
+  const handleOpenmodal = () => setOpentodolist(true)
   const [datetime, setdatetime] = useState(false)
-
   const [checked, setChecked] = useState(false)
 
   const handleChange = (event) => {
@@ -198,19 +151,20 @@ function LandingPage() {
     }
   }
 
+  const handleClosemodal = () => {
+    setOpentodolist(false)
+    resetFields()
+  }
+
+  const resetFields = () => {
+    setNewTodo('')
+    setChecked(false)
+    setdatetime(false)
+    setEnddate(null)
+  }
   const [updatedata, setUpdatedata] = useState(null)
-  console.log(updatedata)
+
   const [getdata, setGetdata] = useState('')
-
-  const [anchorMenu, setAnchorMenu] = useState(null)
-  const isopen = Boolean(anchorMenu)
-
-  const handleClickmenu = (event) => {
-    setAnchorMenu(event.currentTarget)
-  }
-  const handleClosemenu = () => {
-    setAnchorMenu(null)
-  }
 
   const [anchorEl, setAnchorEl] = useState(null)
   const opens = Boolean(anchorEl)
@@ -252,7 +206,7 @@ function LandingPage() {
             className="drawer__tab1"
             size="small"
             color="primary"
-            variant="contrained"
+            variant="contained"
             sx={{
               width: '100%',
               backgroundColor:
@@ -265,7 +219,7 @@ function LandingPage() {
             startIcon={
               <LoopOutlined
                 className="drawer_tab__icons"
-                color="primary"
+                color="action"
               ></LoopOutlined>
             }
             style={{ justifyContent: 'flex-start' }}
@@ -280,7 +234,7 @@ function LandingPage() {
             className="drawer__tab2"
             size="small"
             color="primary"
-            variant="contrained"
+            variant="contained"
             sx={{
               width: '100%',
               backgroundColor: params.status === 'done' ? 'green' : undefined,
@@ -288,7 +242,7 @@ function LandingPage() {
                 backgroundColor: params.status === 'done' ? 'green' : undefined,
               },
             }}
-            startIcon={<DoneOutline color="primary"></DoneOutline>}
+            startIcon={<DoneOutline color="action"></DoneOutline>}
             style={{ justifyContent: 'flex-start' }}
           >
             Finished Task
@@ -301,7 +255,7 @@ function LandingPage() {
             className="drawer__tab3"
             size="small"
             color="primary"
-            variant="contrained"
+            variant="contained"
             sx={{
               width: '100%',
               backgroundColor:
@@ -311,7 +265,7 @@ function LandingPage() {
                   params.status === 'inactive' ? 'green' : undefined,
               },
             }}
-            startIcon={<Close color="primary"></Close>}
+            startIcon={<Close color="action"></Close>}
             style={{ justifyContent: 'flex-start' }}
           >
             Failed to Do Task
@@ -372,36 +326,57 @@ function LandingPage() {
       ),
     )
   } else if (isError) {
-    // content = <p>{error.data.message}</p>
     content = <img className="nodatafound-picture" src={nodatafound}></img>
   }
-  const filteredTask = (result?.result || []).filter((item) => {
-    const currentDate = dayjs().format('YYYY-MM-DD')
-    const taskEndDate = dayjs(item?.end_date).format('YYYY-MM-DD')
-    return (
-      taskEndDate >= currentDate &&
-      item.status !== 'done' &&
-      item.status !== 'inactive'
-    )
-  })
 
+  //--------------Darkmode----------------//
   const [darkMode, setDarkMode] = useState(() => {
     const savedDarkMode = localStorage.getItem('darkMode')
     return savedDarkMode ? JSON.parse(savedDarkMode) : false
   })
 
-  
-
-  useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(darkMode))
-  }, [darkMode])
-
   const toggleDarkMode = () => {
-    setDarkMode((prevDarkMode) => !prevDarkMode) 
+    setDarkMode((prevDarkMode) => !prevDarkMode)
   }
 
   const backgroundColor = darkMode ? '#35374b' : '#dcf2f1'
   const textColor = darkMode ? 'white' : 'black'
+
+  //--------------Toast----------------//
+  const [errorToastAppeared, setErrorToastAppeared] = useState(false)
+
+  useEffect(() => {
+    if (isSuccess && result?.result) {
+      result.result.forEach((item) => {
+        const endDate = new Date(item.end_date)
+        const currentDate = new Date()
+        currentDate.setHours(0, 0, 0, 0)
+
+        const endDateWithoutTime = new Date(endDate)
+        endDateWithoutTime.setHours(0, 0, 0, 0)
+
+        if (
+          endDate < currentDate &&
+          params.status === 'pending' &&
+          item.status !== 'done' &&
+          item.status !== 'inactive'
+        ) {
+          const message = `The task "${item.text}" has exceeded its date.`
+          toast.error(message, {
+            duration: 5000,
+            style: {
+              background: 'red',
+              textAlign: 'center',
+              fontSize: 'large',
+              color: 'white',
+            },
+          })
+
+          setErrorToastAppeared(true)
+        }
+      })
+    }
+  }, [isSuccess, result, params.status])
 
   return (
     <>
@@ -410,6 +385,12 @@ function LandingPage() {
           <Box sx={{ flexGrow: 1 }}>
             <AppBar component="div" color="" position="fixed">
               <Toolbar>
+                <TaskDrawer
+                  isOpen={toggleDrawer(true)}
+                  onClose={() => {
+                    toggleDrawer(false)
+                  }}
+                />
                 <IconButton
                   onClick={toggleDrawer(true)}
                   size="large"
@@ -429,17 +410,7 @@ function LandingPage() {
                 >
                   To Do List Practice
                 </Typography>
-
-                {params.status === 'pending' && (
-                  <Typography
-                    className="landingpage__notif-label"
-                    variant="h6"
-                    component="div"
-                    sx={{ flexGrow: 1 }}
-                  >
-                    {`You have ${filteredTask.length} ongoing task(s) today`}
-                  </Typography>
-                )}
+                {params.status === 'pending' && <TaskLabel result={result} />}
 
                 {params.status === 'pending' && (
                   <SearchBar
@@ -459,53 +430,16 @@ function LandingPage() {
                     color="primary"
                   />
                 )}
-                <Avatar
-                  sx={{
-                    bgcolor: lightBlue[400],
-                    cursor: 'pointer',
-                    marginRight: '10px',
-                    width: 30,
-                    height: 30,
-                  }}
-                  onClick={handleClickmenu}
+
+                <AvatarMenu
+                  toggleDarkMode={toggleDarkMode}
+                  darkMode={darkMode}
+                  buttonText={darkMode ? 'Light Mode' : 'Dark Mode'}
                 />
 
-                <Menu
-                  className="user-menu"
-                  id="fade-menu"
-                  // MenuListProps={{
-                  //   'aria-labelledby': 'fade-button',
-                  // }}
-                  MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                    style: {
-                      backgroundColor: '#494c7d',
-                      color: 'white',
-                      gap: '10px',
-                    },
-                  }}
-                  anchorEl={anchorMenu}
-                  open={isopen}
-                  onClose={handleClosemenu}
-                  TransitionComponent={Fade}
-                >
-                  <MenuItem onClick={toggleDarkMode}>
-                    {' '}
-                    <ExitToApp sx={{ marginRight: '10px' }} />
-                    Dark Mode
-                  </MenuItem>
-
-                  <MenuItem
-                    onClick={() => {
-                      navigate('/')
-                    }}
-                  >
-                    {' '}
-                    <ExitToApp sx={{ marginRight: '10px' }} />
-                    Log Out
-                  </MenuItem>
-                </Menu>
-
+                {/* <AddTodoModal
+isOpen={showmodal}
+/> */}
                 <Modal className="set-todolist_modal" open={openaddtodolist}>
                   <form className="todolist-form" onSubmit={handlesubmit2}>
                     <Close
@@ -594,8 +528,7 @@ function LandingPage() {
           {/* <Outlet /> */}
 
           {/* Event Containers */}
-          <Box className="events-container" position="inherit"
-            >
+          <Box className="events-container" position="inherit">
             {params.status === 'pending' && (
               <Box className="events-container__print-container">
                 {'Ongoing Task'}
@@ -637,6 +570,7 @@ function LandingPage() {
         }}
         TransitionComponent={Fade}
       >
+        {/* Mark as Done Task */}
         {params.status === 'pending' && (
           <MenuItem
             className="menu-item"
@@ -649,7 +583,7 @@ function LandingPage() {
             Done
           </MenuItem>
         )}
-
+        {/* Delete Task */}
         {params.status === 'pending' && (
           <MenuItem
             className="menu-item"
@@ -664,6 +598,7 @@ function LandingPage() {
           </MenuItem>
         )}
 
+        {/* Update Task */}
         {params.status === 'pending' && (
           <MenuItem
             className="menu-item"
@@ -680,6 +615,7 @@ function LandingPage() {
           </MenuItem>
         )}
 
+        {/* Retrieve deleted/failed to do task */}
         {params.status === 'inactive' && (
           <MenuItem
             className="menu-item"
@@ -693,6 +629,8 @@ function LandingPage() {
           </MenuItem>
         )}
       </Menu>
+
+      {/* Update Task */}
       <Updatetask
         updateddata={updatedata}
         isOpen={openupdate}

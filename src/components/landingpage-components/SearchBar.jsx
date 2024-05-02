@@ -37,9 +37,9 @@ function SearchBar({ result, setFilteredTasks }) {
 
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value)
-    if (e.target.value.trim() === '') {
-      window.location.reload()
-    }
+    // if (e.target.value.trim() === '') {
+    //   window.location.reload()
+    // }
   }
   return (
     <Box className="landingpage__searchbar">
