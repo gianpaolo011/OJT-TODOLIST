@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import { ExitToApp } from '@mui/icons-material'
 import { lightBlue } from '@mui/material/colors'
 
-
 function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
   const [anchorMenu, setAnchorMenu] = useState(null)
   const isopen = Boolean(anchorMenu)
@@ -59,7 +58,7 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
         >
           {' '}
           <ExitToApp sx={{ marginRight: '10px' }} />
-          Log Out
+          Log Outt
         </MenuItem>
       </Menu>
     </>
