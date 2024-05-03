@@ -4,10 +4,13 @@ import Darkmode from '../../components/landingpage-components/Darkmode'
 import { useNavigate } from 'react-router-dom'
 import { ExitToApp } from '@mui/icons-material'
 import { lightBlue } from '@mui/material/colors'
+import { toast } from 'sonner'
+
 
 function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
   const [anchorMenu, setAnchorMenu] = useState(null)
   const isopen = Boolean(anchorMenu)
+  const [loading, setLoading] = useState(false);
 
   const handleClickmenu = (event) => {
     setAnchorMenu(event.currentTarget)
@@ -16,6 +19,23 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
     setAnchorMenu(null)
   }
   const navigate = useNavigate()
+  const handleLogout = () => {
+    // Show toast message
+    toast('Logging out...', {
+      duration: 2000,
+      style: {
+        background: 'green',
+        textAlign: 'center',
+        fontSize: 'large',
+        color: 'white',
+      },
+    })
+
+    // After 1 second, navigate to '/'
+    setTimeout(() => {
+      navigate('/')
+    }, 1000)
+  }
 
   return (
     <>
@@ -53,7 +73,8 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
 
         <MenuItem
           onClick={() => {
-            navigate('/')
+            // navigate('/')
+            handleLogout()
           }}
         >
           {' '}
