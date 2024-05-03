@@ -25,11 +25,10 @@
     gap: 12px;
     margin-right: 20px;
     margin-top: 5px;
-    
   }
   &__G_logo__logo-picture {
-    width: 5%;
-    height: 10%;
+    width: 7%;
+    height: 15%;
     position: fixed;
     top: 0;
   }
@@ -88,10 +87,18 @@
   margin-right: 60%;
 }
 
-.ftr_img {
-  height: 58%;
+.read-more {
+  &.MuiButtonBase-root {
+    margin-left: 70%;
+    width: 10%;
+    border-radius: 50px;
+  }
+}
+
+.footer_img {
+  height: 29%;
   width: 100%;
-  margin-top: -10%;
+  margin-top: -4%;
   position: fixed;
 }
 
@@ -142,14 +149,12 @@
   margin: 10px;
 }
 
-
 .submit_button {
   &.MuiButtonBase-root {
     background-color: green;
     margin-top: 2rem;
   }
 }
-
 
 .textfield {
   display: flex;
@@ -162,4 +167,3 @@
 .checkbox {
   margin: 10px;
 }
-

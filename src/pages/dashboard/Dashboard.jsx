@@ -10,16 +10,17 @@ import logo from '../../assets/images/GP-logo.png'
 import '../../assets/styles/dashboard.scss'
 import { useState } from 'react'
 
-
 import SignUp from '../../components/dashboard-components/SignUp'
 import LogIn from '../../components/dashboard-components/LogIn'
+
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
   const [open, setOpen] = useState(false)
   const [opensignup, setOpensignup] = useState(false)
 
   const [opensnackbar, setOpensnackbar] = useState(false)
-
+ const [fade, setFade] = useState(false);
   const handleClosesnackbar = (event, reason) => {
     if (reason === 'clickaway') {
       return
@@ -27,9 +28,17 @@ function Dashboard() {
 
     setOpensnackbar(false)
   }
+  const navigate = useNavigate()
+
+  const handleReadMoreClick = () => {
+    setFade(true);
+    setTimeout(() => {
+      navigate('/Description');
+    }, 500); // Adjust the duration of the animation as needed
+  };
 
   return (
-    <Box className="dashboard">
+     <Box className={`dashboard ${fade ? 'fade-out' : ''}`}>
       {/* Upper_ Buttons */}
       <Box className="dashboard__G_logo">
         <img className="dashboard__G_logo__logo-picture" src={logo}></img>
@@ -41,7 +50,6 @@ function Dashboard() {
           size="large"
           color="primary"
           variant="text"
-          
           startIcon={<Login color="action" />}
         >
           Log In
@@ -69,6 +77,15 @@ function Dashboard() {
         Empower Your Productivity, Unleash Your Potential – Your To-Do List,
         Your Success Story!
       </Box>
+      <Button
+        className="read-more"
+        variant="contained"
+        color="success"
+        sx={{ cursor: 'pointer' }}
+        onClick={handleReadMoreClick}
+      >
+        READ MORE
+      </Button>
       <Box>
         <img className="ftr_img" src={footer}></img>
       </Box>

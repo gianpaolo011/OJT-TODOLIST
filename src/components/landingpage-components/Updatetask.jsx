@@ -34,7 +34,6 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
     },
     resolver: yupResolver(UpdateSchema),
   })
-  console.log('form-error', errors)
   useEffect(() => {
     if (updateddata) {
       console.log(updateddata)
@@ -75,7 +74,6 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
             color: 'white',
           },
         })
-        console.log(error, 'error')
       })
   }
 

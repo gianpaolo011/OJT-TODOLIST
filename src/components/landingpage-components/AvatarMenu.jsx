@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { ExitToApp } from '@mui/icons-material'
 import { lightBlue } from '@mui/material/colors'
 
+
 function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
   const [anchorMenu, setAnchorMenu] = useState(null)
   const isopen = Boolean(anchorMenu)
@@ -16,6 +17,7 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
     setAnchorMenu(null)
   }
   const navigate = useNavigate()
+
   return (
     <>
       <Avatar
@@ -44,7 +46,11 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
         onClose={handleClosemenu}
         TransitionComponent={Fade}
       >
-        <Darkmode toggleDarkMode={toggleDarkMode} darkMode={darkMode} buttonText={buttonText} />
+        <Darkmode
+          toggleDarkMode={toggleDarkMode}
+          darkMode={darkMode}
+          buttonText={buttonText}
+        />
 
         <MenuItem
           onClick={() => {

@@ -75,10 +75,29 @@ function SignUp({ isOpen, onClose }) {
 
     signup(formData)
       .unwrap()
-      .then((response) => setOpensnackbar(response, 'response'))
-      .catch((error) => console.log(error, 'error'))
-    // const isValid = await userSchema.isValid(formData)
-    console.log({ formData })
+      .then((res) => {
+        console.log(res.message, 'ressss')
+        toast.success(res.message, {
+          style: {
+            background: 'green',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+        })
+        onClose()
+      })
+      .catch((error) => {
+        toast.error(error, {
+          style: {
+            background: 'red',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+        })
+        console.log(error, 'error')
+      })
   }
 
   const [opensnackbar, setOpensnackbar] = useState(false)

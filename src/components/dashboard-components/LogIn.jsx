@@ -24,11 +24,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useLoginMutation } from '../../app/features/api/login'
 import CryptoJS from 'crypto-js'
 import calendar from '../../assets/images/calendar_front.png'
-
+import { toast } from 'sonner'
 function LogIn({ isOpen, onClose }) {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
-// const confirm = useConfirm()
+  // const confirm = useConfirm()
   const handleClickShowPassword = () => setShowPassword(!showPassword)
 
   const handleMouseDownPassword = (event) => {
@@ -69,7 +69,15 @@ function LogIn({ isOpen, onClose }) {
     login(data)
       .unwrap()
       .then((response) => {
-        setAlert({ show: true, message: response.message, severity: 'success' })
+        toast.success(response.message, {
+          position: 'bottom-left',
+          style: {
+            background: 'green',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+        })
 
         const encryptedData = CryptoJS.AES.encrypt(
           JSON.stringify(response.result.token),
@@ -91,102 +99,105 @@ function LogIn({ isOpen, onClose }) {
   // [login] = useLoginMutation()
 
   return (
-    
     <Modal open={isOpen}>
-          <Box className="login-page__form-container">
-             <Box className=" signup-page__form-container__logo">
-            <img className="logo-picture" src={calendar}></img>
-          </Box>
-      <Box className="login-page__form-container__form" id="myform">
-        <form
-          className="login-page__form-container__login-form"
-          id="login_form"
-          onSubmit={handleSubmit(logindata)}
-          // onSubmit={login}
-        >
-          <IconButton color="error" sx={{ position: 'absolute', top: 20 }}>
-            <CloseIcon
-              onClick={() => {
-                onClose()
-                reset()
-              }}
-              className="x"
-              color="primary"
-            />
-          </IconButton>
-          <Typography className="login_label" variant="h3">
-            LOG IN
-          </Typography>
-          <Box className="textfields">
-            <TextField
-              {...register('username')}
-              error={!!errors?.username}
-              helperText={errors?.username?.message}
-              required
-              autoComplete="off"
-              className="username__text-field"
-              id="outlined-basic"
-              label="Username"
-              variant="outlined"
-            />
-            <TextField
-              {...register('password')}
-              error={!!errors?.password}
-              helperText={errors?.password?.message}
-              required
-              className="password__text-field"
-              InputProps={{
-                endAdornment: (
-                  <IconButton
-                    className="showpassword_icon"
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                ),
-              }}
-              type={showPassword ? 'text' : 'password'}
-              label="Password"
-            />
-          </Box>
-
-          <Box className="input-box"></Box>
-          <Box className="remember-forgot">
-            <FormControlLabel
-              className="checkbox"
-              control={<Checkbox />}
-              label="Remember Me"
-            />
-            <br></br>
-            <a className="forgot-pass" href="#">
-              Forgot Password
-            </a>
-          </Box>
-          <div>
-            <Button className="submit_button" variant="contained" type="submit">
-              Log In
-            </Button>
-          </div>
-        </form>
-        <Snackbar
-          open={alert.show}
-          autoHideDuration={1500}
-          onClose={handleClosesnackbar}
-        >
-          <Alert
-            elevation={6}
-            onClose={handleClosesnackbar}
-            severity={alert.severity}
-            variant="filled"
-            sx={{ width: '100%' }}
+      <Box className="login-page__form-container">
+        <Box className=" signup-page__form-container__logo">
+          <img className="logo-picture" src={calendar}></img>
+        </Box>
+        <Box className="login-page__form-container__form" id="myform">
+          <form
+            className="login-page__form-container__login-form"
+            id="login_form"
+            onSubmit={handleSubmit(logindata)}
+            // onSubmit={login}
           >
-            {alert.message}
-          </Alert>
-        </Snackbar>
-      </Box>
+            <IconButton color="error" sx={{ position: 'absolute', top: 20 }}>
+              <CloseIcon
+                onClick={() => {
+                  onClose()
+                  reset()
+                }}
+                className="x"
+                color="primary"
+              />
+            </IconButton>
+            <Typography className="login_label" variant="h3">
+              LOG IN
+            </Typography>
+            <Box className="textfields">
+              <TextField
+                {...register('username')}
+                error={!!errors?.username}
+                helperText={errors?.username?.message}
+                required
+                autoComplete="off"
+                className="username__text-field"
+                id="outlined-basic"
+                label="Username"
+                variant="outlined"
+              />
+              <TextField
+                {...register('password')}
+                error={!!errors?.password}
+                helperText={errors?.password?.message}
+                required
+                className="password__text-field"
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      className="showpassword_icon"
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  ),
+                }}
+                type={showPassword ? 'text' : 'password'}
+                label="Password"
+              />
+            </Box>
+
+            <Box className="input-box"></Box>
+            <Box className="remember-forgot">
+              <FormControlLabel
+                className="checkbox"
+                control={<Checkbox />}
+                label="Remember Me"
+              />
+              <br></br>
+              <a className="forgot-pass" href="#">
+                Forgot Password
+              </a>
+            </Box>
+            <div>
+              <Button
+                className="submit_button"
+                variant="contained"
+                type="submit"
+              >
+                Log In
+              </Button>
+            </div>
+          </form>
+          <Snackbar
+            open={alert.show}
+            autoHideDuration={1500}
+            onClose={handleClosesnackbar}
+          >
+            <Alert
+              elevation={6}
+              onClose={handleClosesnackbar}
+              severity={alert.severity}
+              variant="filled"
+              sx={{ width: '100%' }}
+            >
+              {alert.message}
+            </Alert>
+          </Snackbar>
+        </Box>
       </Box>
     </Modal>
   )
