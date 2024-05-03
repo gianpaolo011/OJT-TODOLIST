@@ -58,7 +58,7 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
         >
           {' '}
           <ExitToApp sx={{ marginRight: '10px' }} />
-          Log Outt
+          Log Out
         </MenuItem>
       </Menu>
     </>
