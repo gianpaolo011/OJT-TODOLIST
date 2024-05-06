@@ -86,7 +86,7 @@ function LogIn({ isOpen, onClose }) {
 
         localStorage.setItem('token', encryptedData)
 
-        console.log({ response })
+        // console.log({ response })
         navigate('/landingpage')
       })
       .catch((error) => {

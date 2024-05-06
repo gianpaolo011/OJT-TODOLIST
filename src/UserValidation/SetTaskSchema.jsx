@@ -7,7 +7,7 @@ export const settaskschema = yup.object().shape({
     .date()
     .min(
       moment().format('YYYY-MM-DD hh:mm'),
-      'Date and Time must be present or futuree',
+      'Date and Time must be present or future',
     )
     .required('Date and Time is required.'),
 })
