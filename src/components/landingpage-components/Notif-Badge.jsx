@@ -58,6 +58,8 @@ function NotifBadge({ result }) {
             backgroundColor: '#0f171f',
             color: 'white',
             gap: '10px',
+            position: 'fixed',
+            width: '20%'
           },
         }}
       >

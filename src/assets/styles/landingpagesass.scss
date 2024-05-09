@@ -25,25 +25,20 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textclip 2s linear infinite;
-
   }
 
-  &__notif-label{
-
-    &.MuiTypography-root{
-      font-size: large;  
+  &__notif-label {
+    &.MuiTypography-root {
+      font-size: large;
       color: #4c51d4;
     }
-    
   }
-  &__notif-icon{
+  &__notif-icon {
     cursor: pointer;
   }
-  &__notif-menu{
-    margin-left: 75%;
-  margin-top: -28%;
-  position: fixed;
-    
+  &__notif-menu {
+    margin-left: 79.5%;
+    margin-top: -41%;
   }
 }
 
@@ -161,7 +156,7 @@
       text-align: left;
       height: 50px;
       padding: 10px;
-     
+
       border: 2px solid white;
       border-radius: 15px;
       &:hover {
@@ -217,7 +212,7 @@
     }
     &__ongoing {
       gap: 30px;
-      
+
       display: flex;
       flex-wrap: wrap;
       flex-direction: row;

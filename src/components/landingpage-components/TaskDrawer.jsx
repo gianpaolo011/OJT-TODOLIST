@@ -112,7 +112,6 @@ function TaskDrawer({isOpen, onCLose}) {
         </Box>
       </List>
       <Divider />
-      <Box className="drawer__btn-container"></Box>
     </Box>
   )
 

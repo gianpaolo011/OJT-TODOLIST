@@ -20,6 +20,7 @@ import {
   Menu,
   MenuItem,
   Fade,
+  CircularProgress,
 } from '@mui/material'
 import {
   AddCircleOutlineRounded,
@@ -89,6 +90,10 @@ function LandingPage() {
     params,
   )
 
+  useEffect(() => {
+    // Fetch todos data and handle success or error
+  }, [params])
+
   const [addTodo] = useAddTodoMutation()
   const [updateTodo] = useUpdateTodoMutation()
   const [deleteTodo] = useDeleteTodoMutation()
@@ -96,10 +101,13 @@ function LandingPage() {
 
   const handlesubmit2 = (e) => {
     e.preventDefault()
+    const newId = result?.result.length === 0 ? 1 : result?.result[0]?.id + 1
+
     const startingdate = new Date(startdate.$d)
     const endingdate = new Date(enddate.$d)
 
     const body = {
+      id: newId,
       text: NewTodo,
       start_date: dayjs(startingdate).format('YYYY-MM-DD hh:mm'),
       end_date: dayjs(endingdate).format('YYYY-MM-DD HH:mm'),
@@ -180,7 +188,7 @@ function LandingPage() {
   const [filteredTasks, setFilteredTasks] = useState([])
 
   const DrawerList = (
-    <Box className="drawer" sx={{ width: 250 }} role="presentation">
+    <Box className="drawer" sx={{ width: 250, height: '100%' }} role="presentation">
       <List>
         <ListItem>
           <Box className="drawer__close-btn">
@@ -273,13 +281,15 @@ function LandingPage() {
         </Box>
       </List>
       <Divider />
-      <Box className="drawer__btn-container"></Box>
+    
     </Box>
   )
 
   let content
   if (isLoading) {
-    content = <p>Loading...</p>
+    content =   <Box sx={{ display: 'flex', justifySelf: 'end', marginLeft: '48%', marginTop: '15%'}}>
+      <CircularProgress color='success' size={50} />
+    </Box>
   } else if (isSuccess) {
     content = (filteredTasks.length ? filteredTasks : result?.result)?.map(
       (item) => (

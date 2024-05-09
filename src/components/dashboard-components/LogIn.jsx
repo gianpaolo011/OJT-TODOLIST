@@ -28,7 +28,6 @@ import { toast } from 'sonner'
 function LogIn({ isOpen, onClose }) {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
-  // const confirm = useConfirm()
   const handleClickShowPassword = () => setShowPassword(!showPassword)
 
   const handleMouseDownPassword = (event) => {
@@ -80,23 +79,22 @@ function LogIn({ isOpen, onClose }) {
         })
 
         const encryptedData = CryptoJS.AES.encrypt(
-          JSON.stringify(response.result.token),
+          // JSON.stringify(response.result.token),
+          JSON.stringify(response.data.token), //change data into result on monday!!!
           import.meta.env.VITE_CRYPTO_SALT_KEY,
         ).toString()
 
         localStorage.setItem('token', encryptedData)
 
-        // console.log({ response })
+        console.log({ response })
         navigate('/landingpage')
       })
-      .catch((error) => {
-        alert({ show: true, message: error.message, severity: 'error' })
+    .catch((error) => {
+      alert({ show: true, message: error.message, severity: 'error' })
 
-        console.log(error)
-      })
+      console.log(error)
+    })
   }
-
-  // [login] = useLoginMutation()
 
   return (
     <Modal open={isOpen}>
@@ -141,6 +139,7 @@ function LogIn({ isOpen, onClose }) {
                 error={!!errors?.password}
                 helperText={errors?.password?.message}
                 required
+                autoComplete='off'
                 className="password__text-field"
                 InputProps={{
                   endAdornment: (
