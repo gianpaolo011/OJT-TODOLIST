@@ -55,17 +55,19 @@ function NotifBadge({ result }) {
         MenuListProps={{
           'aria-labelledby': 'basic-button',
           style: {
-            backgroundColor: '#0f171f',
-            color: 'white',
-            gap: '10px',
-            position: 'fixed',
-            width: '20%'
+            backgroundColor: 'white',
+            color: 'black',
+            gap: '20px',
+            position: 'sticky',
+            width: '100%',
           },
         }}
       >
         {/* Display the count of ongoing tasks */}
-        <MenuItem>
-          <Typography>Task scheduled today: {filteredTask.length}</Typography>
+        <MenuItem style={{ pointerEvents: 'none' }}>
+          <Typography variant="h6">
+            Task scheduled today: {filteredTask.length}
+          </Typography>
         </MenuItem>
         <Divider />
 
@@ -75,9 +77,11 @@ function NotifBadge({ result }) {
           </MenuItem>
         ))}
 
-        <Divider />
-        <MenuItem>
-          <Typography color="error">
+        <Divider style={{ backgroundColor: 'black', height: '2px' }} />
+
+        {/* Display the count of expired tasks */}
+        <MenuItem style={{ pointerEvents: 'none' }}>
+          <Typography variant="h6" color="error">
             Expired Tasks : {expiredTask.length}
           </Typography>
         </MenuItem>

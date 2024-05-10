@@ -18,6 +18,7 @@ function Darkmode({ darkMode, toggleDarkMode }) {
 
     if (darkMode) {
       toast.success('Dark Mode Activated.', {
+        duration: 1000,
         style: {
           background: 'black',
           textAlign: 'center',
@@ -27,6 +28,7 @@ function Darkmode({ darkMode, toggleDarkMode }) {
       })
     } else {
       toast.success('Light Mode Activated', {
+         duration: 1000,
         style: {
           background: 'white',
           textAlign: 'center',

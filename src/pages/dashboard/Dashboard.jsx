@@ -34,7 +34,7 @@ function Dashboard() {
     setFade(true);
     setTimeout(() => {
       navigate('/Description');
-    }, 500); // Adjust the duration of the animation as needed
+    }, 500);
   };
 
   return (

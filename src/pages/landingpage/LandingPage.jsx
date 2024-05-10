@@ -187,8 +187,28 @@ function LandingPage() {
 
   const [filteredTasks, setFilteredTasks] = useState([])
 
+   //--------------Darkmode----------------//
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem('darkMode')
+    return savedDarkMode ? JSON.parse(savedDarkMode) : false
+  })
+
+  const toggleDarkMode = () => {
+    setDarkMode((prevDarkMode) => !prevDarkMode)
+  }
+
+  const backgroundColor = darkMode ? '#35374b' : '#dcf2f1'
+  const textColor = darkMode ? 'white' : 'black'
+  const drawerColor = darkMode?  '#a1a7e3' : '#dcf2f1'
+ 
+
   const DrawerList = (
-    <Box className="drawer" sx={{ width: 250, height: '100%' }} role="presentation">
+    <Box
+      className="drawer"
+      sx={{ width: 250, height: '100%', backgroundColor: drawerColor }}
+      role="presentation"
+      
+    >
       <List>
         <ListItem>
           <Box className="drawer__close-btn">
@@ -281,15 +301,23 @@ function LandingPage() {
         </Box>
       </List>
       <Divider />
-    
     </Box>
   )
 
   let content
   if (isLoading) {
-    content =   <Box sx={{ display: 'flex', justifySelf: 'end', marginLeft: '48%', marginTop: '15%'}}>
-      <CircularProgress color='success' size={50} />
-    </Box>
+    content = (
+      <Box
+        sx={{
+          display: 'flex',
+          justifySelf: 'end',
+          marginLeft: '48%',
+          marginTop: '15%',
+        }}
+      >
+        <CircularProgress color="success" size={50} />
+      </Box>
+    )
   } else if (isSuccess) {
     content = (filteredTasks.length ? filteredTasks : result?.result)?.map(
       (item) => (
@@ -339,18 +367,7 @@ function LandingPage() {
     content = <img className="nodatafound-picture" src={nodatafound}></img>
   }
 
-  //--------------Darkmode----------------//
-  const [darkMode, setDarkMode] = useState(() => {
-    const savedDarkMode = localStorage.getItem('darkMode')
-    return savedDarkMode ? JSON.parse(savedDarkMode) : false
-  })
-
-  const toggleDarkMode = () => {
-    setDarkMode((prevDarkMode) => !prevDarkMode)
-  }
-
-  const backgroundColor = darkMode ? '#35374b' : '#dcf2f1'
-  const textColor = darkMode ? 'white' : 'black'
+ 
 
   //--------------Toast----------------//
   const [errorToastAppeared, setErrorToastAppeared] = useState(false)
@@ -393,7 +410,15 @@ function LandingPage() {
       <Box className="landingpage">
         <Box className="landingpage__appbar">
           <Box sx={{ flexGrow: 1 }}>
-            <AppBar component="div" color="" position="fixed">
+            <AppBar
+              component="div"
+              color=""
+              position="fixed"
+              sx={{
+                backgroundColor: darkMode ? '#a1a7e3' : '#ffffff',
+                color: textColor,
+              }}
+            >
               <Toolbar>
                 <TaskDrawer
                   isOpen={toggleDrawer(true)}
@@ -426,6 +451,10 @@ function LandingPage() {
                   <SearchBar
                     setFilteredTasks={setFilteredTasks}
                     result={result}
+                    sx={{
+                      backgroundColor: darkMode ? '#333' : '#fff', // Set background color based on darkMode
+                      color: darkMode ? 'white' : 'black', // Set text color based on darkMode
+                    }}
                   />
                 )}
 
@@ -437,7 +466,7 @@ function LandingPage() {
                     onClick={handleOpenmodal}
                     className="landingpage-body__addbtn"
                     fontSize="large"
-                    color="primary"
+                    color='primary'
                   />
                 )}
 
