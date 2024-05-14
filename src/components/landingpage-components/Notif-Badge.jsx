@@ -1,9 +1,16 @@
-import { Badge, Divider, Menu, MenuItem, Typography } from '@mui/material'
+import {
+  Badge,
+  Divider,
+  Menu,
+  MenuItem,
+  Popover,
+  Typography,
+} from '@mui/material'
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
 
-function NotifBadge({ result }) {
+function NotifBadge({ result, backgroundColor, textColor }) {
   const filteredTask = (result?.result || []).filter((item) => {
     const currentDate = dayjs().startOf('day') // Start of today
     const taskEndDate = dayjs(item?.end_date) // End date of task
@@ -25,17 +32,24 @@ function NotifBadge({ result }) {
     )
   })
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
   }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? 'simple-popover' : undefined
+
   return (
     <>
       <Badge
         badgeContent={filteredTask.length + expiredTask.length}
         color="error"
-        onClick={toggleMenu}
+        onClick={handleClick}
         overlap="circular"
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
@@ -46,26 +60,32 @@ function NotifBadge({ result }) {
         />
       </Badge>
 
-      <Menu
-        className="landingpage__notif-menu"
-        id="ongoing-tasks-menu"
-        anchorEl={null}
-        open={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        PaperProps={{
           style: {
-            backgroundColor: 'white',
-            color: 'black',
-            gap: '20px',
-            position: 'sticky',
-            width: '100%',
+            border: `1px solid  `,
+            borderRadius: '20px',
+            backgroundColor: backgroundColor,
+            color: textColor,
+            padding: '10px',
           },
         }}
       >
         {/* Display the count of ongoing tasks */}
         <MenuItem style={{ pointerEvents: 'none' }}>
-          <Typography variant="h6">
+          <Typography variant="h6" style={{ pointerEvents: 'none' }}>
             Task scheduled today: {filteredTask.length}
           </Typography>
         </MenuItem>
@@ -92,7 +112,7 @@ function NotifBadge({ result }) {
             {task.text}
           </MenuItem>
         ))}
-      </Menu>
+      </Popover>
     </>
   )
 }

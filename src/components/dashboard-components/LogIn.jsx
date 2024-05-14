@@ -80,7 +80,7 @@ function LogIn({ isOpen, onClose }) {
 
         const encryptedData = CryptoJS.AES.encrypt(
           // JSON.stringify(response.result.token),
-          JSON.stringify(response.data.token), //change data into result on monday!!!
+          JSON.stringify(response.result.token), //change data into result on monday!!!
           import.meta.env.VITE_CRYPTO_SALT_KEY,
         ).toString()
 
@@ -89,11 +89,11 @@ function LogIn({ isOpen, onClose }) {
         console.log({ response })
         navigate('/landingpage')
       })
-    .catch((error) => {
-      alert({ show: true, message: error.message, severity: 'error' })
+      .catch((error) => {
+        alert({ show: true, message: error.message, severity: 'error' })
 
-      console.log(error)
-    })
+        console.log(error)
+      })
   }
 
   return (
@@ -139,7 +139,7 @@ function LogIn({ isOpen, onClose }) {
                 error={!!errors?.password}
                 helperText={errors?.password?.message}
                 required
-                autoComplete='off'
+                autoComplete="off"
                 className="password__text-field"
                 InputProps={{
                   endAdornment: (

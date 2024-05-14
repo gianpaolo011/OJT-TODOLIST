@@ -1,25 +1,20 @@
-import React, { useState } from 'react'
-
+import React from 'react'
+import { Box, Button, Divider, List, ListItem } from '@mui/material'
 import {
-  Close,
-  DoneOutline,
-  KeyboardDoubleArrowLeft,
   LoopOutlined,
+  DoneOutline,
+  Close,
+  KeyboardDoubleArrowLeft,
 } from '@mui/icons-material'
-import { Divider, Drawer, List, ListItem } from '@mui/material'
-import { Box } from '@mui/system'
-import { Button } from 'bootstrap'
-
 import logo from '../../assets/images/GP-logo.png'
 
-function TaskDrawer({isOpen, onCLose}) {
-  const [params, setparams] = useState({ status: 'pending' })
-  const [open, setOpen] = useState(false)
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen)
-  }
-  const DrawerList = (
-    <Box className="drawer" sx={{ width: 250 }} role="presentation">
+const DrawerList = ({ toggleDrawer, setParams, params, drawerColor }) => {
+  return (
+    <Box
+      className="drawer"
+      sx={{ width: 250, height: '100%', backgroundColor: drawerColor }}
+      role="presentation"
+    >
       <List>
         <ListItem>
           <Box className="drawer__close-btn">
@@ -28,18 +23,19 @@ function TaskDrawer({isOpen, onCLose}) {
               fontSize="large"
               color="error"
               className="close_button"
-              onClick={toggleDrawer(false)}
+              onClick={() => toggleDrawer(false)}
             />
           </Box>
         </ListItem>
         <Divider />
         <Box className="G_logo">
-          <img className="G_logo__logo-picture" src={logo}></img>
+          <img className="G_logo__logo-picture" src={logo} alt="Logo" />
         </Box>
         <Box className="drawer__event-btn">
           <Button
             onClick={() => {
-              setparams((prev) => ({ ...prev, status: 'pending' }))
+              setParams((prev) => ({ ...prev, status: 'pending' }))
+              toggleDrawer(false)
               window.location.reload()
             }}
             className="drawer__tab1"
@@ -56,19 +52,16 @@ function TaskDrawer({isOpen, onCLose}) {
               },
             }}
             startIcon={
-              <LoopOutlined
-                className="drawer_tab__icons"
-                color="action"
-              ></LoopOutlined>
+              <LoopOutlined className="drawer_tab__icons" color="action" />
             }
             style={{ justifyContent: 'flex-start' }}
           >
             Ongoing Task
           </Button>
-
           <Button
             onClick={() => {
-              setparams((prev) => ({ ...prev, status: 'done' }))
+              setParams((prev) => ({ ...prev, status: 'done' }))
+              toggleDrawer(false)
             }}
             className="drawer__tab2"
             size="small"
@@ -81,15 +74,15 @@ function TaskDrawer({isOpen, onCLose}) {
                 backgroundColor: params.status === 'done' ? 'green' : undefined,
               },
             }}
-            startIcon={<DoneOutline color="action"></DoneOutline>}
+            startIcon={<DoneOutline color="action" />}
             style={{ justifyContent: 'flex-start' }}
           >
             Finished Task
           </Button>
-
           <Button
             onClick={() => {
-              setparams((prev) => ({ ...prev, status: 'inactive' }))
+              setParams((prev) => ({ ...prev, status: 'inactive' }))
+              toggleDrawer(false)
             }}
             className="drawer__tab3"
             size="small"
@@ -104,7 +97,7 @@ function TaskDrawer({isOpen, onCLose}) {
                   params.status === 'inactive' ? 'green' : undefined,
               },
             }}
-            startIcon={<Close color="action"></Close>}
+            startIcon={<Close color="action" />}
             style={{ justifyContent: 'flex-start' }}
           >
             Failed to Do Task
@@ -114,14 +107,6 @@ function TaskDrawer({isOpen, onCLose}) {
       <Divider />
     </Box>
   )
-
-  return (
-    <>
-      <Drawer className="drawer" onClick={toggleDrawer(false)} open={open}>
-        {DrawerList}
-      </Drawer>
-    </>
-  )
 }
 
-export default TaskDrawer
+export default DrawerList

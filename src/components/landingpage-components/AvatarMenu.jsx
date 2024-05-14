@@ -6,11 +6,10 @@ import { ExitToApp } from '@mui/icons-material'
 import { lightBlue } from '@mui/material/colors'
 import { toast } from 'sonner'
 
-
 function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
   const [anchorMenu, setAnchorMenu] = useState(null)
   const isopen = Boolean(anchorMenu)
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const handleClickmenu = (event) => {
     setAnchorMenu(event.currentTarget)
@@ -69,6 +68,8 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
           toggleDarkMode={toggleDarkMode}
           darkMode={darkMode}
           buttonText={buttonText}
+          handleClosemenu={handleClosemenu} 
+          
         />
 
         <MenuItem

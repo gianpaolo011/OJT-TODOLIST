@@ -30,16 +30,13 @@
   &__notif-label {
     &.MuiTypography-root {
       font-size: large;
-      color: #4c51d4;
+      
     }
   }
   &__notif-icon {
     cursor: pointer;
   }
-  &__notif-menu {
-    margin-left: 77%;
-    margin-top: -34%;
-  }
+  
 }
 
 .landingpage-body {
@@ -220,7 +217,7 @@
       margin-bottom: 20px;
       text-align: left;
       font-size: 25px;
-      padding: 10px 14px 10px 30px;
+      padding: 10px 14px 10px 20px;
     }
 
     &__finished {

@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce'
 import { IconButton, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 
-function SearchBar({ result, setFilteredTasks }) {
+function SearchBar({ result, setFilteredTasks, textColor, searchbarColor }) {
   const [searchQuery, setSearchQuery] = useState('')
 
   const handleSearch = () => {
@@ -44,6 +44,7 @@ function SearchBar({ result, setFilteredTasks }) {
   return (
     <Box className="landingpage__searchbar">
       <TextField
+      sx={{color: textColor, backgroundColor: searchbarColor}}
         label="Search Tasks"
         onChange={handleSearchInputChange}
         variant="standard"

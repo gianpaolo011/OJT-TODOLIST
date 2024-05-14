@@ -5,18 +5,11 @@ import {
   Box,
   Divider,
   Drawer,
-  List,
-  ListItem,
   AppBar,
   Typography,
   Toolbar,
   IconButton,
-  Modal,
-  TextField,
-  Button,
   Card,
-  Checkbox,
-  FormControlLabel,
   Menu,
   MenuItem,
   Fade,
@@ -24,20 +17,12 @@ import {
 } from '@mui/material'
 import {
   AddCircleOutlineRounded,
-  Close,
   CloudSync,
   Delete,
   DoneAll,
-  DoneOutline,
-  KeyboardDoubleArrowLeft,
-  LoopOutlined,
   Update,
 } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 
 //Import COMPONENTS
 import ActionMenuCard from '../../components/ActionMenu'
@@ -47,10 +32,11 @@ import ConfirmationDialog from '../../components/confirmation/confirmation-dialo
 import SearchBar from '../../components/landingpage-components/SearchBar'
 import TaskLabel from '../../components/landingpage-components/TaskLabel'
 import AvatarMenu from '../../components/landingpage-components/AvatarMenu'
-import TaskDrawer from '../../components/landingpage-components/TaskDrawer'
+import DrawerList from '../../components/landingpage-components/DrawerList'
+import TaskModal from '../../components/landingpage-components/TaskModal'
 
 //Images and Styles
-import logo from '../../assets/images/GP-logo.png'
+
 import nodatafound from '../../assets/images/nodata.png'
 import '../../assets/styles/landingpagesass.scss'
 
@@ -77,14 +63,10 @@ function LandingPage() {
 
   const [open, setOpen] = useState(false)
 
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen)
-  }
-
   const [startdate, setStartdate] = useState('')
   const [enddate, setEnddate] = useState('')
   const [NewTodo, setNewTodo] = useState('')
-  const [params, setparams] = useState({ status: 'pending' })
+  const [params, setParams] = useState({ status: 'pending' })
 
   const { data: result, isLoading, isSuccess, isError } = useGetTodosQuery(
     params,
@@ -117,7 +99,9 @@ function LandingPage() {
       .unwrap()
       .then((res) => {
         console.log(res.message, 'ressss')
+
         toast.success(res.message, {
+          duration: 5000,
           style: {
             background: 'green',
             textAlign: 'center',
@@ -125,7 +109,10 @@ function LandingPage() {
             color: 'white',
           },
         })
-        handleClosemodal()
+        setOpenTaskModal(!openTaskModal)
+        if (openTaskModal) {
+          resetFields()
+        }
       })
       .catch((error) => {
         toast.error(error, {
@@ -142,10 +129,19 @@ function LandingPage() {
 
   //Add Task Modal
   const [openupdate, setOpenupdate] = useState(false)
-  const [openaddtodolist, setOpentodolist] = useState(false)
-  const handleOpenmodal = () => setOpentodolist(true)
+
   const [datetime, setdatetime] = useState(false)
   const [checked, setChecked] = useState(false)
+
+  const [openTaskModal, setOpenTaskModal] = useState(false)
+
+  const handleToggleDrawer = () => setOpen(!open)
+  const handleToggleTaskModal = () => {
+    setOpenTaskModal(!openTaskModal)
+    if (openTaskModal) {
+      resetFields()
+    }
+  }
 
   const handleChange = (event) => {
     const { checked } = event.target
@@ -157,11 +153,6 @@ function LandingPage() {
     } else {
       setdatetime(false)
     }
-  }
-
-  const handleClosemodal = () => {
-    setOpentodolist(false)
-    resetFields()
   }
 
   const resetFields = () => {
@@ -187,7 +178,7 @@ function LandingPage() {
 
   const [filteredTasks, setFilteredTasks] = useState([])
 
-   //--------------Darkmode----------------//
+  //--------------Darkmode----------------//
   const [darkMode, setDarkMode] = useState(() => {
     const savedDarkMode = localStorage.getItem('darkMode')
     return savedDarkMode ? JSON.parse(savedDarkMode) : false
@@ -197,112 +188,9 @@ function LandingPage() {
     setDarkMode((prevDarkMode) => !prevDarkMode)
   }
 
-  const backgroundColor = darkMode ? '#35374b' : '#dcf2f1'
+  const backgroundColor = darkMode ? '#141414' : '#dcf2f1'
   const textColor = darkMode ? 'white' : 'black'
-  const drawerColor = darkMode?  '#a1a7e3' : '#dcf2f1'
- 
-
-  const DrawerList = (
-    <Box
-      className="drawer"
-      sx={{ width: 250, height: '100%', backgroundColor: drawerColor }}
-      role="presentation"
-      
-    >
-      <List>
-        <ListItem>
-          <Box className="drawer__close-btn">
-            <KeyboardDoubleArrowLeft
-              titleAccess="Close"
-              fontSize="large"
-              color="error"
-              className="close_button"
-              onClick={toggleDrawer(false)}
-            />
-          </Box>
-        </ListItem>
-        <Divider />
-        <Box className="G_logo">
-          <img className="G_logo__logo-picture" src={logo}></img>
-        </Box>
-        <Box className="drawer__event-btn">
-          <Button
-            onClick={() => {
-              setparams((prev) => ({ ...prev, status: 'pending' }))
-              window.location.reload()
-            }}
-            className="drawer__tab1"
-            size="small"
-            color="primary"
-            variant="contained"
-            sx={{
-              width: '100%',
-              backgroundColor:
-                params.status === 'pending' ? 'green' : undefined,
-              '&:hover': {
-                backgroundColor:
-                  params.status === 'pending' ? 'green' : undefined,
-              },
-            }}
-            startIcon={
-              <LoopOutlined
-                className="drawer_tab__icons"
-                color="action"
-              ></LoopOutlined>
-            }
-            style={{ justifyContent: 'flex-start' }}
-          >
-            Ongoing Task
-          </Button>
-
-          <Button
-            onClick={() => {
-              setparams((prev) => ({ ...prev, status: 'done' }))
-            }}
-            className="drawer__tab2"
-            size="small"
-            color="primary"
-            variant="contained"
-            sx={{
-              width: '100%',
-              backgroundColor: params.status === 'done' ? 'green' : undefined,
-              '&:hover': {
-                backgroundColor: params.status === 'done' ? 'green' : undefined,
-              },
-            }}
-            startIcon={<DoneOutline color="action"></DoneOutline>}
-            style={{ justifyContent: 'flex-start' }}
-          >
-            Finished Task
-          </Button>
-
-          <Button
-            onClick={() => {
-              setparams((prev) => ({ ...prev, status: 'inactive' }))
-            }}
-            className="drawer__tab3"
-            size="small"
-            color="primary"
-            variant="contained"
-            sx={{
-              width: '100%',
-              backgroundColor:
-                params.status === 'inactive' ? 'green' : undefined,
-              '&:hover': {
-                backgroundColor:
-                  params.status === 'inactive' ? 'green' : undefined,
-              },
-            }}
-            startIcon={<Close color="action"></Close>}
-            style={{ justifyContent: 'flex-start' }}
-          >
-            Failed to Do Task
-          </Button>
-        </Box>
-      </List>
-      <Divider />
-    </Box>
-  )
+  const drawerColor = darkMode ? '#a1a7e3' : '#dcf2f1'
 
   let content
   if (isLoading) {
@@ -367,8 +255,6 @@ function LandingPage() {
     content = <img className="nodatafound-picture" src={nodatafound}></img>
   }
 
- 
-
   //--------------Toast----------------//
   const [errorToastAppeared, setErrorToastAppeared] = useState(false)
 
@@ -412,22 +298,15 @@ function LandingPage() {
           <Box sx={{ flexGrow: 1 }}>
             <AppBar
               component="div"
-              color=""
               position="fixed"
               sx={{
-                backgroundColor: darkMode ? '#a1a7e3' : '#ffffff',
+                backgroundColor: darkMode ? '#464646' : '#ffffff',
                 color: textColor,
               }}
             >
               <Toolbar>
-                <TaskDrawer
-                  isOpen={toggleDrawer(true)}
-                  onClose={() => {
-                    toggleDrawer(false)
-                  }}
-                />
                 <IconButton
-                  onClick={toggleDrawer(true)}
+                  onClick={handleToggleDrawer}
                   size="large"
                   edge="start"
                   color="inherit"
@@ -445,28 +324,32 @@ function LandingPage() {
                 >
                   To Do List Practice
                 </Typography>
-                {params.status === 'pending' && <TaskLabel result={result} />}
+                {params.status === 'pending' && (
+                  <TaskLabel result={result} textcolor={textColor} />
+                )}
 
                 {params.status === 'pending' && (
                   <SearchBar
                     setFilteredTasks={setFilteredTasks}
                     result={result}
-                    sx={{
-                      backgroundColor: darkMode ? '#333' : '#fff', // Set background color based on darkMode
-                      color: darkMode ? 'white' : 'black', // Set text color based on darkMode
-                    }}
                   />
                 )}
 
-                {params.status === 'pending' && <NotifBadge result={result} />}
+                {params.status === 'pending' && (
+                  <NotifBadge
+                    result={result}
+                    backgroundColor={backgroundColor}
+                    textColor={textColor}
+                  />
+                )}
 
                 {params.status === 'pending' && (
                   <AddCircleOutlineRounded
                     titleAccess="Add Task"
-                    onClick={handleOpenmodal}
+                    onClick={handleToggleTaskModal}
                     className="landingpage-body__addbtn"
                     fontSize="large"
-                    color='primary'
+                    color="primary"
                   />
                 )}
 
@@ -476,85 +359,31 @@ function LandingPage() {
                   buttonText={darkMode ? 'Light Mode' : 'Dark Mode'}
                 />
 
-                {/* <AddTodoModal
-isOpen={showmodal}
-/> */}
-                <Modal className="set-todolist_modal" open={openaddtodolist}>
-                  <form className="todolist-form" onSubmit={handlesubmit2}>
-                    <Close
-                      fontSize="large"
-                      className="todolist-form__closebtn"
-                      color="error"
-                      onClick={() => {
-                        handleClosemodal()
-                      }}
-                    />
-
-                    <Typography className="todolist-form__description">
-                      Description
-                    </Typography>
-
-                    <TextField
-                      autoComplete="off"
-                      value={NewTodo}
-                      onChange={(e) => setNewTodo(e.target.value)}
-                      className="todolist-form__label"
-                      label="What to do?"
-                    />
-
-                    <FormControlLabel
-                      className="todolist-form__controlabel"
-                      control={
-                        <Checkbox
-                          className="todolist-form__controllabel__checkbox"
-                          checked={checked}
-                          onChange={handleChange}
-                        ></Checkbox>
-                      }
-                      label="Set Date and Time"
-                    />
-
-                    {datetime && (
-                      <Box className="todolist-form__timepickers">
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <DemoContainer
-                            className="todolist-form__timepickers"
-                            components={['TimeRangeField', 'DateRangePicker']}
-                          >
-                            <Typography>Set Time Range</Typography>
-
-                            <DateTimePicker
-                              disablePast
-                              minutesStep={1}
-                              timeSteps={{ minutes: 1 }}
-                              label="Set Date and Time"
-                              value={enddate}
-                              onChange={(newValue) => setEnddate(newValue)}
-                            />
-                          </DemoContainer>
-                        </LocalizationProvider>
-                      </Box>
-                    )}
-
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      // onClick={handlesubmit2}
-                      onClick={() => {
-                        handlesubmit2()
-                        window.location.reload()
-                      }}
-                    >
-                      SET
-                    </Button>
-                  </form>
-                </Modal>
+                <TaskModal
+                  open={openTaskModal}
+                  handleClose={handleToggleTaskModal}
+                  NewTodo={NewTodo}
+                  setNewTodo={setNewTodo}
+                  startdate={startdate}
+                  setStartdate={setStartdate}
+                  enddate={enddate}
+                  setEnddate={setEnddate}
+                  checked={checked}
+                  handleChange={handleChange}
+                  datetime={datetime}
+                  handleSubmit={handlesubmit2}
+                />
               </Toolbar>
             </AppBar>
           </Box>
 
-          <Drawer className="drawer" onClick={toggleDrawer(false)} open={open}>
-            {DrawerList}
+          <Drawer anchor={'left'} open={open} onClose={handleToggleDrawer}>
+            <DrawerList
+              toggleDrawer={handleToggleDrawer}
+              setParams={setParams}
+              params={params}
+              drawerColor={drawerColor}
+            />
           </Drawer>
         </Box>
 

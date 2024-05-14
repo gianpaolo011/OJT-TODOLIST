@@ -2,7 +2,7 @@ import { MenuItem } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { DarkMode, LightMode } from '@mui/icons-material'
 import { toast } from 'sonner'
-function Darkmode({ darkMode, toggleDarkMode }) {
+function Darkmode({ darkMode, toggleDarkMode, handleClosemenu }) {
   const [modeText, setModeText] = useState('Dark Mode')
   const [modeIcon, setModeIcon] = useState(<DarkMode />)
   useEffect(() => {
@@ -41,7 +41,11 @@ function Darkmode({ darkMode, toggleDarkMode }) {
 
   return (
     <>
-      <MenuItem onClick={toggleDarkMode}>
+      {/* <MenuItem onClick={toggleDarkMode}> */}
+         <MenuItem  onClick={() => {
+            handleClosemenu()
+            toggleDarkMode()
+          }}>
         {' '}
         {modeIcon}
         {modeText}
