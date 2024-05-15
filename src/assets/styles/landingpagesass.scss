@@ -94,6 +94,7 @@
   }
 }
 .drawer {
+    padding: 5px 10px 5px 10px;
   &__close-btn {
     display: flex;
     justify-content: end;
@@ -115,11 +116,12 @@
   }
   &__tab1 {
     &.MuiButtonBase-root {
-      font-size: larger;
+      font-size: large;
       display: flex;
       text-align: left;
       height: 50px;
       padding: 10px;
+      
 
       border: 2px solid white;
       border-radius: 15px;
@@ -132,7 +134,7 @@
   }
   &__tab2 {
     &.MuiButtonBase-root {
-      font-size: larger;
+      font-size: large;
       display: flex;
       text-align: left;
       height: 50px;
@@ -148,7 +150,7 @@
   }
   &__tab3 {
     &.MuiButtonBase-root {
-      font-size: larger;
+      font-size: large;
       display: flex;
       text-align: left;
       height: 50px;
@@ -217,7 +219,7 @@
       margin-bottom: 20px;
       text-align: left;
       font-size: 25px;
-      padding: 10px 14px 10px 20px;
+      padding: 15px 14px 10px 18px;
     }
 
     &__finished {

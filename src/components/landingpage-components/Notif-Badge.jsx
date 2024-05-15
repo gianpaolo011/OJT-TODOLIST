@@ -1,14 +1,13 @@
 import {
   Badge,
   Divider,
-  Menu,
   MenuItem,
   Popover,
   Typography,
 } from '@mui/material'
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications'
 import dayjs from 'dayjs'
-import React, { useState } from 'react'
+import React from 'react'
 
 function NotifBadge({ result, backgroundColor, textColor }) {
   const filteredTask = (result?.result || []).filter((item) => {

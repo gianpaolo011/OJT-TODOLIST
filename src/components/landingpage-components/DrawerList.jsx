@@ -104,7 +104,7 @@ const DrawerList = ({ toggleDrawer, setParams, params, drawerColor }) => {
           </Button>
         </Box>
       </List>
-      <Divider />
+    
     </Box>
   )
 }

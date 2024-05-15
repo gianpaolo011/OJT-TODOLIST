@@ -1,0 +1,12 @@
+.taskoverview-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.MuiChartsLegend-root {
+  tspan {
+    fill: white;
+  }
+}

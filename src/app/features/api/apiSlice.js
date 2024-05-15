@@ -75,6 +75,12 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: (_, error) => (error ? [] : ['Todo']),
     }),
+
+    getCount: builder.query({
+      query: (params) => ({ url: '/task/count', method: 'GET', params }),
+      // transformResponse: (response) => response.result,
+      providesTags: ['Todo'],
+    }),
   }),
 })
 
@@ -84,4 +90,5 @@ export const {
   useUpdateTodoMutation,
   useUpdateTodostatusMutation,
   useDeleteTodoMutation,
+  useGetCountQuery,
 } = apiSlice

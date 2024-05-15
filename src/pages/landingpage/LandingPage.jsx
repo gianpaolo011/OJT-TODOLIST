@@ -35,6 +35,7 @@ import AvatarMenu from '../../components/landingpage-components/AvatarMenu'
 import DrawerList from '../../components/landingpage-components/DrawerList'
 import TaskModal from '../../components/landingpage-components/TaskModal'
 
+
 //Images and Styles
 
 import nodatafound from '../../assets/images/nodata.png'
@@ -359,6 +360,7 @@ function LandingPage() {
                   buttonText={darkMode ? 'Light Mode' : 'Dark Mode'}
                 />
 
+                {/* ADD TASK MODAL */}
                 <TaskModal
                   open={openTaskModal}
                   handleClose={handleToggleTaskModal}
@@ -377,6 +379,7 @@ function LandingPage() {
             </AppBar>
           </Box>
 
+          {/* DRAWER/DRAWERLIST */}
           <Drawer anchor={'left'} open={open} onClose={handleToggleDrawer}>
             <DrawerList
               toggleDrawer={handleToggleDrawer}
@@ -508,8 +511,12 @@ function LandingPage() {
         }}
       />
 
+    
+
       {/* DONE CONFIRMATION */}
       <ConfirmationDialog
+        textColor={textColor}
+        backgroundColor={backgroundColor}
         message="Are you sure this task is done?"
         handleYes={() => {
           update({
@@ -549,6 +556,8 @@ function LandingPage() {
       />
       {/* DELETE CONFIRMATION */}
       <ConfirmationDialog
+        textColor={textColor}
+        backgroundColor={backgroundColor}
         message="Are you sure you want to delete this task?"
         handleYes={() => {
           deleteTodo(getdata)
@@ -588,6 +597,8 @@ function LandingPage() {
       {/* RETRIEVE CONFIRMATION */}
 
       <ConfirmationDialog
+        textColor={textColor}
+        backgroundColor={backgroundColor}
         message="Are you sure you want to retrieve this task?"
         handleYes={() => {
           deleteTodo(getdata)

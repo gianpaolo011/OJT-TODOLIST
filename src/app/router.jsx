@@ -4,7 +4,7 @@ import Dashboard from '../pages/dashboard/Dashboard'
 import SignUp from '../components/dashboard-components/SignUp'
 import LogIn from '../components/dashboard-components/LogIn'
 import TodoListDescription from '../pages/AppDescription/TodoListDescription'
-
+import TaskOverview from '../pages/UserProgressOverview/TaskOverview'
 export const router = createBrowserRouter([
   {
     path: '/landingpage',
@@ -25,5 +25,9 @@ export const router = createBrowserRouter([
   {
     path: '/Description',
     element: <TodoListDescription />,
+  },
+  {
+    path: '/TaskOverview',
+    element: <TaskOverview />,
   },
 ])

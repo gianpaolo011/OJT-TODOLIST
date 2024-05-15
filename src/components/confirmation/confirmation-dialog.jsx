@@ -2,12 +2,25 @@ import React from 'react'
 import { Button, Dialog, DialogTitle, Divider } from '@mui/material'
 import '../../assets/styles/confirmation-dialog.scss'
 
-function ConfirmationDialog({ isOpen, onClose, handleYes, message }) {
+function ConfirmationDialog({
+  isOpen,
+  onClose,
+  handleYes,
+  message,
+  backgroundColor,
+  textColor,
+}) {
   return (
     <Dialog
       open={isOpen}
       className="dialog"
-      PaperProps={{ style: { borderRadius: '10px' } }}
+      PaperProps={{
+        style: {
+          borderRadius: '10px',
+          backgroundColor: backgroundColor,
+          color: textColor,
+        },
+      }}
     >
       <DialogTitle
         id="responsive-dialog-title"
