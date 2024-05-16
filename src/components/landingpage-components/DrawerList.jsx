@@ -5,10 +5,31 @@ import {
   DoneOutline,
   Close,
   KeyboardDoubleArrowLeft,
+  PieChart,
 } from '@mui/icons-material'
 import logo from '../../assets/images/GP-logo.png'
+import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 const DrawerList = ({ toggleDrawer, setParams, params, drawerColor }) => {
+  const navigate = useNavigate()
+  const opentaskoverview = () => {
+    // Show toast message
+    toast('Opening Task Overview...', {
+      duration: 2000,
+      style: {
+        background: 'green',
+        textAlign: 'center',
+        fontSize: 'large',
+        color: 'white',
+      },
+    })
+
+    // After 1 second, navigate to '/'
+    setTimeout(() => {
+      navigate('/TaskOverview')
+    }, 1000)
+  }
   return (
     <Box
       className="drawer"
@@ -102,9 +123,31 @@ const DrawerList = ({ toggleDrawer, setParams, params, drawerColor }) => {
           >
             Failed to Do Task
           </Button>
+          <Divider style={{ height: '10px' }} />
+
+          <Button
+            onClick={() => {
+              opentaskoverview()
+              toggleDrawer(false)
+            }}
+            className="drawer__tab4"
+            size="small"
+            color="primary"
+            variant="contained"
+            sx={{
+              width: '100%',
+              backgroundColor: params.status === 'done' ? 'green' : undefined,
+              '&:hover': {
+                backgroundColor: params.status === 'done' ? 'green' : undefined,
+              },
+            }}
+            startIcon={<PieChart color="action" />}
+            style={{ justifyContent: 'flex-start' }}
+          >
+            Task Overview
+          </Button>
         </Box>
       </List>
-    
     </Box>
   )
 }

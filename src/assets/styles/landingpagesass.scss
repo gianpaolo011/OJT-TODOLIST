@@ -164,6 +164,22 @@
       }
     }
   }
+    &__tab4 {
+    &.MuiButtonBase-root {
+      font-size: large;
+      display: flex;
+      text-align: left;
+      height: 50px;
+      padding: 10px;
+
+      border: 2px solid white;
+      border-radius: 15px;
+      &:hover {
+        background-color: #101322;
+        transform: translateY(-3px);
+      }
+    }
+  }
 }
 
 .morevert_container {
