@@ -35,7 +35,6 @@ import AvatarMenu from '../../components/landingpage-components/AvatarMenu'
 import DrawerList from '../../components/landingpage-components/DrawerList'
 import TaskModal from '../../components/landingpage-components/TaskModal'
 
-
 //Images and Styles
 
 import nodatafound from '../../assets/images/nodata.png'
@@ -62,6 +61,8 @@ function LandingPage() {
     false,
   )
 
+
+  
   const [open, setOpen] = useState(false)
 
   const [startdate, setStartdate] = useState('')
@@ -193,6 +194,15 @@ function LandingPage() {
   const textColor = darkMode ? 'white' : 'black'
   const drawerColor = darkMode ? '#a1a7e3' : '#dcf2f1'
 
+  const styles = {
+    userSelectNone: {
+      WebkitUserSelect: 'none' /* Safari */,
+      MozUserSelect: 'none' /* Firefox */,
+      msUserSelect: 'none' /* IE 10 and IE 11 */,
+      userSelect: 'none' /* Standard syntax */,
+    },
+  }
+
   let content
   if (isLoading) {
     content = (
@@ -210,7 +220,20 @@ function LandingPage() {
   } else if (isSuccess) {
     content = (filteredTasks.length ? filteredTasks : result?.result)?.map(
       (item) => (
-        <Card className="map-container" key={item?.id}>
+        <Card
+          className="map-container"
+          key={item?.id}
+          style={{
+            backgroundColor:
+              params.status === 'pending' &&
+              !dayjs(item?.end_date).isSame(new Date(), 'day') &&
+              new Date(item?.end_date) < new Date()
+                ? 'grey'
+                : '#7fc7d9',
+            ...styles.userSelectNone,
+          }}
+          
+        >
           <Box
             sx={{
               alignItems: 'end',
@@ -244,7 +267,18 @@ function LandingPage() {
               width: '100%',
             }}
           >
-            {`What to do:  ${item?.text}`}
+            <Typography
+              sx={{
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis !important',
+                fontSize: '25px'
+              }}
+            >
+               {`What to do:  ${item?.text}`}
+               
+            </Typography>
+           
             <Divider />
             <Divider />
             {`Date: ${dayjs(item?.end_date).format('LLLL')}`}
@@ -405,6 +439,7 @@ function LandingPage() {
                 {'Ongoing Task'}
                 <Box className="events-container__print-container__ongoing">
                   <i className="pin"></i>
+
                   {content}
                 </Box>
               </Box>
@@ -510,8 +545,6 @@ function LandingPage() {
           handleClose()
         }}
       />
-
-    
 
       {/* DONE CONFIRMATION */}
       <ConfirmationDialog

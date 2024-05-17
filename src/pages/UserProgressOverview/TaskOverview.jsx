@@ -34,7 +34,7 @@ function TaskOverview() {
         },
       })
     }
-  }, [isSuccess])
+  }, [isSuccess]) 
 
   return (
     <>
@@ -89,7 +89,7 @@ function TaskOverview() {
                     <Typography
                       variant="h5"
                       component="span"
-                      sx={{ fontStyle: 'italic' , fontWeight: 'bold' }}
+                      sx={{ fontStyle: 'italic', fontWeight: 'bold' }}
                     >
                       {result.result.pending}
                     </Typography>
@@ -113,7 +113,7 @@ function TaskOverview() {
                     <Typography
                       variant="h5"
                       component="span"
-                      sx={{ fontStyle: 'italic' , fontWeight: 'bold'}}
+                      sx={{ fontStyle: 'italic', fontWeight: 'bold' }}
                     >
                       {result.result.done}
                     </Typography>
@@ -144,9 +144,21 @@ function TaskOverview() {
               </>
             )}
           </Box>
-          
+
           {isSuccess && result && (
             <PieChart
+              slotProps={{
+                legend: {
+                  position: {
+                    vertical: 'middle',
+                    horizontal: 'right',
+                  },
+                  itemMarkWidth: 22,
+                  itemMarkHeight: 8,
+                  markGap: 5,
+                  itemGap: 10,
+                },
+              }}
               sx={{
                 [`& .${pieArcLabelClasses.root}`]: {
                   fontWeight: 'bold',
@@ -174,7 +186,6 @@ function TaskOverview() {
                     },
                   ],
                   arcLabel: (item) => ` ${item.value}`,
-                  // arcLabelMinAngle: 10,
                   highlightScope: { faded: 'global', highlighted: 'item' },
                   faded: {
                     innerRadius: 40,
@@ -186,19 +197,25 @@ function TaskOverview() {
               width={1200}
               height={650}
             />
-            
           )}
-          
         </Box>
-          {result && (
-        <Typography variant="h5" sx={{ fontStyle: 'italic', fontWeight: 'bold' }}>
-          {`Percentage of successfully completed tasks: `}
-          {((result.result.done / (result.result.pending + result.result.done + result.result.inactive)) * 100).toFixed(2)}%
-            {` in total `}
-        </Typography>
-      )}
+        {result && (
+          <Typography
+            variant="h5"
+            sx={{ fontStyle: 'italic', fontWeight: 'bold' }}
+          >
+            {`Percentage of successfully completed tasks: `}
+            {(
+              (result.result.done /
+                (result.result.pending +
+                  result.result.done +
+                  result.result.inactive)) *
+              100
+            ).toFixed(2)}
+            %{` in total `}
+          </Typography>
+        )}
       </Box>
-        
     </>
   )
 }

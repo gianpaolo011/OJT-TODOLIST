@@ -9,6 +9,7 @@ function SearchBar({ result, setFilteredTasks, textColor, searchbarColor }) {
 
   const handleSearch = () => {
     const trimmedQuery = searchQuery.trim().toLowerCase()
+    
     if (trimmedQuery === '') {
       setFilteredTasks(result?.result || [])
     } else {

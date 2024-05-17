@@ -1,10 +1,4 @@
-import {
-  Badge,
-  Divider,
-  MenuItem,
-  Popover,
-  Typography,
-} from '@mui/material'
+import { Badge, Divider, MenuItem, Popover, Typography } from '@mui/material'
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications'
 import dayjs from 'dayjs'
 import React from 'react'
@@ -78,13 +72,24 @@ function NotifBadge({ result, backgroundColor, textColor }) {
             borderRadius: '20px',
             backgroundColor: backgroundColor,
             color: textColor,
-            padding: '10px',
+            padding: '5px',
+            width: '20%',
+            overflow: 'hidden !important',
+            display: 'inline-block',
+            textOverflow: 'ellipsis',
           },
         }}
       >
         {/* Display the count of ongoing tasks */}
         <MenuItem style={{ pointerEvents: 'none' }}>
-          <Typography variant="h6" style={{ pointerEvents: 'none' }}>
+          <Typography
+            sx={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis !important',
+              fontSize: '25px',
+            }}
+          >
             Task scheduled today: {filteredTask.length}
           </Typography>
         </MenuItem>

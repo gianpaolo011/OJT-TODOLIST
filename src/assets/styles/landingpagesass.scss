@@ -30,13 +30,11 @@
   &__notif-label {
     &.MuiTypography-root {
       font-size: large;
-      
     }
   }
   &__notif-icon {
     cursor: pointer;
   }
-  
 }
 
 .landingpage-body {
@@ -94,7 +92,7 @@
   }
 }
 .drawer {
-    padding: 5px 10px 5px 10px;
+  padding: 5px 10px 5px 10px;
   &__close-btn {
     display: flex;
     justify-content: end;
@@ -121,7 +119,6 @@
       text-align: left;
       height: 50px;
       padding: 10px;
-      
 
       border: 2px solid white;
       border-radius: 15px;
@@ -164,7 +161,7 @@
       }
     }
   }
-    &__tab4 {
+  &__tab4 {
     &.MuiButtonBase-root {
       font-size: large;
       display: flex;
@@ -214,7 +211,9 @@
 .events-container {
   &__print-container {
     & .MuiPaper-root {
-      background-color: #7fc7d9;
+      width: 32%;
+      display: inline-block;
+
       border-radius: 15px;
       border: 3px solid white;
       color: #0f1035;

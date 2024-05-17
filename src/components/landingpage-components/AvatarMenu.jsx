@@ -1,16 +1,15 @@
 import { Avatar, Fade, Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
 import Darkmode from '../../components/landingpage-components/Darkmode'
-import TaskOverview from '../../pages/UserProgressOverview/TaskOverview'
+
 import { useNavigate } from 'react-router-dom'
-import { ExitToApp, PieChart } from '@mui/icons-material'
+import { ExitToApp } from '@mui/icons-material'
 import { lightBlue } from '@mui/material/colors'
 import { toast } from 'sonner'
 
 function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
   const [anchorMenu, setAnchorMenu] = useState(null)
   const isopen = Boolean(anchorMenu)
-  const [loading, setLoading] = useState(false)
 
   const handleClickmenu = (event) => {
     setAnchorMenu(event.currentTarget)
@@ -34,24 +33,6 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
     // After 1 second, navigate to '/'
     setTimeout(() => {
       navigate('/')
-    }, 1000)
-  }
-
-  const opentaskoverview = () => {
-    // Show toast message
-    toast('Opening Task Overview...', {
-      duration: 2000,
-      style: {
-        background: 'green',
-        textAlign: 'center',
-        fontSize: 'large',
-        color: 'white',
-      },
-    })
-
-    // After 1 second, navigate to '/'
-    setTimeout(() => {
-      navigate('/TaskOverview')
     }, 1000)
   }
 
@@ -89,15 +70,6 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
           buttonText={buttonText}
           handleClosemenu={handleClosemenu}
         />
-        <MenuItem
-          onClick={() => {
-            opentaskoverview()
-          }}
-        >
-          {' '}
-          <PieChart sx={{ marginRight: '10px' }} />
-          Task Overview
-        </MenuItem>
 
         <MenuItem
           onClick={() => {
