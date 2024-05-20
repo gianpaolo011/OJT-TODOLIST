@@ -1,18 +1,29 @@
 import React from 'react'
-import {
-  Dialog,
-  DialogContent,
-  Typography,
-  Button,
-  Divider,
-} from '@mui/material'
+import { Modal, Typography, Button, Divider } from '@mui/material'
 import { Box } from '@mui/system'
 import dayjs from 'dayjs'
+import { Close } from '@mui/icons-material'
 
-const TaskZoom = ({ onClose, itemStartDate, itemText, itemEndDate }) => {
+const TaskZoom = ({ onClose, isOpen, itemStartDate, itemText, itemEndDate }) => {
   return (
-    <Dialog open={true} onClose={onClose}>
-      <DialogContent>
+    <Modal open={isOpen} onClose={onClose}>
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+      }}>
+        <Close
+          fontSize="large"
+          className="todolist-form__closebtn"
+          color="error"
+          onClick={onClose}
+        />
         <Box className="date-created">
           {`Date Created: ${dayjs(itemStartDate).format('LLL')}`}
         </Box>
@@ -34,8 +45,8 @@ const TaskZoom = ({ onClose, itemStartDate, itemText, itemEndDate }) => {
         </Typography>
         {/* Add more task details as needed */}
         <Button onClick={onClose}>Close</Button>
-      </DialogContent>
-    </Dialog>
+      </Box>
+    </Modal>
   )
 }
 

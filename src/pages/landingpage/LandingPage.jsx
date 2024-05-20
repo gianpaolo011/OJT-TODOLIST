@@ -14,12 +14,15 @@ import {
   MenuItem,
   Fade,
   CircularProgress,
+  Modal,
 } from '@mui/material'
 import {
   AddCircleOutlineRounded,
+  Close,
   CloudSync,
   Delete,
   DoneAll,
+  OpenInFull,
   Update,
 } from '@mui/icons-material'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -34,6 +37,7 @@ import TaskLabel from '../../components/landingpage-components/TaskLabel'
 import AvatarMenu from '../../components/landingpage-components/AvatarMenu'
 import DrawerList from '../../components/landingpage-components/DrawerList'
 import TaskModal from '../../components/landingpage-components/TaskModal'
+// import TaskZoom from '../../components/landingpage-components/TaskZoom'
 
 //Images and Styles
 
@@ -61,8 +65,6 @@ function LandingPage() {
     false,
   )
 
-
-  
   const [open, setOpen] = useState(false)
 
   const [startdate, setStartdate] = useState('')
@@ -203,6 +205,30 @@ function LandingPage() {
     },
   }
 
+  const [openTaskzoomModal, setOpenTaskzoomModal] = useState(false)
+  const [selectedTask, setSelectedTask] = useState(null)
+
+  const handleToggleTaskzoomModal = () => {
+    setOpenTaskzoomModal(!openTaskzoomModal)
+  }
+
+  const [taskModalBackgroundColor, setTaskModalBackgroundColor] = useState(
+    'white',
+  )
+
+  // Function to handle task click and open modal
+  const handleTaskClick = (item) => {
+    const bgColor =
+      params.status === 'pending' &&
+      !dayjs(item?.end_date).isSame(new Date(), 'day') &&
+      new Date(item?.end_date) < new Date()
+        ? 'grey'
+        : 'white'
+    setTaskModalBackgroundColor(bgColor)
+    setSelectedTask(item)
+    setOpenTaskzoomModal(true)
+  }
+
   let content
   if (isLoading) {
     content = (
@@ -229,10 +255,9 @@ function LandingPage() {
               !dayjs(item?.end_date).isSame(new Date(), 'day') &&
               new Date(item?.end_date) < new Date()
                 ? 'grey'
-                : '#7fc7d9',
+                : 'white',
             ...styles.userSelectNone,
           }}
-          
         >
           <Box
             sx={{
@@ -243,16 +268,27 @@ function LandingPage() {
               width: '100%',
             }}
           >
-            {(params.status === 'pending' || params.status === 'inactive') && (
-              <Box className="morevert_container">
-                <ActionMenuCard
-                  id={item?.id}
-                  item={item}
-                  opens={opens}
-                  handleClick={handleClick}
+            <Box className="morevert_container">
+              {params.status === 'pending' && (
+                <OpenInFull
+                  onClick={() => handleTaskClick(item)}
+                  color="action"
+                  sx={{ marginTop: '5px', cursor: 'pointer' }}
                 />
-              </Box>
-            )}
+              )}
+
+              {(params.status === 'pending' ||
+                params.status === 'inactive') && (
+                <Box>
+                  <ActionMenuCard
+                    id={item?.id}
+                    item={item}
+                    opens={opens}
+                    handleClick={handleClick}
+                  />
+                </Box>
+              )}
+            </Box>
 
             <Box className="date-created">
               {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
@@ -272,13 +308,12 @@ function LandingPage() {
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis !important',
-                fontSize: '25px'
+                fontSize: '25px',
               }}
             >
-               {`What to do:  ${item?.text}`}
-               
+              {`What to do:  ${item?.text}`}
             </Typography>
-           
+
             <Divider />
             <Divider />
             {`Date: ${dayjs(item?.end_date).format('LLLL')}`}
@@ -463,6 +498,64 @@ function LandingPage() {
           </Box>
         </Box>
       </Box>
+
+      <Modal
+        className="taskzoommodal"
+        open={openTaskzoomModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          className="taskzoommodal__task_modal"
+          sx={{ backgroundColor: taskModalBackgroundColor }}
+        >
+          {selectedTask && (
+            <>
+              <Close
+                fontSize="large"
+                className="taskzoommodal__closebtn"
+                color="error"
+                onClick={handleToggleTaskzoomModal}
+                sx={{ fontSize: '40px' }}
+              />
+              <Box className="taskzoommodal__date-created">
+                {`Date Created: ${dayjs(selectedTask.start_date).format(
+                  'LLL',
+                )}`}
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'column',
+                  width: '100%',
+                }}
+              >
+                <Typography variant="h5">
+                  {`What to do: `}
+                  <Typography
+                    variant="h4"
+                    component="span"
+                    sx={{ fontStyle: 'italic', textTransform:'uppercase' }}
+                  >
+                    {selectedTask.text}
+                  </Typography>
+                </Typography>
+                <Divider />
+                <Divider />
+
+                <Typography variant="h5">
+                  {`Date: `}
+                  <Typography variant="h5" component="span">
+                    {dayjs(selectedTask.end_date).format('LLLL')}
+                  </Typography>
+                </Typography>
+              </Box>
+            </>
+          )}
+        </Box>
+      </Modal>
 
       <Menu
         className="confirm-menu"
