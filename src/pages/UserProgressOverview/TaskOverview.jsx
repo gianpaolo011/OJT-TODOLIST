@@ -57,6 +57,7 @@ function TaskOverview() {
 
         <Typography className="taskoverview-body__label" variant="h3">
           Overall Task Progress Overview
+          <div className="pins"></div>
         </Typography>
         <Divider
           style={{ height: '1px', width: '50%', backgroundColor: 'white' }}

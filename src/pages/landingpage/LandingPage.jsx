@@ -223,7 +223,7 @@ function LandingPage() {
       !dayjs(item?.end_date).isSame(new Date(), 'day') &&
       new Date(item?.end_date) < new Date()
         ? 'grey'
-        : 'white'
+        : '#e8ce58'
     setTaskModalBackgroundColor(bgColor)
     setSelectedTask(item)
     setOpenTaskzoomModal(true)
@@ -255,10 +255,15 @@ function LandingPage() {
               !dayjs(item?.end_date).isSame(new Date(), 'day') &&
               new Date(item?.end_date) < new Date()
                 ? 'grey'
-                : 'white',
+                : '#e8ce58',
             ...styles.userSelectNone,
+            
           }}
+          
         >
+           
+         
+          
           <Box
             sx={{
               alignItems: 'end',
@@ -289,11 +294,14 @@ function LandingPage() {
                 </Box>
               )}
             </Box>
-
+  
             <Box className="date-created">
+              
               {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
             </Box>
           </Box>
+      
+              <Divider sx={{height: '10px'}}/>
 
           <Box
             sx={{
@@ -483,6 +491,7 @@ function LandingPage() {
               <Box className="finished">
                 {'Finished Task '}
                 <Box className="events-container__print-container__finished">
+                
                   {content}
                 </Box>
               </Box>
@@ -505,10 +514,13 @@ function LandingPage() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
+        
         <Box
           className="taskzoommodal__task_modal"
           sx={{ backgroundColor: taskModalBackgroundColor }}
         >
+          <i className="pins"></i>
+          
           {selectedTask && (
             <>
               <Close
@@ -518,11 +530,13 @@ function LandingPage() {
                 onClick={handleToggleTaskzoomModal}
                 sx={{ fontSize: '40px' }}
               />
+              
               <Box className="taskzoommodal__date-created">
                 {`Date Created: ${dayjs(selectedTask.start_date).format(
                   'LLL',
                 )}`}
               </Box>
+             <Divider sx={{height: '10px'}}/>
 
               <Box
                 sx={{
