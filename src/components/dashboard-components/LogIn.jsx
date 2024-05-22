@@ -1,6 +1,5 @@
 import { Box } from '@mui/system'
-import React from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import '../../assets/styles/loginpage.scss'
@@ -16,8 +15,6 @@ import {
   Typography,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-
-// import CryptoJS from 'crypto-js'
 import { userSchemaLogin } from '../../UserValidation/UserLogInValidation'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -25,9 +22,32 @@ import { useLoginMutation } from '../../app/features/api/login'
 import CryptoJS from 'crypto-js'
 import calendar from '../../assets/images/calendar_front.png'
 import { toast } from 'sonner'
+
 function LogIn({ isOpen, onClose }) {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // Prevent back and forward navigation
+    const handleBeforeUnload = (event) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+
+    const disableNavigation = () => {
+      history.pushState(null, '', window.location.href)
+      window.addEventListener('popstate', handleBeforeUnload)
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    disableNavigation()
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      window.removeEventListener('popstate', handleBeforeUnload)
+    }
+  }, [])
+
   const handleClickShowPassword = () => setShowPassword(!showPassword)
 
   const handleMouseDownPassword = (event) => {
@@ -45,7 +65,7 @@ function LogIn({ isOpen, onClose }) {
       return
     }
 
-    setOpensnackbar(false)
+    setAlert((prev) => ({ ...prev, show: false }))
   }
 
   const [login] = useLoginMutation()
@@ -79,8 +99,7 @@ function LogIn({ isOpen, onClose }) {
         })
 
         const encryptedData = CryptoJS.AES.encrypt(
-          // JSON.stringify(response.result.token),
-          JSON.stringify(response.result.token), //change data into result on monday!!!
+          JSON.stringify(response.result.token), 
           import.meta.env.VITE_CRYPTO_SALT_KEY,
         ).toString()
 
@@ -90,8 +109,7 @@ function LogIn({ isOpen, onClose }) {
         navigate('/landingpage')
       })
       .catch((error) => {
-        alert({ show: true, message: error.message, severity: 'error' })
-
+        setAlert({ show: true, message: error.message, severity: 'error' })
         console.log(error)
       })
   }
@@ -100,14 +118,13 @@ function LogIn({ isOpen, onClose }) {
     <Modal open={isOpen}>
       <Box className="login-page__form-container">
         <Box className=" signup-page__form-container__logo">
-          <img className="logo-picture" src={calendar}></img>
+          <img className="logo-picture" src={calendar} alt="Calendar Logo" />
         </Box>
         <Box className="login-page__form-container__form" id="myform">
           <form
             className="login-page__form-container__login-form"
             id="login_form"
             onSubmit={handleSubmit(logindata)}
-            // onSubmit={login}
           >
             <IconButton color="error" sx={{ position: 'absolute', top: 20 }}>
               <CloseIcon

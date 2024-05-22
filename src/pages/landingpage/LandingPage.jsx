@@ -59,6 +59,25 @@ import { toast } from 'sonner'
 import { Toaster } from 'sonner'
 
 function LandingPage() {
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+
+    const disableNavigation = () => {
+      history.pushState(null, '', window.location.href)
+      window.addEventListener('popstate', handleBeforeUnload)
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    disableNavigation()
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      window.removeEventListener('popstate', handleBeforeUnload)
+    }
+  }, [])
   const [openconfirmdialog, setOpenconfirmdialog] = useState(false)
   const [opendoneconfirmdialog, setOpendoneconfirmdialog] = useState(false)
   const [openretrieveconfirmdialog, setOpenretrieveconfirmdialog] = useState(
@@ -248,6 +267,9 @@ function LandingPage() {
       (item) => (
         <Card
           className="map-container"
+          // className={ params.status === 'pending' &&
+          //     !dayjs(item?.end_date).isSame(new Date(), 'day') &&
+          //     new Date(item?.end_date) < new Date() ? "expiredtask" : "ongoingtask"}
           key={item?.id}
           style={{
             backgroundColor:
@@ -257,13 +279,8 @@ function LandingPage() {
                 ? 'grey'
                 : '#e8ce58',
             ...styles.userSelectNone,
-            
           }}
-          
         >
-           
-         
-          
           <Box
             sx={{
               alignItems: 'end',
@@ -294,14 +311,13 @@ function LandingPage() {
                 </Box>
               )}
             </Box>
-  
+
             <Box className="date-created">
-              
               {`Date Created: ${dayjs(item?.start_date).format('LLL')}`}
             </Box>
           </Box>
-      
-              <Divider sx={{height: '10px'}}/>
+
+          <Divider sx={{ height: '10px' }} />
 
           <Box
             sx={{
@@ -324,6 +340,7 @@ function LandingPage() {
 
             <Divider />
             <Divider />
+
             {`Date: ${dayjs(item?.end_date).format('LLLL')}`}
           </Box>
         </Card>
@@ -491,7 +508,6 @@ function LandingPage() {
               <Box className="finished">
                 {'Finished Task '}
                 <Box className="events-container__print-container__finished">
-                
                   {content}
                 </Box>
               </Box>
@@ -514,13 +530,12 @@ function LandingPage() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        
         <Box
           className="taskzoommodal__task_modal"
           sx={{ backgroundColor: taskModalBackgroundColor }}
         >
           <i className="pins"></i>
-          
+
           {selectedTask && (
             <>
               <Close
@@ -530,13 +545,13 @@ function LandingPage() {
                 onClick={handleToggleTaskzoomModal}
                 sx={{ fontSize: '40px' }}
               />
-              
+
               <Box className="taskzoommodal__date-created">
                 {`Date Created: ${dayjs(selectedTask.start_date).format(
                   'LLL',
                 )}`}
               </Box>
-             <Divider sx={{height: '10px'}}/>
+              <Divider sx={{ height: '10px' }} />
 
               <Box
                 sx={{
@@ -551,7 +566,7 @@ function LandingPage() {
                   <Typography
                     variant="h4"
                     component="span"
-                    sx={{ fontStyle: 'italic', textTransform:'uppercase' }}
+                    sx={{ fontStyle: 'italic', textTransform: 'uppercase' }}
                   >
                     {selectedTask.text}
                   </Typography>
