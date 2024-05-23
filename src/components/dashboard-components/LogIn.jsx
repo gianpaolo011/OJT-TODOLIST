@@ -27,24 +27,29 @@ function LogIn({ isOpen, onClose }) {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
 
+  //DISABLE BROWSER BACK ARROWS
   useEffect(() => {
-    // Prevent back and forward navigation
-    const handleBeforeUnload = (event) => {
-      event.preventDefault()
-      event.returnValue = ''
+    const token = localStorage.getItem('token')
+
+    const handlePopState = () => {
+      if (token) {
+        history.pushState(null, '', window.location.href)
+      }
     }
 
     const disableNavigation = () => {
-      history.pushState(null, '', window.location.href)
-      window.addEventListener('popstate', handleBeforeUnload)
+      if (token) {
+        history.pushState(null, '', window.location.href)
+        window.addEventListener('popstate', handlePopState)
+      }
     }
 
-    window.addEventListener('beforeunload', handleBeforeUnload)
     disableNavigation()
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-      window.removeEventListener('popstate', handleBeforeUnload)
+      if (token) {
+        window.removeEventListener('popstate', handlePopState)
+      }
     }
   }, [])
 
@@ -99,14 +104,15 @@ function LogIn({ isOpen, onClose }) {
         })
 
         const encryptedData = CryptoJS.AES.encrypt(
-          JSON.stringify(response.result.token), 
+          JSON.stringify(response.result.token),
           import.meta.env.VITE_CRYPTO_SALT_KEY,
         ).toString()
 
         localStorage.setItem('token', encryptedData)
-
+        localStorage.setItem('user_data', JSON.stringify(response.result))
+        console.log('RESULT', response.result.first_name)
         console.log({ response })
-        navigate('/landingpage')
+        navigate('/TaskOverview')
       })
       .catch((error) => {
         setAlert({ show: true, message: error.message, severity: 'error' })

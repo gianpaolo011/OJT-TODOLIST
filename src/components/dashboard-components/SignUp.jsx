@@ -115,7 +115,7 @@ function SignUp({ isOpen, onClose }) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
-  console.log({ errors }, Boolean(errors.confirm))
+  // console.log({ errors }, Boolean(errors.confirm))
   // console.log(data)
   return (
     <div>

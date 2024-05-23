@@ -5,10 +5,9 @@ import { useGetCountQuery } from '../../app/features/api/apiSlice'
 import * as React from 'react'
 import { toast } from 'sonner'
 import { useEffect } from 'react'
-
-import '../../assets/styles/taskoverview.scss'
 import {
-  KeyboardDoubleArrowLeft,
+
+  KeyboardDoubleArrowRight,
   LoopOutlined,
   ThumbDown,
   ThumbUp,
@@ -16,6 +15,32 @@ import {
 import { useNavigate } from 'react-router-dom'
 
 function TaskOverview() {
+
+
+   useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    const handlePopState = () => {
+      if (token) {
+        history.pushState(null, '', window.location.href)
+      }
+    }
+
+    const disableNavigation = () => {
+      if (token) {
+        history.pushState(null, '', window.location.href)
+        window.addEventListener('popstate', handlePopState)
+      }
+    }
+
+    disableNavigation()
+
+    return () => {
+      if (token) {
+        window.removeEventListener('popstate', handlePopState)
+      }
+    }
+  }, [])
   const palette = ['#5bc0de', '#22bb33', '#ff3333']
   const navigate = useNavigate()
   const { data: result, isLoading, isSuccess, isError } = useGetCountQuery()
@@ -34,7 +59,24 @@ function TaskOverview() {
         },
       })
     }
-  }, [isSuccess]) 
+  }, [isSuccess])
+
+  const handleSliceClick = (_, data) => {
+    console.log('datalabel', data)
+    switch (data.dataIndex) {
+      case 0:
+        navigate('/landingpage', { state: 'pending' })
+        break
+      case 1:
+        navigate('/landingpage', { state: 'done' })
+        break
+      case 2:
+        navigate('/landingpage', { state: 'inactive' })
+        break
+      default:
+        break
+    }
+  }
 
   return (
     <>
@@ -42,10 +84,10 @@ function TaskOverview() {
         className="taskoverview-body"
         sx={{ backgroundColor: '#101322', color: 'white', padding: '15px' }}
       >
-        <Box sx={{ width: '100%', position: 'fixed' }}>
+        <Box sx={{ width: '100%', position: 'fixed', display: 'flex', justifyContent: 'end' }}>
           <IconButton className="back-btn">
-            <KeyboardDoubleArrowLeft
-              fontSize="large"
+            <KeyboardDoubleArrowRight
+            sx={{fontSize: '50px'}}
               className="back-btn"
               onClick={() => {
                 navigate('/landingpage')
@@ -57,7 +99,6 @@ function TaskOverview() {
 
         <Typography className="taskoverview-body__label" variant="h3">
           Overall Task Progress Overview
-         
         </Typography>
         <Divider
           style={{ height: '1px', width: '50%', backgroundColor: 'white' }}
@@ -129,7 +170,6 @@ function TaskOverview() {
                   }}
                 >
                   <ThumbDown fontSize="large" color="error" />
-
                   <Typography variant="h5">
                     {`You have failed to complete `}
                     <Typography
@@ -139,7 +179,7 @@ function TaskOverview() {
                     >
                       {result.result.inactive}
                     </Typography>
-                    {` task${result.result.done !== 1 ? 's' : ''}.`}
+                    {` task${result.result.inactive !== 1 ? 's' : ''}.`}
                   </Typography>
                 </Box>
               </>
@@ -148,6 +188,7 @@ function TaskOverview() {
 
           {isSuccess && result && (
             <PieChart
+              onItemClick={handleSliceClick}
               slotProps={{
                 legend: {
                   position: {
@@ -193,6 +234,7 @@ function TaskOverview() {
                     additionalRadius: -30,
                     color: 'gray',
                   },
+                  onClick: handleSliceClick,
                 },
               ]}
               width={1200}

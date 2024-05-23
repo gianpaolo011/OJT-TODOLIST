@@ -36,7 +36,7 @@ function Update({ isOpen, onClose, itemData, updateddata }) {
   })
   useEffect(() => {
     if (updateddata) {
-      console.log(updateddata)
+     
       setValue('descriptionvalue', updateddata.text)
       setValue('dateandtime', updateddata.end_date)
     }

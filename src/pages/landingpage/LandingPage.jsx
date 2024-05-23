@@ -57,25 +57,24 @@ import {
 import dayjs from 'dayjs'
 import { toast } from 'sonner'
 import { Toaster } from 'sonner'
+import { useLocation } from 'react-router-dom'
 
 function LandingPage() {
+  //DISABLE BROWSER BACK ARROWS
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault()
-      event.returnValue = ''
+    const handlePopState = () => {
+      history.pushState(null, '', window.location.href)
     }
 
     const disableNavigation = () => {
       history.pushState(null, '', window.location.href)
-      window.addEventListener('popstate', handleBeforeUnload)
+      window.addEventListener('popstate', handlePopState)
     }
 
-    window.addEventListener('beforeunload', handleBeforeUnload)
     disableNavigation()
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-      window.removeEventListener('popstate', handleBeforeUnload)
+      window.removeEventListener('popstate', handlePopState)
     }
   }, [])
   const [openconfirmdialog, setOpenconfirmdialog] = useState(false)
@@ -83,6 +82,8 @@ function LandingPage() {
   const [openretrieveconfirmdialog, setOpenretrieveconfirmdialog] = useState(
     false,
   )
+  const location = useLocation()
+  console.log({ location })
 
   const [open, setOpen] = useState(false)
 
@@ -98,6 +99,11 @@ function LandingPage() {
   useEffect(() => {
     // Fetch todos data and handle success or error
   }, [params])
+
+  useEffect(() => {
+    console.log({ location })
+    if (location.state) return setParams({ status: location?.state })
+  }, [location])
 
   const [addTodo] = useAddTodoMutation()
   const [updateTodo] = useUpdateTodoMutation()
@@ -213,7 +219,7 @@ function LandingPage() {
 
   const backgroundColor = darkMode ? '#141414' : '#dcf2f1'
   const textColor = darkMode ? 'white' : 'black'
-  const drawerColor = darkMode ? '#a1a7e3' : '#dcf2f1'
+  const drawerColor = darkMode ? '#929292' : '#dcf2f1'
 
   const styles = {
     userSelectNone: {
@@ -266,18 +272,16 @@ function LandingPage() {
     content = (filteredTasks.length ? filteredTasks : result?.result)?.map(
       (item) => (
         <Card
-          className="map-container"
-          // className={ params.status === 'pending' &&
-          //     !dayjs(item?.end_date).isSame(new Date(), 'day') &&
-          //     new Date(item?.end_date) < new Date() ? "expiredtask" : "ongoingtask"}
+          // className="map-container"
+          className={
+            params.status === 'pending' &&
+            !dayjs(item?.end_date).isSame(new Date(), 'day') &&
+            new Date(item?.end_date) < new Date()
+              ? 'expiredtask map-container'
+              : 'ongoingtask map-container'
+          }
           key={item?.id}
           style={{
-            backgroundColor:
-              params.status === 'pending' &&
-              !dayjs(item?.end_date).isSame(new Date(), 'day') &&
-              new Date(item?.end_date) < new Date()
-                ? 'grey'
-                : '#e8ce58',
             ...styles.userSelectNone,
           }}
         >
@@ -384,7 +388,7 @@ function LandingPage() {
         }
       })
     }
-  }, [isSuccess, result, params.status])
+  }, [isSuccess, result, params?.status])
 
   return (
     <>

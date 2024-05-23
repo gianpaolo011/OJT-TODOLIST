@@ -258,9 +258,10 @@
     }
 
     &__failed {
+      
       & .MuiPaper-root {
         width: 100%;
-
+        height: 10%;  
         box-shadow: inset -3px -3px 5px #666666, inset 1px 1px 4px #666666;
       }
       gap: 10px;
@@ -274,10 +275,14 @@
 }
 
 .ongoingtask {
-  background-color: #e8ce58;
+  &.MuiPaper-root {
+    background-color: #e8ce58;
+  }
 }
 .expiredtask {
-  background-color: grey;
+  &.MuiPaper-root {
+    background-color: grey;
+  }
 }
 
 .G_logo {
@@ -399,4 +404,3 @@
     margin-left: 40%;
   }
 }
-

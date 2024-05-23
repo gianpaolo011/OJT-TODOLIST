@@ -1,7 +1,7 @@
 import { Avatar, Fade, Menu, MenuItem } from '@mui/material'
 import React, { useState } from 'react'
 import Darkmode from '../../components/landingpage-components/Darkmode'
-
+import UserProfile from '../landingpage-components/UserProfile'
 import { useNavigate } from 'react-router-dom'
 import { ExitToApp } from '@mui/icons-material'
 import { lightBlue } from '@mui/material/colors'
@@ -35,6 +35,15 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
       navigate('/')
     }, 1000)
   }
+  const [modalOpen, setModalOpen] = useState(false)
+  console.log('OPEN MODAL', modalOpen)
+  const handleOpenModal = () => {
+    setModalOpen(true)
+  }
+
+  const handleToggleProfileModal = () => {
+    setModalOpen(!modalOpen)
+  }
 
   return (
     <>
@@ -64,6 +73,12 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
         onClose={handleClosemenu}
         TransitionComponent={Fade}
       >
+        <UserProfile
+          isOpen={modalOpen}
+          handleToggleProfileModal={handleToggleProfileModal}
+          handleClosemenu={handleClosemenu}
+        />
+
         <Darkmode
           toggleDarkMode={toggleDarkMode}
           darkMode={darkMode}

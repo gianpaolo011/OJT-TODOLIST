@@ -8,9 +8,12 @@
 .MuiChartsLegend-root {
   tspan {
     fill: white;
-   
+
     text-transform: uppercase;
   }
 }
-
-
+.back-btn {
+  &:hover {
+    transform: translateX(2px);
+  }
+}
