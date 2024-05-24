@@ -3,19 +3,29 @@ import { Modal, Box, Typography, IconButton, MenuItem } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import { Person } from '@mui/icons-material'
 import '../../assets/styles/UserProfile.scss'
+
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '40%',
-  bgcolor: 'background.paper',
+  bgcolor: '#dcf2f1',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 }
+
+const darkModeStyle = {
+  ...style,
+  bgcolor: '#141414',
+  color: '#fff',
+}
+
 function UserProfile({ isOpen, handleToggleProfileModal, handleClosemenu }) {
   const userData = JSON.parse(localStorage.getItem('user_data'))
+  const darkMode = localStorage.getItem('darkMode') === 'true'
+
   const getFullName = (user) => {
     return `${user.first_name} ${user.middle_name} ${user.last_name}`.trim()
   }
@@ -35,9 +45,11 @@ function UserProfile({ isOpen, handleToggleProfileModal, handleClosemenu }) {
           onClose={handleToggleProfileModal}
           aria-labelledby="user-details-modal-title"
           aria-describedby="user-details-modal-description"
-      
         >
-          <Box sx={style} className='UserProfileModal' >
+          <Box
+            sx={darkMode ? darkModeStyle : style}
+            className="UserProfileModal"
+          >
             <IconButton
               aria-label="close"
               onClick={() => {
@@ -48,11 +60,9 @@ function UserProfile({ isOpen, handleToggleProfileModal, handleClosemenu }) {
             >
               <CloseIcon />
             </IconButton>
-            <Person sx={{fontSize: '50px'}}/>
+            <Person sx={{ fontSize: '50px' }} />
             <Typography id="user-details-modal-title" variant="h2">
-                
               User ID: {userData.id}
-              
             </Typography>
             {userData && (
               <Box>
@@ -65,7 +75,6 @@ function UserProfile({ isOpen, handleToggleProfileModal, handleClosemenu }) {
                 <Typography variant="h5">
                   Contact No: {userData.contact_no}
                 </Typography>
-                {/* Add more fields as needed */}
               </Box>
             )}
           </Box>

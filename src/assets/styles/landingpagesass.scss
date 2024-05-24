@@ -201,14 +201,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid white;
-    font-size: medium;
+    border: 2px solid white;
+    font-size: 15px;
+    padding: 10px;
 
-    width: 80%;
-    height: 30px;
+    width: auto;
+    height: auto;
   }
 }
-.events-container {
+.events-container { 
   padding: 15px;
   &__print-container {
     & .MuiPaper-root {
