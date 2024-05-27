@@ -27,7 +27,7 @@ function UserProfile({ isOpen, handleToggleProfileModal, handleClosemenu }) {
   const darkMode = localStorage.getItem('darkMode') === 'true'
 
   const getFullName = (user) => {
-    return `${user.first_name} ${user.middle_name} ${user.last_name}`.trim()
+    return `${user.first_name} ${user.middle_name}. ${user.last_name}`.trim()
   }
 
   return (
@@ -45,22 +45,29 @@ function UserProfile({ isOpen, handleToggleProfileModal, handleClosemenu }) {
           onClose={handleToggleProfileModal}
           aria-labelledby="user-details-modal-title"
           aria-describedby="user-details-modal-description"
+          aria-hidden="true"
         >
+          
+          
           <Box
             sx={darkMode ? darkModeStyle : style}
             className="UserProfileModal"
           >
+            <Box>
+                 <Person sx={{ fontSize: '200px', marginRight: '30px' }} />
+            </Box>
+            <Box>
             <IconButton
               aria-label="close"
               onClick={() => {
                 handleToggleProfileModal()
                 handleClosemenu()
               }}
-              sx={{ position: 'absolute', right: 8, top: 8 }}
+              sx={{ color: darkMode ? 'lightgrey' : 'black',  position: 'absolute', right: 8, top: 8 }}
             >
-              <CloseIcon />
+              <CloseIcon sx={{fontSize :'30px'}}/>
             </IconButton>
-            <Person sx={{ fontSize: '50px' }} />
+        
             <Typography id="user-details-modal-title" variant="h2">
               User ID: {userData.id}
             </Typography>
@@ -78,6 +85,7 @@ function UserProfile({ isOpen, handleToggleProfileModal, handleClosemenu }) {
               </Box>
             )}
           </Box>
+         </Box>
         </Modal>
       </MenuItem>
     </>

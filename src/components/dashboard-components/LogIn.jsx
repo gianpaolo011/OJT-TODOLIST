@@ -25,9 +25,9 @@ import { toast } from 'sonner'
 
 function LogIn({ isOpen, onClose }) {
   const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
   const navigate = useNavigate()
 
-  //DISABLE BROWSER BACK ARROWS
   useEffect(() => {
     const token = localStorage.getItem('token')
 
@@ -53,10 +53,24 @@ function LogIn({ isOpen, onClose }) {
     }
   }, [])
 
+  useEffect(() => {
+    const savedUsername = localStorage.getItem('rememberedUsername')
+    const savedPassword = localStorage.getItem('rememberedPassword')
+    if (savedUsername && savedPassword) {
+      setValue('username', savedUsername)
+      setValue('password', savedPassword)
+      setRememberMe(true)
+    }
+  }, [])
+
   const handleClickShowPassword = () => setShowPassword(!showPassword)
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
+  }
+
+  const handleRememberMeChange = (event) => {
+    setRememberMe(event.target.checked)
   }
 
   const [alert, setAlert] = useState({
@@ -79,6 +93,7 @@ function LogIn({ isOpen, onClose }) {
     reset,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -89,7 +104,6 @@ function LogIn({ isOpen, onClose }) {
   })
 
   const logindata = (data) => {
-    console.log('data', data)
     login(data)
       .unwrap()
       .then((response) => {
@@ -110,13 +124,29 @@ function LogIn({ isOpen, onClose }) {
 
         localStorage.setItem('token', encryptedData)
         localStorage.setItem('user_data', JSON.stringify(response.result))
-        console.log('RESULT', response.result.first_name)
-        console.log({ response })
+
+        if (rememberMe) {
+          localStorage.setItem('rememberedUsername', data.username)
+          localStorage.setItem('rememberedPassword', data.password)
+        } else {
+          localStorage.removeItem('rememberedUsername')
+          localStorage.removeItem('rememberedPassword')
+        }
+
         navigate('/TaskOverview')
+        console.log(response)
       })
       .catch((error) => {
-        setAlert({ show: true, message: error.message, severity: 'error' })
-        console.log(error)
+        toast.error("The provided credentials are incorrect.", {
+          position: 'bottom-left',
+          style: {
+            background: 'red',
+            textAlign: 'center',
+            fontSize: 'large',
+            color: 'white',
+          },
+        })
+        console.log('ERROR', error)
       })
   }
 
@@ -186,13 +216,15 @@ function LogIn({ isOpen, onClose }) {
             <Box className="remember-forgot">
               <FormControlLabel
                 className="checkbox"
-                control={<Checkbox />}
+                control={
+                  <Checkbox
+                    checked={rememberMe}
+                    onChange={handleRememberMeChange}
+                  />
+                }
                 label="Remember Me"
               />
-              <br></br>
-              <a className="forgot-pass" href="#">
-                Forgot Password
-              </a>
+            
             </Box>
             <div>
               <Button
@@ -204,21 +236,7 @@ function LogIn({ isOpen, onClose }) {
               </Button>
             </div>
           </form>
-          <Snackbar
-            open={alert.show}
-            autoHideDuration={1500}
-            onClose={handleClosesnackbar}
-          >
-            <Alert
-              elevation={6}
-              onClose={handleClosesnackbar}
-              severity={alert.severity}
-              variant="filled"
-              sx={{ width: '100%' }}
-            >
-              {alert.message}
-            </Alert>
-          </Snackbar>
+          
         </Box>
       </Box>
     </Modal>
