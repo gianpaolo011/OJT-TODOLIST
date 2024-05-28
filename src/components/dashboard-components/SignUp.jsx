@@ -19,8 +19,8 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useSignupMutation } from '../../app/features/api/signup'
 import calendar from '../../assets/images/calendar_front.png'
+import calendarsvg from "../../assets/images/calendar-svg.svg"
 import '../../assets/styles/signup.scss'
-
 
 function SignUp({ isOpen, onClose }) {
   const {
@@ -115,14 +115,13 @@ function SignUp({ isOpen, onClose }) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault()
   }
-  // console.log({ errors }, Boolean(errors.confirm))
-  // console.log(data)
+
   return (
     <div>
       <Modal open={isOpen}>
         <Box className="signup-page__form-container">
           <Box className=" signup-page__form-container__logo">
-            <img className="logo-picture" src={calendar}></img>
+            <img className="logo-picture-signup" src={calendarsvg}></img>
           </Box>
           <Box className="signup-page__form-container__form">
             <form
@@ -138,6 +137,7 @@ function SignUp({ isOpen, onClose }) {
                   }}
                   className="x"
                   color="error"
+                  sx={{fontSize: '30px'}}
                 />
               </IconButton>
               <Typography className="signup_label" variant="h3">
@@ -206,8 +206,6 @@ function SignUp({ isOpen, onClose }) {
                   {...register('password')}
                   error={!!errors?.password}
                   helperText={errors?.password?.message}
-                  // value={password}
-                  // required
                   className="sign_textfield"
                   InputProps={{
                     endAdornment: (
@@ -222,17 +220,14 @@ function SignUp({ isOpen, onClose }) {
                       </IconButton>
                     ),
                   }}
-                  // onChange={(e) => setPassword(e.target.value)}
                   type={showPassword ? 'text' : 'password'}
                   label="Password"
                 />
 
                 <TextField
-                  // value={confirmPassword}
                   {...register('confirm')}
                   error={Boolean(errors.confirm)}
                   helperText={errors?.confirm?.message}
-                  //required
                   className="sign_textfield"
                   InputProps={{
                     endAdornment: (
@@ -255,13 +250,12 @@ function SignUp({ isOpen, onClose }) {
 
               <Box>
                 <Button
-                  // onClick={handleClick}
                   className="submit_button"
                   variant="contained"
                   type="submit"
-                   onClick={() => {
-                        toast('This is a sonner toast')
-                      }}
+                  onClick={() => {
+                    toast('This is a sonner toast')
+                  }}
                 >
                   Register
                 </Button>

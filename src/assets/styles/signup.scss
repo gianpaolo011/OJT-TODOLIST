@@ -13,13 +13,10 @@
 }
 
 
-.login-page__form-container {
-  width: 100%;
-  text-align: center;
-}
+
 
 .sign_textfield {
-  width: 90%;
+  width: 60%;
 }
 
 .signup_label {
@@ -39,17 +36,24 @@
 }
 
 .x {
-  margin-left: 1500%; 
+  margin-left: 1400%; 
 }
 
  .personal-info {
-  width: 100%;
+  width: 70%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: flex-start;
   gap: 10px;
 }
-
+.signup-page__form-container__sign-form {
+  width: 100%;
+  text-align: center;
+}
+.logo-picture-signup{
+  width: 90%;
+  margin-left: 40px;
+}
 
 

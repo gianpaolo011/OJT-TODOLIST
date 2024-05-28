@@ -19,7 +19,7 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
   }
   const navigate = useNavigate()
   const handleLogout = () => {
-    // Show toast message
+    
     toast('Logging out...', {
       duration: 2000,
       style: {
@@ -30,7 +30,7 @@ function AvatarMenu({ toggleDarkMode, darkMode, buttonText }) {
       },
     })
 
-    // After 1 second, navigate to '/'
+ 
     setTimeout(() => {
       navigate('/')
     }, 1000)

@@ -5,8 +5,8 @@ import React from 'react'
 
 function NotifBadge({ result, backgroundColor, textColor }) {
   const filteredTask = (result?.result || []).filter((item) => {
-    const currentDate = dayjs().startOf('day') // Start of today
-    const taskEndDate = dayjs(item?.end_date) // End date of task
+    const currentDate = dayjs().startOf('day')
+    const taskEndDate = dayjs(item?.end_date)
     return (
       taskEndDate.isSame(currentDate, 'day') && // Check if task end date is same as today
       item.status !== 'done' &&

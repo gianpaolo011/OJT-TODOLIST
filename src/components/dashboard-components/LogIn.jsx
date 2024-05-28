@@ -10,7 +10,6 @@ import {
   FormControlLabel,
   IconButton,
   Modal,
-  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
@@ -20,7 +19,8 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useLoginMutation } from '../../app/features/api/login'
 import CryptoJS from 'crypto-js'
-import calendar from '../../assets/images/calendar_front.png'
+
+import calendarsvg from "../../assets/images/calendar-svg.svg"
 import { toast } from 'sonner'
 
 function LogIn({ isOpen, onClose }) {
@@ -153,8 +153,8 @@ function LogIn({ isOpen, onClose }) {
   return (
     <Modal open={isOpen}>
       <Box className="login-page__form-container">
-        <Box className=" signup-page__form-container__logo">
-          <img className="logo-picture" src={calendar} alt="Calendar Logo" />
+        <Box className=" login-page__form-container__logo">
+          <img className="logo-picture-login" src={calendarsvg} alt="Calendar Logo" />
         </Box>
         <Box className="login-page__form-container__form" id="myform">
           <form
@@ -162,14 +162,15 @@ function LogIn({ isOpen, onClose }) {
             id="login_form"
             onSubmit={handleSubmit(logindata)}
           >
-            <IconButton color="error" sx={{ position: 'absolute', top: 20 }}>
+            <IconButton  sx={{ position: 'absolute', top: 20 }}>
               <CloseIcon
                 onClick={() => {
                   onClose()
                   reset()
                 }}
-                className="x"
-                color="primary"
+                className="x-button"
+                color="error"
+                sx={{fontSize: '40px'}}
               />
             </IconButton>
             <Typography className="login_label" variant="h3">

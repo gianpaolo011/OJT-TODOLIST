@@ -3,7 +3,8 @@ import React from 'react'
 import { Alert, Box, Button, Snackbar } from '@mui/material'
 import { GroupAdd, Login } from '@mui/icons-material'
 
-import calendar from '../../assets/images/calendar_front.png'
+
+import calendarsvg from "../../assets/images/calendar-svg.svg"
 import footer from '../../assets/images/footer.png'
 import logo from '../../assets/images/GP-logo.png'
 
@@ -51,6 +52,7 @@ function Dashboard() {
           color="primary"
           variant="text"
           startIcon={<Login color="action" />}
+          sx={{fontSize: '20px'}}
         >
           Log In
         </Button>
@@ -61,17 +63,18 @@ function Dashboard() {
           color="primary"
           variant="text"
           startIcon={<GroupAdd color="action" />}
+          sx={{fontSize: '20px'}}
         >
           Sign Up
         </Button>
       </Box>
 
       <Box className="calendar-box">
-        <img className="calendar-box__calendar" src={calendar} />
+        <img className="calendar-box__calendar" src={calendarsvg} />
       </Box>
       <Box className="title_box" style={{ fontWeight: 'bold' }}>
         {' '}
-        ToDo List Practice
+        To Do List
       </Box>
       <Box className="label_box">
         Empower Your Productivity, Unleash Your Potential – Your To-Do List,

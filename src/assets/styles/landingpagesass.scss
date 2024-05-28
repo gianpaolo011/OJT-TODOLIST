@@ -1,6 +1,7 @@
 .landingpage {
   height: 100vh;
   gap: 10px;
+  
 
   &__appbar {
     top: 0;
@@ -209,7 +210,7 @@
     height: auto;
   }
 }
-.events-container { 
+.events-container {
   padding: 15px;
   &__print-container {
     & .MuiPaper-root {
@@ -259,10 +260,9 @@
     }
 
     &__failed {
-      
       & .MuiPaper-root {
         width: 100%;
-        height: 10%;  
+        height: 10%;
         box-shadow: inset -3px -3px 5px #666666, inset 1px 1px 4px #666666;
       }
       gap: 10px;
@@ -298,9 +298,11 @@
   }
 }
 .nodatafound-picture {
-  height: 100%;
+
   width: 35%;
   margin-left: 33%;
+  
+  
 }
 
 .pin {
@@ -373,6 +375,7 @@
   justify-content: center;
   align-items: center;
   height: auto;
+  
 
   &__task_modal {
     padding: 30px;
@@ -381,10 +384,7 @@
     width: 50%;
     border-radius: 20px;
     border-block-start: solid 30px #d4ba78;
-    border-block-end: solid 1px white;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-      rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-      rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+ box-shadow: inset -3px -3px 5px #666666, inset 1px 1px 4px #666666;
   }
   &__closebtn {
     display: flex;
@@ -404,4 +404,24 @@
     height: 40px;
     margin-left: 40%;
   }
+}
+.calendar-box-landingpage{
+  display: flex;
+  height: 80%;
+  justify-content: center;
+
+  
+  &__calendar{
+    
+    width: 60%;
+    z-index: -1;
+    display: flex;
+    align-self: center  ;
+position: fixed;
+opacity: 0.2;
+ top: 50%;  
+  left: 50%;
+   transform: translate(-50%, -50%);  
+  }
+  
 }

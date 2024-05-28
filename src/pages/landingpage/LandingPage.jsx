@@ -42,6 +42,7 @@ import TaskModal from '../../components/landingpage-components/TaskModal'
 //Images and Styles
 
 import nodatafound from '../../assets/images/nodata.png'
+import calendarsvg from "../../assets/images/calendar-svg.svg"
 import '../../assets/styles/landingpagesass.scss'
 
 //Slices
@@ -272,7 +273,6 @@ function LandingPage() {
     content = (filteredTasks.length ? filteredTasks : result?.result)?.map(
       (item) => (
         <Card
-          // className="map-container"
           className={
             params.status === 'pending' &&
             !dayjs(item?.end_date).isSame(new Date(), 'day') &&
@@ -353,6 +353,7 @@ function LandingPage() {
   } else if (isError) {
     content = <img className="nodatafound-picture" src={nodatafound}></img>
   }
+  
 
   //--------------Toast----------------//
   const [errorToastAppeared, setErrorToastAppeared] = useState(false)
@@ -419,9 +420,9 @@ function LandingPage() {
                   className="landingpage__appbar__label"
                   variant="h5"
                   component="div"
-                  sx={{ flexGrow: 1 }}
+                  sx={{ flexGrow: 1, fontWeight: 'bold' }}
                 >
-                  To Do List Practice
+                  To Do List
                 </Typography>
                 {params.status === 'pending' && (
                   <TaskLabel result={result} textcolor={textColor} />
@@ -494,7 +495,9 @@ function LandingPage() {
           className="landingpage-body"
           sx={{ backgroundColor, color: textColor }}
         >
-          {/* <Outlet /> */}
+          <Box className="calendar-box-landingpage">
+        <img className="calendar-box-landingpage__calendar" src={calendarsvg} />
+      </Box>
 
           {/* Event Containers */}
           <Box className="events-container" position="inherit">
@@ -570,7 +573,7 @@ function LandingPage() {
                   <Typography
                     variant="h4"
                     component="span"
-                    sx={{ fontStyle: 'italic', textTransform: 'uppercase' }}
+                    sx={{ fontStyle: 'italic' }}
                   >
                     {selectedTask.text}
                   </Typography>
@@ -793,8 +796,6 @@ function LandingPage() {
           handleClose()
         }}
       />
-
-      {/* <Button onClick={showtoast}>toast</Button> */}
       <Toaster richColors />
     </>
   )

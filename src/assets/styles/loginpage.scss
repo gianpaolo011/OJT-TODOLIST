@@ -18,17 +18,12 @@
   }
 }
 
-.signup-page__form-container__sign-form {
+
+
+.username__textfield {
   width: 100%;
-  text-align: center;
 }
 
-.sign_textfield {
-  width: 90%;
-}
-.signup_label {
-  color: navy;
-}
 
 .registration_succesfully_alert {
   height: 80%;
@@ -40,8 +35,8 @@
   margin-bottom: 20%;
   margin-left: 35%;
 }
-.x {
-  margin-left: 1500%;
+.x-button {
+  margin-left: 800%;
 }
 .personal-info {
   margin-right: -20%;
@@ -51,4 +46,9 @@
   flex-direction: row;
   justify-content: flex-start;
   gap: 10px;
+}
+.logo-picture-login{
+  width: 80%;
+  margin-left: 40px;
+ 
 }
